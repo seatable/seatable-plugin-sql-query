@@ -3,15 +3,15 @@
   "version": "0.0.3",
   "display_type": "overlay",
   "display_name": {
-    "de": "SQL 查询",
-    "en": "SQL 查询",
-    "fr": "SQL 查询",
+    "de": "SQL-Abfrage",
+    "en": "SQL query",
+    "fr": "requête SQL",
     "zh-cn": "SQL 查询"
   },
   "description": {
-    "de": "SQL 查询",
-    "en": "SQL 查询",
-    "fr": "SQL 查询",
-    "zh-cn": "SQL 查询"
+    "de": "Verwenden Sie SQL, um die Daten in der Tabelle abzufragen",
+    "en": "Use SQL to query the data in the table",
+    "fr": "Utiliser SQL pour interroger les données de la table",
+    "zh-cn": "用 SQL 的方式来查询表格中的数据"
   }
 }

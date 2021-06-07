@@ -23,6 +23,12 @@
   border-radius: 12px 12px 0 0;
 }
 
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-header-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .sql-query-plugin .sql-query-plugin-header .sql-query-plugin-header-right {
   height: 24px;
   width: 24px;
@@ -65,7 +71,6 @@
 .sql-query-plugin .sql-query-result {
   height: calc(100% - 56px);
   width: 100%;
-  overflow: scroll;
   padding: 4px 16px 16px;
 }
 
@@ -73,6 +78,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.sql-query-plugin .sql-query-result .sql-query-result-content {
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
 }
 
 .sql-query-plugin .sql-query-result.success .sql-query-result-table {
@@ -103,6 +114,7 @@
   border-right: 1px solid #ccc;
   min-width: 200px;
   max-width: 400px;
+  padding: 0 8px;
 }
 
 .sql-query-plugin .sql-query-result.success .sql-query-result-thead-th:first-child,
