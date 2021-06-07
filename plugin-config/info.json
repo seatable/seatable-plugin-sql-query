@@ -1,0 +1,17 @@
+{
+  "name": "sql-query",
+  "version": "0.0.3",
+  "display_type": "overlay",
+  "display_name": {
+    "de": "SQL 查询",
+    "en": "SQL 查询",
+    "fr": "SQL 查询",
+    "zh-cn": "SQL 查询"
+  },
+  "description": {
+    "de": "SQL 查询",
+    "en": "SQL 查询",
+    "fr": "SQL 查询",
+    "zh-cn": "SQL 查询"
+  }
+}
