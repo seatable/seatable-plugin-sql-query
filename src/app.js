@@ -123,9 +123,9 @@ class App extends React.Component {
         {intl.get('Querying')}
       </div>
     );
-    const { success, error_message, results } = result;
-    const displayResults = results.slice(0, displayResultsCount);
+    const { success, error_message, results, error_msg } = result;
     if (success) {
+      const displayResults = results.slice(0, displayResultsCount);
       const firstResult = displayResults[0];
       if (!firstResult) return '';
       const keys = Object.keys(firstResult);
@@ -168,7 +168,7 @@ class App extends React.Component {
     }
     return (
       <div className="sql-query-result failed">
-        {error_message}
+        {error_message || error_msg}
       </div>
     );
   }

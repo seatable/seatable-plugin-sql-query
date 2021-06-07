@@ -1,6 +1,6 @@
 .dtable-plugin.sql-query-plugin {
-  height: calc(100% - 9px);
-  margin-top: 9px;
+  height: calc(100% - 87px);
+  margin-top: 87px;
   width: 100%;
   flex: 1 1;
   display: flex;
@@ -71,7 +71,7 @@
 .sql-query-plugin .sql-query-result {
   height: calc(100% - 56px);
   width: 100%;
-  padding: 4px 16px 16px;
+  padding: 4px 16px 0px;
 }
 
 .sql-query-plugin .sql-query-result.doing {
@@ -88,6 +88,7 @@
 
 .sql-query-plugin .sql-query-result.success .sql-query-result-table {
   min-width: 200px;
+  margin-bottom: 16px;
 }
 
 .sql-query-plugin .sql-query-result.success .sql-query-result-thead {
