@@ -123,10 +123,60 @@
   border-left: 1px solid #ccc;
 }
 
+.sql-query-plugin .sql-query-result .sql-query-result-column-content {
+  height: 100%;
+  width: 100%;
+}
+
+.sql-query-plugin .sql-query-result-column-content .sql-query-result-column-icon {
+  height: 24px;
+  width: 24px;
+  line-height: 24px;
+  text-align: center;
+  margin-top: 2px;
+  margin-right: 3px;
+  font-size: 14px;
+  color: #aaa;
+}
+
 .sql-query-plugin .sql-query-result.failed {
   display: flex;
   justify-content: center;
   align-items: center;
   color: red;
   font-size: 20px;
+}
+
+/* cell formatter */
+.sql-query-plugin .sql-query-cell-content {
+  height: 100%;
+  width: 100%;
+}
+
+.sql-query-plugin .sql-query-cell-content .sql-query-button-formatter {
+  margin: 0 auto;
+  text-align: center;
+  min-width: 80px;
+  max-width: 100%;
+  width: fit-content;
+}
+
+.sql-query-plugin .sql-query-cell-content .sql-query-date-formatter,
+.sql-query-plugin .sql-query-cell-content .sql-query-number-formatter,
+.sql-query-plugin .sql-query-cell-content .sql-query-duration-formatter {
+  text-align: right;
+}
+
+.sql-query-plugin .sql-query-cell-content .sql-query-url-formatter,
+.sql-query-plugin .sql-query-cell-content .sql-query-email-formatter,
+.sql-query-plugin .sql-query-cell-content .sql-query-long-text-formatter .long-text-content {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sql-query-plugin .sql-query-cell-content .sql-query-checkbox-formatter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

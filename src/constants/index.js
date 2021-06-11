@@ -1,3 +1,5 @@
+import { CELL_TYPE } from 'dtable-sdk';
+
 export const QUERY_STATUS = {
   READY: 'ready',
   DOING: 'doing',
@@ -5,3 +7,38 @@ export const QUERY_STATUS = {
 };
 
 export const PER_DISPLAY_COUNT = 25;
+
+export const NOT_SUPPORT_COLUMN_TYPES = [
+  CELL_TYPE.LINK,
+  CELL_TYPE.FORMULA,
+  CELL_TYPE.LINK_FORMULA,
+  CELL_TYPE.FILE,
+];
+
+export const COLUMNS_ICONS = {
+  [CELL_TYPE.DEFAULT]: 'dtable-font dtable-icon-single-line-text',
+  [CELL_TYPE.TEXT]: 'dtable-font dtable-icon-single-line-text',
+  [CELL_TYPE.NUMBER]: 'dtable-font dtable-icon-number',
+  [CELL_TYPE.CHECKBOX]: 'dtable-font dtable-icon-check-square-solid',
+  [CELL_TYPE.DATE]: 'dtable-font dtable-icon-calendar-alt-solid',
+  [CELL_TYPE.SINGLE_SELECT]: 'dtable-font dtable-icon-single-election',
+  [CELL_TYPE.LONG_TEXT]: 'dtable-font dtable-icon-long-text',
+  [CELL_TYPE.IMAGE]: 'dtable-font dtable-icon-picture',
+  [CELL_TYPE.FILE]: 'dtable-font dtable-icon-file-alt-solid',
+  [CELL_TYPE.MULTIPLE_SELECT]: 'dtable-font dtable-icon-multiple-selection',
+  [CELL_TYPE.COLLABORATOR]: 'dtable-font dtable-icon-collaborator',
+  [CELL_TYPE.LINK]: 'dtable-font dtable-icon-link-other-record',
+  [CELL_TYPE.FORMULA]: 'dtable-font dtable-icon-formula',
+  [CELL_TYPE.LINK_FORMULA]: 'dtable-font dtable-icon-link-formulas',
+  [CELL_TYPE.CREATOR]: 'dtable-font dtable-icon-creator',
+  [CELL_TYPE.CTIME]: 'dtable-font dtable-icon-creation-time',
+  [CELL_TYPE.LAST_MODIFIER]: 'dtable-font dtable-icon-creator',
+  [CELL_TYPE.MTIME]: 'dtable-font dtable-icon-creation-time',
+  [CELL_TYPE.GEOLOCATION]: 'dtable-font dtable-icon-location',
+  [CELL_TYPE.AUTO_NUMBER]: 'dtable-font dtable-icon-autonumber',
+  [CELL_TYPE.URL]: 'dtable-font dtable-icon-url',
+  [CELL_TYPE.EMAIL]: 'dtable-font dtable-icon-email',
+  [CELL_TYPE.DURATION]: 'dtable-font dtable-icon-duration',
+  [CELL_TYPE.BUTTON]: 'dtable-font dtable-icon-button',
+  [CELL_TYPE.RATE]: 'dtable-font dtable-icon-star',
+};
