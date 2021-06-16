@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { 
   TextFormatter,
@@ -206,10 +206,10 @@ class CellFormatter extends React.Component {
   }
 
   render() {
-    return(
-      <div className="sql-query-cell-content text-truncate">
+    return (
+      <Fragment>
         {this.renderFormatter()}
-      </div>
+      </Fragment>
     );
   }
 }
