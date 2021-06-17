@@ -1,7 +1,7 @@
 class SqlOptionsLocalStorage {
 
   constructor(dtableUuid) {
-    this.appKey = `sql-query&${dtableUuid}`;
+    this.appKey = `sql-queries-${dtableUuid}`;
   }
 
   getCurrentHistorySqlOptions = () => {

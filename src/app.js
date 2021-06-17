@@ -42,6 +42,8 @@ class App extends React.Component {
       // local develop
       await this.dtable.init(window.dtablePluginConfig);
       await this.dtable.syncWithServer();
+      const { dtableUuid } = this.dtable.config;
+      this.sqlOptionsLocalStorage = new SqlOptionsLocalStorage(dtableUuid);
       let relatedUsersRes = await this.dtable.dtableStore.dtableAPI.getTableRelatedUsers();
       window.app = {
         state: {
@@ -51,9 +53,10 @@ class App extends React.Component {
     } else { 
       // integrated to dtable app
       this.dtable.initInBrowser(window.app.dtableStore);
+      const { dtableUuid } = window.app.dtableStore.dtableSettings;
+      this.sqlOptionsLocalStorage = new SqlOptionsLocalStorage(dtableUuid);
     }
-    const { dtableUuid } = this.dtable.config;
-    this.sqlOptionsLocalStorage = new SqlOptionsLocalStorage(dtableUuid);
+    
     const options = this.sqlOptionsLocalStorage.getCurrentHistorySqlOptions();
     this.setState({ displayHistoryOptions: options });
   }
