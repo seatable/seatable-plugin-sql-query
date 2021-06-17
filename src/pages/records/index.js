@@ -55,7 +55,7 @@ class RecordList extends Component {
           { recordsCount > 1 ? intl.get('There_are_records', { count: recordsCount }) : intl.get('There_is_1_record')}
         </div>
         <div className="sql-query-result-container">
-          <div className="sql-query-result-content" style={{width: totalWidth}}>
+          <div className="sql-query-result-content" style={{ width: totalWidth + 2 }}>
             <div className="static-sql-query-result-content">
               <div className="sql-query-result-table-row">
                 {this.disPlayColumns.map(column => {
