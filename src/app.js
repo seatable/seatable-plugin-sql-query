@@ -53,7 +53,7 @@ class App extends React.Component {
       this.dtable.initInBrowser(window.app.dtableStore);
     }
     const { dtableUuid } = this.dtable.config;
-    this.sqlOptionsLocalStorage = new SqlOptionsLocalStorage({ appKey: 'seatable-sql-query', dtableUuid });
+    this.sqlOptionsLocalStorage = new SqlOptionsLocalStorage(dtableUuid);
     const options = this.sqlOptionsLocalStorage.getCurrentHistorySqlOptions();
     this.setState({ displayHistoryOptions: options });
   }
@@ -70,7 +70,9 @@ class App extends React.Component {
     if (validSql) {
       displayHistoryOptions = options.filter(option => option.toLowerCase().indexOf(validSql.toLowerCase()) > -1);
     }
-    this.setState({ sql, displayHistoryOptions });
+    this.setState({ sql, displayHistoryOptions }, () => {
+      this.inputRef.focus();
+    });
   }
 
   onChange = (event) => {
@@ -80,7 +82,6 @@ class App extends React.Component {
 
   onKeyDown = (event) => {
     if (isHotkey('enter', event)) {
-      this.inputRef.blur();
       this.onQuery();
     }
   }
@@ -90,6 +91,7 @@ class App extends React.Component {
     const { sql, queryStatus } = this.state;
     if (!sql) return;
     if (queryStatus.DOING) return;
+    this.inputRef.blur();
     this.setState({queryStatus: QUERY_STATUS.DOING}, () => {
       const dtableAPI = isDevelopment ? this.dtable.dtableStore.dtableAPI : window.app.dtableStore.dtableAPI;
       dtableAPI.sqlQuery(sql, 'dtable-server').then(res => {
@@ -99,7 +101,7 @@ class App extends React.Component {
       });
       const options = this.sqlOptionsLocalStorage.getCurrentHistorySqlOptions();
       const newOptions = options.includes(sql) ? options : [ sql.trim(), ...options ];
-      this.sqlOptionsLocalStorage.saveHistorySqlOptions(newOptions.slice(0, 10));
+      this.sqlOptionsLocalStorage.saveHistorySqlOptions(newOptions);
     });
   }
 
