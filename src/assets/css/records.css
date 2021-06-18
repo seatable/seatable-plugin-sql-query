@@ -1,0 +1,165 @@
+.sql-query-plugin .sql-query-result.success {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  overflow: hidden;
+}
+
+/* no records */
+.sql-query-plugin .sql-query-result.success .sql-query-result-none {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* records count */
+.sql-query-plugin .sql-query-result.success .sql-query-result-count {
+  height: 30px;
+  width: 100%;
+  overflow: hidden;
+  padding-bottom: 8px;
+}
+
+/* records container */
+.sql-query-plugin .sql-query-result.success .sql-query-result-container {
+  overflow-x: scroll;
+  height: calc(100% - 30px);
+  width: 100%;
+  overflow-y: hidden;
+}
+
+.sql-query-plugin .sql-query-result.success .sql-query-result-content {
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+/* static table */
+.sql-query-plugin .sql-query-result.success .static-sql-query-result-content {
+  height: 33px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  border-right: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+}
+
+.sql-query-plugin .sql-query-result.success .static-sql-query-result-content .sql-query-result-table-row {
+  border-top: 1px solid #ccc;
+}
+
+/* scroll table */
+.sql-query-plugin .sql-query-result.success .sql-query-result-table-content {
+  overflow-y: scroll;
+}
+
+.sql-query-plugin .sql-query-result.success .sql-query-result-table {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  border-right: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+}
+
+.sql-query-plugin .sql-query-result.success .sql-query-result-table-row {
+  height: 33px;
+  width: 100%;
+  border-bottom: 1px solid #ccc;
+  display: inline-flex;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.sql-query-plugin .sql-query-result.success .sql-query-result-table-cell {
+  height: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-right: 1px solid #ccc;
+  padding: 0 8px;
+}
+
+.sql-query-plugin .sql-query-result.success .sql-query-result-table-row .sql-query-result-table-cell:last-child {
+  border-right: none;
+}
+
+.sql-query-plugin .sql-query-result .sql-query-result-column-content {
+  height: 100%;
+  width: 100%;
+  text-align: left;
+  line-height: 32px;
+  font-weight: 600;
+}
+
+.sql-query-plugin .sql-query-result-column-content .sql-query-result-column-icon {
+  height: 24px;
+  width: 24px;
+  line-height: 24px;
+  text-align: center;
+  margin-top: 2px;
+  margin-right: 3px;
+  font-size: 14px;
+  color: #aaa;
+}
+
+/* cell formatter */
+.sql-query-plugin .sql-query-result-table-cell .dtable-ui.cell-formatter-container {
+  height: 100%;
+  width: 100%;
+  line-height: 32px;
+}
+
+.sql-query-plugin .sql-query-result-table-cell .sql-query-button-formatter.cell-formatter-container {
+  margin: 3px auto;
+  text-align: center;
+  height: 26px;
+  line-height: 14px;
+  min-width: 80px;
+  max-width: 100%;
+  width: fit-content;
+}
+
+.sql-query-plugin .sql-query-result-table-cell .sql-query-date-formatter,
+.sql-query-plugin .sql-query-result-table-cell .sql-query-number-formatter,
+.sql-query-plugin .sql-query-result-table-cell .sql-query-duration-formatter {
+  text-align: right;
+}
+
+.sql-query-plugin .sql-query-result-table-cell .sql-query-text-formatter,
+.sql-query-plugin .sql-query-result-table-cell .sql-query-url-formatter,
+.sql-query-plugin .sql-query-result-table-cell .sql-query-email-formatter,
+.sql-query-plugin .sql-query-result-table-cell .sql-query-long-text-formatter .long-text-content {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sql-query-plugin .sql-query-result-table-cell .dtable-ui.long-text-formatter {
+  height: 100%;
+}
+
+.sql-query-plugin .sql-query-result-table-cell .sql-query-checkbox-formatter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sql-query-plugin .sql-query-result-table-cell .sql-query-collaborator-formatter,
+.sql-query-plugin .sql-query-result-table-cell .sql-query-creator-formatter,
+.sql-query-plugin .sql-query-result-table-cell .sql-query-last-modifier-formatter {
+  display: flex;
+  align-items: center;
+}
+
+.sql-query-plugin .sql-query-result-table-cell .collaborator-avatar {
+  height: 16px;
+  width: 16px;
+}

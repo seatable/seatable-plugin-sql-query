@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DTable from 'dtable-sdk';
-import { Input, Button } from 'reactstrap';
+import { Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import intl from 'react-intl-universal';
+import isHotkey from 'is-hotkey';
 import './locale/index.js';
-import { Loading, CellFormatter } from './components';
-import { QUERY_STATUS, PER_DISPLAY_COUNT, NOT_SUPPORT_COLUMN_TYPES } from './constants';
-import LOGO from './assets/images/sql-query.png';
+import { QUERY_STATUS } from './constants';
+import Header from './pages/header';
+import RecordList from './pages/records';
+import SqlOptionsLocalStorage from './api/sql-options-local-storage';
 
 import './assets/css/app.css';
 
@@ -19,12 +21,11 @@ class App extends React.Component {
       sql: '',
       result: {},
       queryStatus: QUERY_STATUS.READY,
-      displayResultsCount: PER_DISPLAY_COUNT,
-      isLoading: false,
+      isOpen: false,
+      displayHistoryOptions: [],
     };
     this.dtable = new DTable();
-    this.sqlQueryResultRef = null;
-    this.sqlQueryResultContentRef = null;
+    this.sqlOptionsLocalStorage = null;
   }
 
   componentDidMount() {
@@ -35,19 +36,14 @@ class App extends React.Component {
     this.setState({showDialog: nextProps.showDialog});
   } 
 
-  componentWillUnmount() {
-    this.unsubscribeLocalDtableChanged();
-    this.unsubscribeRemoteDtableChanged();
-    this.sqlQueryResultRef = null;
-    this.sqlQueryResultContentRef = null;
-  }
-
   async initPluginDTableData() {
     const { isDevelopment } = this.props;
     if (isDevelopment) {
       // local develop
       await this.dtable.init(window.dtablePluginConfig);
       await this.dtable.syncWithServer();
+      const { dtableUuid } = this.dtable.config;
+      this.sqlOptionsLocalStorage = new SqlOptionsLocalStorage(dtableUuid);
       let relatedUsersRes = await this.dtable.dtableStore.dtableAPI.getTableRelatedUsers();
       window.app = {
         state: {
@@ -57,7 +53,12 @@ class App extends React.Component {
     } else { 
       // integrated to dtable app
       this.dtable.initInBrowser(window.app.dtableStore);
+      const { dtableUuid } = window.app.dtableStore.dtableSettings;
+      this.sqlOptionsLocalStorage = new SqlOptionsLocalStorage(dtableUuid);
     }
+    
+    const options = this.sqlOptionsLocalStorage.getCurrentHistorySqlOptions();
+    this.setState({ displayHistoryOptions: options });
   }
 
   onCloseToggle = () => {
@@ -65,37 +66,46 @@ class App extends React.Component {
     window.app.onClosePlugin && window.app.onClosePlugin();
   }
 
+  onSqlChange = (sql) => {
+    const validSql = sql.trim();
+    const options = this.sqlOptionsLocalStorage.getCurrentHistorySqlOptions();
+    let displayHistoryOptions = options;
+    if (validSql) {
+      displayHistoryOptions = options.filter(option => option.toLowerCase().indexOf(validSql.toLowerCase()) > -1);
+    }
+    this.setState({ sql, displayHistoryOptions }, () => {
+      this.inputRef.focus();
+    });
+  }
+
   onChange = (event) => {
     const value = event.target.value;
-    this.setState({sql: value});
+    this.onSqlChange(value);
+  }
+
+  onKeyDown = (event) => {
+    if (isHotkey('enter', event)) {
+      this.onQuery();
+    }
   }
 
   onQuery = () => {
     const { isDevelopment } = this.props;
     const { sql, queryStatus } = this.state;
+    if (!sql) return;
     if (queryStatus.DOING) return;
+    this.inputRef.blur();
     this.setState({queryStatus: QUERY_STATUS.DOING}, () => {
       const dtableAPI = isDevelopment ? this.dtable.dtableStore.dtableAPI : window.app.dtableStore.dtableAPI;
       dtableAPI.sqlQuery(sql, 'dtable-server').then(res => {
-        this.setState({ queryStatus: QUERY_STATUS.DONE, result: res.data });
+        this.setState({ queryStatus: QUERY_STATUS.DONE, result: res.data, isOpen: false });
       }).catch(e => {
-        this.setState({ queryStatus: QUERY_STATUS.DONE, result: {error_msg: 'DtableDb Server Error.' } });
+        this.setState({ queryStatus: QUERY_STATUS.DONE, result: { error_msg: 'DtableDb Server Error.', isOpen: false } });
       });
+      const options = this.sqlOptionsLocalStorage.getCurrentHistorySqlOptions();
+      const newOptions = options.includes(sql) ? options : [ sql.trim(), ...options ];
+      this.sqlOptionsLocalStorage.saveHistorySqlOptions(newOptions);
     });
-  }
-
-  getMoreResults = () => {
-    const { isLoading, displayResultsCount, queryStatus, result } = this.state;
-    if (isLoading) return;
-    if (queryStatus !== QUERY_STATUS.DONE) return;
-    const { success, results } = result;
-    if (!success) return;
-    if (displayResultsCount >= results.length) return;
-    if (this.sqlQueryResultContentRef.offsetHeight + this.sqlQueryResultContentRef.scrollTop >= this.sqlQueryResultRef.offsetHeight) {
-      this.setState({ isLoading: true }, () => {
-        this.setState({ isLoading: false, displayResultsCount: displayResultsCount + PER_DISPLAY_COUNT });
-      });
-    }
   }
 
   getOptionColors = () => {
@@ -108,7 +118,7 @@ class App extends React.Component {
   }
 
   renderResult = () => {
-    const { result, queryStatus, displayResultsCount, isLoading } = this.state;
+    const { result, queryStatus } = this.state;
     if (queryStatus === QUERY_STATUS.READY) return (
       <div className="sql-query-result ready"></div>
     );
@@ -119,54 +129,13 @@ class App extends React.Component {
     );
     const { success, error_message, results, error_msg, metadata: columns } = result;
     if (success) {
-      const disPlayColumns = columns.filter(column => !NOT_SUPPORT_COLUMN_TYPES.includes(column.type));
-      const displayResults = results.slice(0, displayResultsCount);
       return (
-        <div className="sql-query-result success">
-          <div className="sql-query-result-content" onScroll={this.getMoreResults} ref={ref => this.sqlQueryResultContentRef = ref}>
-            <table className="sql-query-result-table" ref={ref => this.sqlQueryResultRef = ref}>
-              <thead className="sql-query-result-thead">
-                <tr className="sql-query-result-thead-tr" key="-1">
-                  {disPlayColumns.map(column => {
-                    const { key, name } = column;
-                    return (
-                      <th className="sql-query-result-thead-th" key={`${key}-0`}>
-                        <div className="sql-query-result-column-content text-truncate">
-                          {/* <i className={`${COLUMNS_ICONS[type]} sql-query-result-column-icon`}></i> */}
-                          {name}
-                        </div>
-                      </th>
-                    );
-                  })}
-                </tr>
-              </thead>
-              <tbody>
-                {displayResults.map((result, index) => {
-                  return (
-                    <tr className="sql-query-result-tbody-tr" key={result._id || index}>
-                      {disPlayColumns.map(column => {
-                        const { key, name } = column;
-                        const value = result[name];
-                        return (
-                          <td className="sql-query-result-tbody-td" key={`${key}-${{index}}`}>
-                            <CellFormatter
-                              collaborators={window.app.state.collaborators}
-                              cellValue={value}
-                              column={column}
-                              getOptionColors={this.getOptionColors}
-                              getUserCommonInfo={this.getUserCommonInfo}
-                            />
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-            {isLoading && <Loading />}
-          </div>
-        </div>
+        <RecordList
+          columns={columns}
+          records={results}
+          getOptionColors={this.getOptionColors}
+          getUserCommonInfo={this.getUserCommonInfo}
+        />
       );
     }
     return (
@@ -176,26 +145,58 @@ class App extends React.Component {
     );
   }
 
+  renderHistorySqlOptions = () => {
+    if (!this.sqlOptionsLocalStorage) return '';
+    const { displayHistoryOptions } = this.state;
+    if (displayHistoryOptions < 1) return '';
+    return (
+      <DropdownMenu className="sql-query-input-dropdown-menu">
+        {displayHistoryOptions.map((option, index) => {
+          return (
+            <DropdownItem
+              key={`history-option-${index}`}
+              className="sql-query-input-dropdown-item"
+              onClick={() => this.onSqlChange(option)}
+            >
+              {option}
+            </DropdownItem>
+          );
+        })}
+      </DropdownMenu>
+    );
+  }
+
+  toggleInput = () => {
+    this.setState({ isOpen: !this.state.isOpen });
+  }
+
   render() {
-    let { showDialog, sql, queryStatus } = this.state;
+    let { showDialog, sql, queryStatus, isOpen } = this.state;
     if (!showDialog) {
       return '';
     }
     
     return (
       <div className="dtable-plugin sql-query-plugin">
-        <div className="sql-query-plugin-header">
-          <div className="sql-query-plugin-header-left">
-            <img src={LOGO} alt="logo" width="24"/>
-            <span className="ml-2">{intl.get('SQL_query')}</span>
-          </div>
-          <div className="sql-query-plugin-header-right" onClick={this.onCloseToggle}>
-            <i title={intl.get('Close')} className="dtable-font dtable-icon-fork-number"></i>
-          </div>
-        </div>
+        <Header onCloseToggle={this.onCloseToggle} />
         <div className="sql-query-plugin-body">
           <div className="sql-input-container">
-            <Input className="sql-input" value={sql} onChange={this.onChange} autoFocus={!sql} />
+            <Dropdown
+              isOpen={isOpen}
+              toggle={this.toggleInput}
+              className="dtable-dropdown-menu sql-query-input-dropdown"
+            >
+              <DropdownToggle tag="span" data-toggle="dropdown" aria-expanded={isOpen} className="sql-query-input">
+                <input
+                  className="form-control sql-input"
+                  value={sql}
+                  onChange={this.onChange}
+                  onKeyDown={this.onKeyDown}
+                  ref={ref => this.inputRef = ref}
+                />
+              </DropdownToggle>
+              {this.renderHistorySqlOptions()}
+            </Dropdown>
             <Button
               color="primary"
               className="query-sql-button"
