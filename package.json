@@ -1,6 +1,6 @@
 {
   "name": "sql-query",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "private": true,
   "dependencies": {
     "dtable-sdk": "0.0.87",
@@ -9,9 +9,9 @@
     "moment": "^2.24.0",
     "react": "^16.12.0",
     "react-app-polyfill": "^1.0.6",
-    "react-dom": "^16.12.0",
+    "react-dom": "16.12",
     "react-intl-universal": "^2.2.2",
-    "reactstrap": "^8.4.1"
+    "reactstrap": "8.8.1"
   },
   "scripts": {
     "clean": "rm -rf plugin-zip && mkdir plugin-zip",
