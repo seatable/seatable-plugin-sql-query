@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import intl from 'react-intl-universal';
-import { Loading, CellFormatter } from '../../components';
-import { PER_DISPLAY_COUNT, NOT_SUPPORT_COLUMN_TYPES } from '../../constants';
-import { getCellRecordWidth } from '../../utils/common-utils';
+import { Loading, CellFormatter } from '../../../components';
+import { PER_DISPLAY_COUNT, NOT_SUPPORT_COLUMN_TYPES } from '../../../constants';
+import { getCellRecordWidth } from '../../../utils/common-utils';
 
-import '../../assets/css/records.css';
+import '../../../assets/css/records.css';
 
 class RecordList extends Component {
 
@@ -15,7 +15,11 @@ class RecordList extends Component {
       isLoading: false,
       displayRecordsCount: PER_DISPLAY_COUNT
     };
-    this.disPlayColumns = props.columns.filter(column => !NOT_SUPPORT_COLUMN_TYPES.includes(column.type)).map(column => { return {...column, width: getCellRecordWidth(column)}; });
+    this.disPlayColumns = props.columns
+      .filter(column => !NOT_SUPPORT_COLUMN_TYPES.includes(column.type))
+      .map(column => {
+        return { ...column, width: getCellRecordWidth(column) };
+      });
     this.sqlQueryResultRef = null;
     this.sqlQueryResultContentRef = null;
   }
@@ -51,11 +55,8 @@ class RecordList extends Component {
     
     return (
       <div className="sql-query-result success">
-        <div className="sql-query-result-count">
-          { recordsCount > 1 ? intl.get('There_are_records', { count: recordsCount }) : intl.get('There_is_1_record')}
-        </div>
         <div className="sql-query-result-container">
-          <div className="sql-query-result-content" style={{ width: totalWidth + 2 }}>
+          <div className="sql-query-result-content" style={{ width: totalWidth }}>
             <div className="static-sql-query-result-content">
               <div className="sql-query-result-table-row">
                 {this.disPlayColumns.map(column => {
@@ -95,6 +96,9 @@ class RecordList extends Component {
                 })}
               </div>
               {isLoading && <Loading />}
+            </div>
+            <div className="sql-query-result-count">
+              { recordsCount > 1 ? intl.get('xxx_records', { count: recordsCount }) : intl.get('1_record')}
             </div>
           </div>
         </div>

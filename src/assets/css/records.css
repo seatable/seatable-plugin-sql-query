@@ -15,20 +15,14 @@
   align-items: center;
 }
 
-/* records count */
-.sql-query-plugin .sql-query-result.success .sql-query-result-count {
-  height: 30px;
-  width: 100%;
-  overflow: hidden;
-  padding-bottom: 8px;
-}
-
 /* records container */
 .sql-query-plugin .sql-query-result.success .sql-query-result-container {
   overflow-x: scroll;
-  height: calc(100% - 30px);
-  width: 100%;
+  max-height: 100%;
+  max-width: 100%;
   overflow-y: hidden;
+  border: 1px solid #ccc;
+  border-radius: 3px;
 }
 
 .sql-query-plugin .sql-query-result.success .sql-query-result-content {
@@ -46,17 +40,16 @@
   width: 100%;
   position: relative;
   z-index: 2;
-  border-right: 1px solid #ccc;
-  border-left: 1px solid #ccc;
 }
 
 .sql-query-plugin .sql-query-result.success .static-sql-query-result-content .sql-query-result-table-row {
-  border-top: 1px solid #ccc;
+  background-color: #F9F9F9;
 }
 
 /* scroll table */
 .sql-query-plugin .sql-query-result.success .sql-query-result-table-content {
   overflow-y: scroll;
+  flex: 1;
 }
 
 .sql-query-plugin .sql-query-result.success .sql-query-result-table {
@@ -64,9 +57,6 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  margin-bottom: 8px;
-  border-right: 1px solid #ccc;
-  border-left: 1px solid #ccc;
 }
 
 .sql-query-plugin .sql-query-result.success .sql-query-result-table-row {
@@ -76,6 +66,10 @@
   display: inline-flex;
   margin-top: 0;
   margin-bottom: 0;
+}
+
+.sql-query-plugin .sql-query-result.success .sql-query-result-table-content .sql-query-result-table-row:last-child {
+  border-bottom: none;
 }
 
 .sql-query-plugin .sql-query-result.success .sql-query-result-table-cell {
@@ -162,4 +156,17 @@
 .sql-query-plugin .sql-query-result-table-cell .collaborator-avatar {
   height: 16px;
   width: 16px;
+}
+
+/* records count */
+.sql-query-plugin .sql-query-result.success .sql-query-result-count {
+  height: 32px;
+  width: 100%;
+  overflow: hidden;
+  line-height: 32px;
+  background-color: #F9F9F9;
+  border-top: 1px solid #ccc;
+  padding: 0 8px;
+  position: relative;
+  z-index: 2;
 }

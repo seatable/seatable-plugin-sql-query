@@ -12,35 +12,6 @@
   background-color: #fff;
 }
 
-.sql-query-plugin .sql-query-plugin-header {
-  height: 48px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 1rem;
-  border-bottom: 1px solid #e7eaec;
-  border-radius: 12px 12px 0 0;
-}
-
-.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-header-left {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-header-right {
-  height: 24px;
-  width: 24px;
-  text-align: center;
-  line-height: 24px;
-}
-
-.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-header-right:hover {
-  cursor: pointer;
-  opacity: .75;
-}
-
 .sql-query-plugin .sql-query-plugin-body {
   height: calc(100% - 48px);
   display: flex;
@@ -52,7 +23,7 @@
 .sql-query-plugin .sql-input-container {
   height: 56px;
   width: 100%;
-  padding: 0 16px;
+  padding: 16px 16px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -90,7 +61,7 @@
 .sql-query-plugin .sql-query-result {
   height: calc(100% - 56px);
   width: 100%;
-  padding: 4px 16px 0px;
+  padding: 16px 16px;
 }
 
 .sql-query-plugin .sql-query-result.doing {
