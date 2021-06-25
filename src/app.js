@@ -4,7 +4,7 @@ import DTable from 'dtable-sdk';
 import deepCopy from 'deep-copy';
 import intl from 'react-intl-universal';
 import './locale/index.js';
-import { PLUGIN_NAME, DEFAULT_SETTINGS } from './constants';
+import { PLUGIN_NAME, DEFAULT_SETTINGS, NOT_SUPPORT_COLUMN_TYPES } from './constants';
 import { Header, Body } from './pages';
 import SqlOptionsLocalStorage from './api/sql-options-local-storage';
 import { generatorViewId } from './utils/common-utils';
@@ -47,6 +47,7 @@ class App extends React.Component {
         state: {
           collaborators: relatedUsersRes.data.user_list,
         },
+        collaboratorsCache: []
       };
       this.dtable.subscribe('dtable-connect', () => { this.onDTableConnect(); });
     } else { 
@@ -110,11 +111,22 @@ class App extends React.Component {
     this.updateViews(currentViewIdx, newViews);
   }
 
-  exportView = () => {
+  exportView = async () => {
     const result = this.bodyRef.getResult();
+    const { currentViewIdx, views } = this.state;
+    const view = views[currentViewIdx];
+    const { name } = view;
     const { success, error_message, results, error_msg, metadata: columns, isInternalError } = result;
     if (success) {
-      // console.log('23');
+      try {
+        await this.dtable.appendTable(name, columns.filter(column => !NOT_SUPPORT_COLUMN_TYPES.includes(column.type)), results);
+        const tables = this.dtable.getTables();
+        this.onCloseToggle();
+        window.app.onSelectTable && window.app.onSelectTable(tables.length - 1);
+      } catch (error) {
+        const { message } = error;
+        toaster.danger(intl.get(message));
+      }
       return;
     }
     if (isInternalError) {

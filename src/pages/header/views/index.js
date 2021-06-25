@@ -49,8 +49,8 @@ class Views extends Component {
       this.viewsScroll.scrollLeft = left - offsetWidth;
       this.setState({ scrollLeft: left - offsetWidth });
     }
-    this.tabsNavWidth = offsetWidth;
-    this.tabsNavTotalWidth = scrollWidth;
+    this.viewsContainerWidth = offsetWidth;
+    this.viewsContentWidth = scrollWidth;
   }
 
   render() {
@@ -83,7 +83,7 @@ class Views extends Component {
             );
           })}
         </div>
-        {scrollLeft + this.tabsNavWidth < this.tabsNavTotalWidth && (
+        {scrollLeft + this.viewsContainerWidth < this.viewsContentWidth && (
           <div className="sql-query-plugin-views-scroll-after"></div>
         )}
       </div>

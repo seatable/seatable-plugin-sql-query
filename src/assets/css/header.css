@@ -52,18 +52,23 @@
 }
 
 .sql-query-plugin .sql-query-plugin-header .sql-query-plugin-header-view-add {
-  width: 48px;
-  height: 100%;
+  width: 24px;
+  height: 24px;
   text-align: center;
-  line-height: 48px;
+  line-height: 24px;
   cursor: pointer;
+  opacity: .5;
+}
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-header-view-add:hover {
+  opacity: .8;
 }
 
 .sql-query-plugin .sql-query-plugin-header .sql-query-plugin-view {
   flex-shrink: 0;
   height: 100%;
   padding: 0 2px;
-  margin: 0 6px;
+  margin: 0 14px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -72,12 +77,26 @@
   border-bottom: 2px solid transparent;
 }
 
-.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-view.selected {
-  border-bottom-color: #ff6700;
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-view:first-child {
+  margin-left: 0px;
+}
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-view.selected,
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-view:hover {
+  border-bottom-color: #00B9FF;
 }
 
 .sql-query-plugin .sql-query-plugin-header .sql-query-plugin-view.selected .sql-query-plugin-view-name {
   cursor: default;
+}
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-view-name {
+  color: #999;
+}
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-view.selected .sql-query-plugin-view-name,
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-view:hover .sql-query-plugin-view-name {
+  color: #444;
 }
 
 /* dropdown */

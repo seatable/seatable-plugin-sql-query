@@ -38,9 +38,7 @@ class RecordList extends Component {
 
   render() {
     const { records } = this.props;
-    if (!Array.isArray(records)) return '';
-    const recordsCount = records.length;
-    if (recordsCount === 0) {
+    if (!Array.isArray(records) || records.length === 0) {
       return (
         <div className="sql-query-result success">
           <div className="sql-query-result-none">
@@ -49,6 +47,7 @@ class RecordList extends Component {
         </div>
       );
     }
+    const recordsCount = records.length;
     const { isLoading, displayRecordsCount } = this.state;
     const displayResults = records.slice(0, displayRecordsCount);
     const totalWidth = this.disPlayColumns.reduce((cur, nextItem) => { return (cur + nextItem.width); }, 0);
@@ -98,7 +97,9 @@ class RecordList extends Component {
               {isLoading && <Loading />}
             </div>
             <div className="sql-query-result-count">
-              { recordsCount > 1 ? intl.get('xxx_records', { count: recordsCount }) : intl.get('1_record')}
+              <div className="position-absolute">
+                { recordsCount > 1 ? intl.get('xxx_records', { count: recordsCount }) : intl.get('1_record')}
+              </div>
             </div>
           </div>
         </div>
