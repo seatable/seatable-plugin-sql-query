@@ -74,6 +74,7 @@ class Body extends Component {
     const { sql, queryStatus } = this.state;
     if (!sql) return;
     if (queryStatus === QUERY_STATUS.DOING) return;
+    const { currentView } = this.props;
     this.inputRef.blur();
     this.setState({ queryStatus: QUERY_STATUS.DOING }, () => {
       this.props.sqlQuery(sql, 'dtable-server').then(res => {
@@ -84,7 +85,10 @@ class Body extends Component {
       const options = this.props.getCurrentHistorySqlOptions();
       const newOptions = options.includes(sql) ? options : [ sql.trim(), ...options ];
       this.props.saveHistorySqlOptions(newOptions);
-      this.props.updateView({ sql: sql });
+      const { sql: oldSQL } = currentView;
+      if (oldSQL !== sql) {
+        this.props.updateView({ sql: sql });
+      }
     });
   }
 
