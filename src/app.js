@@ -119,7 +119,7 @@ class App extends React.Component {
     const { success, error_message, results, error_msg, metadata: columns, isInternalError } = result;
     if (success) {
       try {
-        await this.dtable.appendTable(name, columns.filter(column => !NOT_SUPPORT_COLUMN_TYPES.includes(column.type)), results);
+        await this.dtable.importDataIntoNewTable(name, columns.filter(column => !NOT_SUPPORT_COLUMN_TYPES.includes(column.type)), results);
         const tables = this.dtable.getTables();
         this.onCloseToggle();
         window.app.onSelectTable && window.app.onSelectTable(tables.length - 1);
