@@ -1,0 +1,150 @@
+.sql-query-plugin .sql-query-plugin-header {
+  height: 48px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 1rem;
+  border-bottom: 1px solid #e7eaec;
+  border-radius: 12px 12px 0 0;
+}
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-header-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-header-center {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 14px;
+  font-weight: 500;
+  overflow: hidden;
+}
+
+/* views */
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-views-container {
+  max-width: calc(100% - 48px);
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  overflow: hidden;
+}
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-views-content {
+  display: flex;
+  height: 100%;
+  max-height: 100%;
+  max-width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-views-content::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-header-view-add {
+  width: 24px;
+  height: 24px;
+  text-align: center;
+  line-height: 24px;
+  cursor: pointer;
+  opacity: .5;
+}
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-header-view-add:hover {
+  opacity: .8;
+}
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-view {
+  flex-shrink: 0;
+  height: 100%;
+  padding: 0 2px;
+  margin: 0 14px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  cursor: pointer;
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid transparent;
+}
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-view:first-child {
+  margin-left: 0px;
+}
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-view.selected,
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-view:hover {
+  border-bottom-color: #00B9FF;
+}
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-view.selected .sql-query-plugin-view-name {
+  cursor: default;
+}
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-view-name {
+  color: #999;
+}
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-view.selected .sql-query-plugin-view-name,
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-view:hover .sql-query-plugin-view-name {
+  color: #444;
+}
+
+/* dropdown */
+.sql-query-plugin .sql-query-plugin-header .dtable-icon-drop-down {
+  display: inline-block;
+  font-size: 12px;
+  color: #949494;
+  transform: scale(.8);
+  transition: all .1s;
+}
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-view-dropdown-menu {
+  margin-top: 0px;
+}
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-view-dropdown-item {
+  height: 32px;
+  padding: 3px 12px;
+  line-height: 1.5;
+  font-size: 14px;
+  color: #202428;
+  cursor: pointer;
+}
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-view-dropdown-item:hover {
+  color: #fff;
+  background-color: #20a0ff;
+}
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-view-dropdown-item .sql-query-view-item-icon {
+  font-size: 14px;
+  margin-right: 10px;
+  color: #8c8c8c;
+}
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-view-dropdown-item:hover .sql-query-view-item-icon {
+  color: #fff;
+}
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-header-right {
+  height: 24px;
+  width: 24px;
+  text-align: center;
+  line-height: 24px;
+  opacity: .5;
+}
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-header-right:hover {
+  cursor: pointer;
+  opacity: .8;
+}

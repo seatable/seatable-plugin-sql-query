@@ -64,39 +64,56 @@ class CellFormatter extends React.Component {
 
   getCollaborator = (value) => {
     if (!value) {
-      this.setState({isDataLoaded: true, collaborator: null});
+      this.setState({ isDataLoaded: true, collaborator: null });
       return;
     }
-    this.setState({isDataLoaded: false, collaborator: null});
-    let { collaborators } = this.props;
+    this.setState({ isDataLoaded: false, collaborator: null });
+    const { collaborators } = this.props;
     let collaborator = collaborators && collaborators.find(c => c.email === value);
     if (collaborator) {
-      this.setState({isDataLoaded: true, collaborator: collaborator});
+      this.setState({ isDataLoaded: true, collaborator });
+      return;
+    }
+
+    const mediaUrl = getValueFromPluginConfig('mediaUrl');
+    const defaultAvatarUrl = `${mediaUrl}/avatars/default.png`;
+    if (value === 'anonymous') {
+      collaborator = {
+        name: 'anonymous',
+        avatar_url: defaultAvatarUrl,
+      };
+      this.setState({ isDataLoaded: true, collaborator });
+      return;
+    }
+
+    let dtableCollaborators = window.app.collaboratorsCache;
+    collaborator = dtableCollaborators[value];
+    if (collaborator) {
+      this.setState({ isDataLoaded: true, collaborator });
       return;
     }
 
     if (!isValidEmail(value)) {
-      let mediaUrl = getValueFromPluginConfig('mediaUrl');
-      let defaultAvatarUrl = `${mediaUrl}/avatars/default.png`;
       collaborator = {
         name: value,
         avatar_url: defaultAvatarUrl,
       };
-      this.setState({isDataLoaded: true, collaborator: collaborator});
+      dtableCollaborators[value] = collaborator;
+      this.setState({ isDataLoaded: true, collaborator });
       return;
     }
     
     this.props.getUserCommonInfo(value).then(res => {
       collaborator = res.data;
-      this.setState({isDataLoaded: true, collaborator: collaborator});
+      dtableCollaborators[value] = collaborator;
+      this.setState({ isDataLoaded: true, collaborator });
     }).catch(() => {
-      let mediaUrl = getValueFromPluginConfig('mediaUrl');
-      let defaultAvatarUrl = `${mediaUrl}/avatars/default.png`;
       collaborator = {
         name: value,
         avatar_url: defaultAvatarUrl,
       };
-      this.setState({isDataLoaded: true, collaborator: collaborator});
+      dtableCollaborators[value] = collaborator;
+      this.setState({ isDataLoaded: true, collaborator });
     });
   }
 

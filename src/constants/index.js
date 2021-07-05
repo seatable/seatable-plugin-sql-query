@@ -1,4 +1,7 @@
 import { CELL_TYPE } from 'dtable-sdk';
+import { View } from '../model';
+
+export const PLUGIN_NAME = 'sql-query';
 
 export const QUERY_STATUS = {
   READY: 'ready',
@@ -42,3 +45,7 @@ export const COLUMNS_ICONS = {
   [CELL_TYPE.BUTTON]: 'dtable-font dtable-icon-button',
   [CELL_TYPE.RATE]: 'dtable-font dtable-icon-star',
 };
+
+export const DEFAULT_SETTINGS = [
+  new View({ _id: '0000' }),
+];

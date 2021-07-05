@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DTable from 'dtable-sdk';
-import { Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import deepCopy from 'deep-copy';
 import intl from 'react-intl-universal';
-import isHotkey from 'is-hotkey';
 import './locale/index.js';
-import { QUERY_STATUS } from './constants';
-import Header from './pages/header';
-import RecordList from './pages/records';
+import { PLUGIN_NAME, DEFAULT_SETTINGS, NOT_SUPPORT_COLUMN_TYPES } from './constants';
+import { Header, Body } from './pages';
 import SqlOptionsLocalStorage from './api/sql-options-local-storage';
+import { generatorViewId } from './utils/common-utils';
+import { View } from './model';
+import { toaster } from './components';
 
 import './assets/css/app.css';
 
@@ -18,11 +19,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       showDialog: props.showDialog || false,
-      sql: '',
-      result: {},
-      queryStatus: QUERY_STATUS.READY,
-      isOpen: false,
-      displayHistoryOptions: [],
+      currentViewIdx: 0,
+      views: [],
     };
     this.dtable = new DTable();
     this.sqlOptionsLocalStorage = null;
@@ -33,7 +31,7 @@ class App extends React.Component {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setState({showDialog: nextProps.showDialog});
+    this.setState({ showDialog: nextProps.showDialog });
   } 
 
   async initPluginDTableData() {
@@ -49,63 +47,130 @@ class App extends React.Component {
         state: {
           collaborators: relatedUsersRes.data.user_list,
         },
+        collaboratorsCache: []
       };
+      this.dtable.subscribe('dtable-connect', () => { this.onDTableConnect(); });
     } else { 
       // integrated to dtable app
       this.dtable.initInBrowser(window.app.dtableStore);
       const { dtableUuid } = window.app.dtableStore.dtableSettings;
       this.sqlOptionsLocalStorage = new SqlOptionsLocalStorage(dtableUuid);
     }
-    
-    const options = this.sqlOptionsLocalStorage.getCurrentHistorySqlOptions();
-    this.setState({ displayHistoryOptions: options });
+
+    this.dtable.subscribe('local-dtable-changed', () => { this.onDTableChanged(); });
+    this.dtable.subscribe('remote-dtable-changed', () => { this.onDTableChanged(); });
+
+    const views = this.getPluginSettings();
+    this.setState({ currentViewIdx: 0, views });
+  }
+
+  onDTableConnect = () => {
+    this.resetData();
+  }
+
+  onDTableChanged = () => {
+    this.resetData();
+  }
+
+  resetData = () => {
+    const views = this.getPluginSettings();
+    let { currentViewIdx } = this.state;
+    if (!views[currentViewIdx]) {
+      currentViewIdx = views.length - 1;
+    }
+    this.setState({ currentViewIdx, views });
+  }
+
+  // callBack: scroll to new view
+  addView = (viewName, callBack) => {
+    let { views } = this.state;
+    let currentViewIdx = views.length;
+    let _id = generatorViewId(views);
+    let newView = new View({ _id, name: viewName, sql: '' });
+    let newViews = deepCopy(views);
+    newViews.push(newView);
+    this.updateViews(currentViewIdx, newViews, callBack);
+  }
+
+  deleteView = () => {
+    let { currentViewIdx } = this.state;
+    const { views } = this.state;
+    let newViews = deepCopy(views);
+    newViews.splice(currentViewIdx, 1);
+    if (currentViewIdx >= newViews.length) {
+      currentViewIdx = newViews.length - 1;
+    }
+    this.updateViews(currentViewIdx, newViews);
+  }
+
+  updateView = (update = {}) => {
+    const { views, currentViewIdx } = this.state;
+    const changeView = views[currentViewIdx];
+    let newViews = deepCopy(views);
+    newViews.splice(currentViewIdx, 1, { ...changeView, ...update });
+    this.updateViews(currentViewIdx, newViews);
+  }
+
+  exportView = async () => {
+    const result = this.bodyRef.getResult();
+    const { currentViewIdx, views } = this.state;
+    const view = views[currentViewIdx];
+    const { name } = view;
+    const { success, error_message, results, error_msg, metadata: columns, isInternalError } = result;
+    if (success) {
+      try {
+        await this.dtable.importDataIntoNewTable(name, columns.filter(column => !NOT_SUPPORT_COLUMN_TYPES.includes(column.type)), results);
+        const tables = this.dtable.getTables();
+        this.onCloseToggle();
+        window.app.onSelectTable && window.app.onSelectTable(tables.length - 1);
+      } catch (error) {
+        const { message } = error;
+        toaster.danger(intl.get(message));
+      }
+      return;
+    }
+    if (isInternalError) {
+      toaster.danger(intl.get(error_message));
+      return;
+    }
+    toaster.danger(error_message || error_msg);
+  }
+
+  updateViews = (currentViewIdx, views, callBack) => {
+    this.setState({ currentViewIdx, views }, () => {
+      this.updatePluginSettings(views);
+      callBack && callBack();
+    });
+  }
+
+  onSelectView = (viewId) => {
+    const { views } = this.state;
+    let viewIdx = views.findIndex(view => view._id === viewId);
+    if (viewIdx > -1) {
+      this.setState({ currentViewIdx: viewIdx });
+    }
+  }
+
+  getPluginSettings = () => {
+    return this.dtable.getPluginSettings(PLUGIN_NAME) || DEFAULT_SETTINGS;
+  }
+
+  updatePluginSettings = (pluginSettings) => {
+    this.dtable.updatePluginSettings(PLUGIN_NAME, pluginSettings);
+  }
+
+  getCurrentHistorySqlOptions = () => {
+    if (!this.sqlOptionsLocalStorage) return [];
+    return this.sqlOptionsLocalStorage.getCurrentHistorySqlOptions();
+  }
+
+  saveHistorySqlOptions = (newOptions) => {
+    this.sqlOptionsLocalStorage.saveHistorySqlOptions(newOptions);
   }
 
   onCloseToggle = () => {
-    this.setState({showDialog: false});
+    this.setState({ showDialog: false });
     window.app.onClosePlugin && window.app.onClosePlugin();
-  }
-
-  onSqlChange = (sql) => {
-    const validSql = sql.trim();
-    const options = this.sqlOptionsLocalStorage.getCurrentHistorySqlOptions();
-    let displayHistoryOptions = options;
-    if (validSql) {
-      displayHistoryOptions = options.filter(option => option.toLowerCase().indexOf(validSql.toLowerCase()) > -1);
-    }
-    this.setState({ sql, displayHistoryOptions }, () => {
-      this.inputRef.focus();
-    });
-  }
-
-  onChange = (event) => {
-    const value = event.target.value;
-    this.onSqlChange(value);
-  }
-
-  onKeyDown = (event) => {
-    if (isHotkey('enter', event)) {
-      this.onQuery();
-    }
-  }
-
-  onQuery = () => {
-    const { isDevelopment } = this.props;
-    const { sql, queryStatus } = this.state;
-    if (!sql) return;
-    if (queryStatus.DOING) return;
-    this.inputRef.blur();
-    this.setState({queryStatus: QUERY_STATUS.DOING}, () => {
-      const dtableAPI = isDevelopment ? this.dtable.dtableStore.dtableAPI : window.app.dtableStore.dtableAPI;
-      dtableAPI.sqlQuery(sql, 'dtable-server').then(res => {
-        this.setState({ queryStatus: QUERY_STATUS.DONE, result: res.data, isOpen: false });
-      }).catch(e => {
-        this.setState({ queryStatus: QUERY_STATUS.DONE, result: { error_msg: 'DtableDb Server Error.', isOpen: false } });
-      });
-      const options = this.sqlOptionsLocalStorage.getCurrentHistorySqlOptions();
-      const newOptions = options.includes(sql) ? options : [ sql.trim(), ...options ];
-      this.sqlOptionsLocalStorage.saveHistorySqlOptions(newOptions);
-    });
   }
 
   getOptionColors = () => {
@@ -117,97 +182,39 @@ class App extends React.Component {
     return dtableWebAPI.getUserCommonInfo(email, avatar_size);
   }
 
-  renderResult = () => {
-    const { result, queryStatus } = this.state;
-    if (queryStatus === QUERY_STATUS.READY) return (
-      <div className="sql-query-result ready"></div>
-    );
-    if (queryStatus === QUERY_STATUS.DOING) return (
-      <div className="sql-query-result doing">
-        {intl.get('Querying')}
-      </div>
-    );
-    const { success, error_message, results, error_msg, metadata: columns } = result;
-    if (success) {
-      return (
-        <RecordList
-          columns={columns}
-          records={results}
-          getOptionColors={this.getOptionColors}
-          getUserCommonInfo={this.getUserCommonInfo}
-        />
-      );
-    }
-    return (
-      <div className="sql-query-result failed">
-        {error_message || error_msg}
-      </div>
-    );
-  }
-
-  renderHistorySqlOptions = () => {
-    if (!this.sqlOptionsLocalStorage) return '';
-    const { displayHistoryOptions } = this.state;
-    if (displayHistoryOptions < 1) return '';
-    return (
-      <DropdownMenu className="sql-query-input-dropdown-menu">
-        {displayHistoryOptions.map((option, index) => {
-          return (
-            <DropdownItem
-              key={`history-option-${index}`}
-              className="sql-query-input-dropdown-item"
-              onClick={() => this.onSqlChange(option)}
-            >
-              {option}
-            </DropdownItem>
-          );
-        })}
-      </DropdownMenu>
-    );
-  }
-
-  toggleInput = () => {
-    this.setState({ isOpen: !this.state.isOpen });
+  sqlQuery = (sql, method) => {
+    const { isDevelopment } = this.props;
+    const dtableAPI = isDevelopment ? this.dtable.dtableStore.dtableAPI : window.app.dtableStore.dtableAPI;
+    return dtableAPI.sqlQuery(sql, method);
   }
 
   render() {
-    let { showDialog, sql, queryStatus, isOpen } = this.state;
-    if (!showDialog) {
-      return '';
-    }
+    const { showDialog, currentViewIdx, views } = this.state;
+    if (!showDialog || !views[currentViewIdx]) return '';
     
     return (
       <div className="dtable-plugin sql-query-plugin">
-        <Header onCloseToggle={this.onCloseToggle} />
-        <div className="sql-query-plugin-body">
-          <div className="sql-input-container">
-            <Dropdown
-              isOpen={isOpen}
-              toggle={this.toggleInput}
-              className="dtable-dropdown-menu sql-query-input-dropdown"
-            >
-              <DropdownToggle tag="span" data-toggle="dropdown" aria-expanded={isOpen} className="sql-query-input">
-                <input
-                  className="form-control sql-input"
-                  value={sql}
-                  onChange={this.onChange}
-                  onKeyDown={this.onKeyDown}
-                  ref={ref => this.inputRef = ref}
-                />
-              </DropdownToggle>
-              {this.renderHistorySqlOptions()}
-            </Dropdown>
-            <Button
-              color="primary"
-              className="query-sql-button"
-              onClick={this.onQuery}
-              disabled={!sql || (sql && queryStatus.DOING)}
-            >
-              {intl.get('Query')}
-            </Button>
-          </div>
-          {this.renderResult()}
-        </div>
+        <Header
+          views={views}
+          currentViewIdx={currentViewIdx}
+          onSelectView={this.onSelectView}
+          addView={this.addView}
+          deleteView={this.deleteView}
+          updateView={this.updateView}
+          exportView={this.exportView}
+          onCloseToggle={this.onCloseToggle}
+        />
+        <Body
+          ref={ref => this.bodyRef = ref}
+          currentView={views[currentViewIdx]}
+          sqlQuery={this.sqlQuery}
+          getOptionColors={this.getOptionColors}
+          getUserCommonInfo={this.getUserCommonInfo}
+          getCurrentHistorySqlOptions={this.getCurrentHistorySqlOptions}
+          saveHistorySqlOptions={this.saveHistorySqlOptions}
+          updateView={this.updateView}
+          
+        />
       </div>
     );
   }
