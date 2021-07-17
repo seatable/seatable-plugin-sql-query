@@ -77,7 +77,7 @@ class RecordList extends Component {
                     <div className="sql-query-result-table-row" key={result._id || index}>
                       {this.disPlayColumns.map(column => {
                         const { key, name, width } = column;
-                        const value = result[name];
+                        const value = (result[name] || result[name] === 0) ? result[name] : result[key];
                         return (
                           <div className="sql-query-result-table-cell" key={`${key}-${{index}}`} style={{width, maxWidth: width, minWidth: width}}>
                             <CellFormatter

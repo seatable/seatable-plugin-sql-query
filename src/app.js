@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import DTable from 'dtable-sdk';
+import DTable, { CELL_TYPE } from 'dtable-sdk';
 import deepCopy from 'deep-copy';
 import intl from 'react-intl-universal';
 import './locale/index.js';
@@ -10,6 +10,7 @@ import SqlOptionsLocalStorage from './api/sql-options-local-storage';
 import { generatorViewId } from './utils/common-utils';
 import { View } from './model';
 import { toaster } from './components';
+import getPreviewContent from './utils/normalize-long-text-value';
 
 import './assets/css/app.css';
 
@@ -119,7 +120,9 @@ class App extends React.Component {
     const { success, error_message, results, error_msg, metadata: columns, isInternalError } = result;
     if (success) {
       try {
-        await this.dtable.importDataIntoNewTable(name, columns.filter(column => !NOT_SUPPORT_COLUMN_TYPES.includes(column.type)), results);
+        const validColumns = columns.filter(column => !NOT_SUPPORT_COLUMN_TYPES.includes(column.type));
+        const validResults = this.changeDataToNameValue(validColumns, results);
+        await this.dtable.importDataIntoNewTable(name, validColumns, validResults);
         const tables = this.dtable.getTables();
         this.onCloseToggle();
         window.app.onSelectTable && window.app.onSelectTable(tables.length - 1);
@@ -143,6 +146,36 @@ class App extends React.Component {
     });
   }
 
+  changeDataToNameValue = (columns, results) => {
+    let columnsKeyNameMap = {};
+    Array.isArray(columns) && columns.forEach(column => {
+      const { key, name } = column;
+      if (key && name) {
+        columnsKeyNameMap[key] = column;
+      }
+    });
+    return Array.isArray(results) ? results.map(row => {
+      let newRow = {};
+      Object.keys(columnsKeyNameMap).forEach(key => {
+        const column = columnsKeyNameMap[key];
+        const { name, type } = column;
+        if (type === CELL_TYPE.LONG_TEXT) {
+          const value = (row[name] || row[name] === 0) ? row[name] : row[key];
+          const valueType = Object.prototype.toString.call(value);
+          if (valueType === '[object String]') {
+            const validValue = getPreviewContent(value);
+            newRow[name] = { ...validValue, text: value };
+          } else if (valueType === '[object Object]') {
+            newRow[name] = value;
+          }
+        } else {
+          newRow[name] = (row[name] || row[name] === 0) ? row[name] : row[key];
+        }
+      });
+      return newRow;
+    }) : [];
+  }
+ 
   onSelectView = (viewId) => {
     const { views } = this.state;
     let viewIdx = views.findIndex(view => view._id === viewId);
