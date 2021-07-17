@@ -43,6 +43,11 @@ export const getCellRecordWidth = (column) => {
     case CELL_TYPE.MTIME: {
       return 170;
     }
+    case CELL_TYPE.RATE: {
+      const { rate_max_number } = data || {};
+      const rateMaxNumber = rate_max_number || 5;
+      return 16 * rateMaxNumber + 20;
+    }
     default: {
       return 160;
     }
