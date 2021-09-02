@@ -156,19 +156,25 @@ class CellFormatter extends React.Component {
       }
       case CELL_TYPE.NUMBER: {
         if (!cellValue && cellValue !== 0) return this.renderEmptyFormatter();
-        return <NumberFormatter value={cellValue} data={column.data} containerClassName={containerClassName} />;
+        return <NumberFormatter value={cellValue} data={column.data || {}} containerClassName={containerClassName} />;
       }
       case CELL_TYPE.DATE: {
         if (!cellValue) return this.renderEmptyFormatter();
-        return <DateFormatter value={cellValue.replace('T', ' ').replace('Z', '')} format={column.data.format} containerClassName={containerClassName} />;
+        const { data } = column;
+        const { format } = data || {};
+        return <DateFormatter value={cellValue.replace('T', ' ').replace('Z', '')} format={format} containerClassName={containerClassName} />;
       }
       case CELL_TYPE.MULTIPLE_SELECT: {
         if (!cellValue || cellValue.length === 0) return this.renderEmptyFormatter();
-        return <MultipleSelectFormatter value={cellValue} options={column.data.options} containerClassName={containerClassName} />;
+        const { data } = column;
+        const { options } = data || {};
+        return <MultipleSelectFormatter value={cellValue} options={options || []} containerClassName={containerClassName} />;
       }
       case CELL_TYPE.SINGLE_SELECT: {
         if (!cellValue) return this.renderEmptyFormatter();
-        return <SingleSelectFormatter value={cellValue} options={column.data.options} containerClassName={containerClassName} />;
+        const { data } = column;
+        const { options } = data || {};
+        return <SingleSelectFormatter value={cellValue} options={options || []} containerClassName={containerClassName} />;
       }
       case CELL_TYPE.CHECKBOX: {
         return <CheckboxFormatter value={cellValue} containerClassName={containerClassName} />;
@@ -209,7 +215,9 @@ class CellFormatter extends React.Component {
       }
       case CELL_TYPE.DURATION: {
         if (!cellValue) return this.renderEmptyFormatter();
-        return <DurationFormatter value={cellValue} format={column.data.duration_format} containerClassName={containerClassName} />;
+        const { data } = column;
+        const { duration_format } = data || {};
+        return <DurationFormatter value={cellValue} format={duration_format} containerClassName={containerClassName} />;
       }
       case CELL_TYPE.RATE: {
         return <RateFormatter value={cellValue} data={column.data || {}} containerClassName={containerClassName}/>;
