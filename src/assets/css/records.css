@@ -169,7 +169,7 @@
 }
 
 .sql-query-plugin .sql-query-result-table-cell .sql-query-link-formatter .sql-query-link-item {
-  display: inline-flex;
+  flex-shrink: 0;
   height: 20px;
   margin-right: 4px;
   padding: 0 6px;
