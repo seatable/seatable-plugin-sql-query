@@ -17,11 +17,12 @@
   "Submit": "Absenden",
   "SQL_is_required": "SQL ist eine Pflichtangabe.",
   "Querying_try_again_later": "Abfrage läuft. Versuchen Sie es später nochmals.",
-  "The_number_of_tables_exceeds_200_limit": "The number of tables exceeds 200 limit.",
-  "Table_name_is_required": "Table name is required.",
-  "Columns_is_required": "Columns is required.",
-  "Columns_must_be_array": "Columns must be an array.",
-  "The_number_of_columns_must_be_more_than_0": "The number of columns must be more than 0.",
-  "The_number_of_columns_in_the_current_table_exceeds_the_limit": "The number of columns in the current table exceeds the limit.",
-  "Rows_must_be_array": "Rows must be an array."
+  "The_number_of_tables_exceeds_200_limit": "Die Anzahl der Tabellen überschreitet das Limit von 200.",
+  "Table_name_is_required": "Der Tabellenname ist ein Pflichtfeld.",
+  "Columns_is_required": "Die Spalte ist erforderlich.",
+  "Columns_must_be_array": "Spalten müssen ein Array sein.",
+  "The_number_of_columns_must_be_more_than_0": "Die Anzahl der Spalten muss größer 0 sein.",
+  "The_number_of_columns_in_the_current_table_exceeds_the_limit": "Die Anzahl der Spalten in der aktuellen Tabelle überschreitet das Limit.",
+  "Rows_must_be_array": "Zeilen müssen ein Array sein.",
+  "All_files": "All files"
 }

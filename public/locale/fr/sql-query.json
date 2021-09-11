@@ -17,11 +17,12 @@
   "Submit": "Soumettre",
   "SQL_is_required": "SQL est nécessaire.",
   "Querying_try_again_later": "Requête en cours. Veuillez essayer plus tard.",
-  "The_number_of_tables_exceeds_200_limit": "The number of tables exceeds 200 limit.",
-  "Table_name_is_required": "Table name is required.",
-  "Columns_is_required": "Columns is required.",
-  "Columns_must_be_array": "Columns must be an array.",
-  "The_number_of_columns_must_be_more_than_0": "The number of columns must be more than 0.",
-  "The_number_of_columns_in_the_current_table_exceeds_the_limit": "The number of columns in the current table exceeds the limit.",
-  "Rows_must_be_array": "Rows must be an array."
+  "The_number_of_tables_exceeds_200_limit": "Le nombre de tableaux dépasse la limite de 200.",
+  "Table_name_is_required": "Le nom de tableau est nécessaire.",
+  "Columns_is_required": "La colonne est nécessaire.",
+  "Columns_must_be_array": "Les colonnes doivent être un array.",
+  "The_number_of_columns_must_be_more_than_0": "Le nombre de colonnes doit être supérieur à 0.",
+  "The_number_of_columns_in_the_current_table_exceeds_the_limit": "Le nombre de colonnes dans le tableau actuel dépasse la limite.",
+  "Rows_must_be_array": "Les lignes doivent être un array.",
+  "All_files": "All files"
 }

@@ -25,6 +25,7 @@ import {
 } from 'dtable-ui-component';
 import { CELL_TYPE } from 'dtable-sdk';
 import { isValidEmail, getValueFromPluginConfig } from '../../utils/common-utils';
+import FormulaFormatter from './formula-formatter';
 
 const propTypes = {
   column: PropTypes.object.isRequired,
@@ -121,6 +122,12 @@ class CellFormatter extends React.Component {
     return null;
   }
 
+  downloadImage = (url) => {
+    let seafileFileIndex = url.indexOf('seafile-connector');
+    if (seafileFileIndex > -1) return;
+    window.location.href = url + '?dl=1';
+  }
+
   renderFormatter = () => {
     let { column, cellValue, collaborators } = this.props;
     const { type: columnType } = column || {};
@@ -144,7 +151,13 @@ class CellFormatter extends React.Component {
       }
       case CELL_TYPE.IMAGE: {
         if (!cellValue || (Array.isArray(cellValue) && cellValue.length === 0)) return this.renderEmptyFormatter();
-        return <ImageFormatter value={cellValue} containerClassName={containerClassName}/>;
+        return <ImageFormatter
+          value={cellValue}
+          containerClassName={containerClassName}
+          isSupportPreview={true}
+          readOnly={true}
+          downloadImage={this.downloadImage}
+        />;
       }
       case CELL_TYPE.FILE: {
         if (!cellValue || (Array.isArray(cellValue) && cellValue.length === 0)) return this.renderEmptyFormatter();
@@ -159,7 +172,7 @@ class CellFormatter extends React.Component {
         return <NumberFormatter value={cellValue} data={column.data || {}} containerClassName={containerClassName} />;
       }
       case CELL_TYPE.DATE: {
-        if (!cellValue) return this.renderEmptyFormatter();
+        if (!cellValue || typeof cellValue !== 'string') return this.renderEmptyFormatter();
         const { data } = column;
         const { format } = data || {};
         return <DateFormatter value={cellValue.replace('T', ' ').replace('Z', '')} format={format} containerClassName={containerClassName} />;
@@ -224,6 +237,22 @@ class CellFormatter extends React.Component {
       }
       case CELL_TYPE.BUTTON: {
         return <ButtonFormatter data={column.data || {}} containerClassName={containerClassName} optionColors={this.props.getOptionColors()}/>;
+      }
+      case CELL_TYPE.FORMULA: {
+        return <FormulaFormatter value={cellValue} column={column} collaborators={collaborators} containerClassName={containerClassName} renderEmptyFormatter={this.renderEmptyFormatter} />;
+      }
+      case CELL_TYPE.LINK: {
+        if (!Array.isArray(cellValue) || cellValue.length === 0) return null;
+        return (
+          <div className={containerClassName}>
+            {cellValue.map((item, index) => {
+              const { display_value, row_id } = item;
+              return (
+                <div key={`${row_id}-${index}`} className="sql-query-link-item">{display_value}</div>
+              );
+            })}
+          </div>
+        );
       }
       default:
         return this.renderEmptyFormatter();

@@ -1,5 +1,6 @@
 import { CELL_TYPE } from 'dtable-sdk';
 import { View } from '../model';
+export { FILE_COLUMN_TYPES, START, FILES_SLICE_LENGTH, END, DOWNLOAD_NAME_COLUMN_TYPES } from './download-file';
 
 export const PLUGIN_NAME = 'sql-query';
 
@@ -12,10 +13,8 @@ export const QUERY_STATUS = {
 export const PER_DISPLAY_COUNT = 25;
 
 export const NOT_SUPPORT_COLUMN_TYPES = [
-  CELL_TYPE.LINK,
-  CELL_TYPE.FORMULA,
+  // CELL_TYPE.FORMULA,
   CELL_TYPE.LINK_FORMULA,
-  CELL_TYPE.FILE,
 ];
 
 export const COLUMNS_ICONS = {

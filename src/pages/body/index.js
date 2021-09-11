@@ -77,7 +77,7 @@ class Body extends Component {
     const { currentView } = this.props;
     this.inputRef.blur();
     this.setState({ queryStatus: QUERY_STATUS.DOING }, () => {
-      this.props.sqlQuery(sql, 'dtable-server').then(res => {
+      this.props.sqlQuery(sql).then(res => {
         this.setState({ queryStatus: QUERY_STATUS.DONE, result: res.data, isOpen: false });
       }).catch(e => {
         this.setState({ queryStatus: QUERY_STATUS.DONE, result: { error_msg: 'DtableDb Server Error.', isOpen: false } });

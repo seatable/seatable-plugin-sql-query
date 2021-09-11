@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import intl from 'react-intl-universal';
 import { Loading, CellFormatter } from '../../../components';
-import { PER_DISPLAY_COUNT, NOT_SUPPORT_COLUMN_TYPES } from '../../../constants';
+import { PER_DISPLAY_COUNT, NOT_SUPPORT_COLUMN_TYPES, FILE_COLUMN_TYPES } from '../../../constants';
 import { getCellRecordWidth } from '../../../utils/common-utils';
+import EnlargeFormatter from '../../../components/formatter/enlarge-formatter';
 
 import '../../../assets/css/records.css';
 
@@ -13,7 +14,9 @@ class RecordList extends Component {
     super(props);
     this.state = {
       isLoading: false,
-      displayRecordsCount: PER_DISPLAY_COUNT
+      displayRecordsCount: PER_DISPLAY_COUNT,
+      isShowEnlargeFormatter: false,
+      enlargeFormatterProps: {}
     };
     this.disPlayColumns = props.columns
       .filter(column => !NOT_SUPPORT_COLUMN_TYPES.includes(column.type))
@@ -36,6 +39,20 @@ class RecordList extends Component {
     }
   }
 
+  openEnlargeFormatter = (column, value) => {
+    this.setState({
+      isShowEnlargeFormatter: true,
+      enlargeFormatterProps: { column, value }
+    });
+  }
+
+  closeEnlargeFormatter = () => {
+    this.setState({
+      isShowEnlargeFormatter: false,
+      enlargeFormatterProps: { }
+    });
+  }
+
   render() {
     const { records } = this.props;
     if (!Array.isArray(records) || records.length === 0) {
@@ -48,62 +65,72 @@ class RecordList extends Component {
       );
     }
     const recordsCount = records.length;
-    const { isLoading, displayRecordsCount } = this.state;
+    const { isLoading, displayRecordsCount, isShowEnlargeFormatter, enlargeFormatterProps } = this.state;
     const displayResults = records.slice(0, displayRecordsCount);
     const totalWidth = this.disPlayColumns.reduce((cur, nextItem) => { return (cur + nextItem.width); }, 0);
     
     return (
-      <div className="sql-query-result success">
-        <div className="sql-query-result-container">
-          <div className="sql-query-result-content" style={{ width: totalWidth }}>
-            <div className="static-sql-query-result-content">
-              <div className="sql-query-result-table-row">
-                {this.disPlayColumns.map(column => {
-                  const { key, name, width } = column;
-                  return (
-                    <div className="sql-query-result-table-cell" key={`${key}--1`} style={{width, maxWidth: width, minWidth: width}}>
-                      <div className="sql-query-result-column-content text-truncate">
-                        {name}
+      <Fragment>
+        <div className="sql-query-result success">
+          <div className="sql-query-result-container">
+            <div className="sql-query-result-content" style={{ width: totalWidth }}>
+              <div className="static-sql-query-result-content">
+                <div className="sql-query-result-table-row">
+                  {this.disPlayColumns.map(column => {
+                    const { key, name, width } = column;
+                    return (
+                      <div className="sql-query-result-table-cell" key={`${key}--1`} style={{width, maxWidth: width, minWidth: width}}>
+                        <div className="sql-query-result-column-content text-truncate">
+                          {name}
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-            <div className="sql-query-result-table-content" onScroll={this.getMoreResults} ref={ref => this.sqlQueryResultContentRef = ref}>
-              <div className="sql-query-result-table" ref={ref => this.sqlQueryResultRef = ref}>
-                {displayResults.map((result, index) => {
-                  return (
-                    <div className="sql-query-result-table-row" key={result._id || index}>
-                      {this.disPlayColumns.map(column => {
-                        const { key, name, width } = column;
-                        const value = (result[name] || result[name] === 0) ? result[name] : result[key];
-                        return (
-                          <div className="sql-query-result-table-cell" key={`${key}-${{index}}`} style={{width, maxWidth: width, minWidth: width}}>
-                            <CellFormatter
-                              collaborators={window.app.state.collaborators}
-                              cellValue={value}
-                              column={column}
-                              getOptionColors={this.props.getOptionColors}
-                              getUserCommonInfo={this.props.getUserCommonInfo}
-                            />
-                          </div>
-                        );
-                      })}
-                    </div>
-                  );
-                })}
+              <div className="sql-query-result-table-content" onScroll={this.getMoreResults} ref={ref => this.sqlQueryResultContentRef = ref}>
+                <div className="sql-query-result-table" ref={ref => this.sqlQueryResultRef = ref}>
+                  {displayResults.map((result, index) => {
+                    return (
+                      <div className="sql-query-result-table-row" key={result._id || index}>
+                        {this.disPlayColumns.map(column => {
+                          const { key, name, width, type } = column;
+                          const value = (result[name] || result[name] === 0) ? result[name] : result[key];
+                          return (
+                            <div
+                              className="sql-query-result-table-cell"
+                              key={`${key}-${{index}}`}
+                              style={{width, maxWidth: width, minWidth: width}}
+                              onDoubleClick={FILE_COLUMN_TYPES.includes(type) ? () => this.openEnlargeFormatter(column, value) : () => {}}
+                            >
+                              <CellFormatter
+                                collaborators={window.app.state.collaborators}
+                                cellValue={value}
+                                column={column}
+                                getOptionColors={this.props.getOptionColors}
+                                getUserCommonInfo={this.props.getUserCommonInfo}
+                              />
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  })}
+                </div>
+                {isLoading && <Loading />}
               </div>
-              {isLoading && <Loading />}
-            </div>
-            <div className="sql-query-result-count">
-              <div className="position-absolute">
-                { recordsCount > 1 ? intl.get('xxx_records', { count: recordsCount }) : intl.get('1_record')}
+              <div className="sql-query-result-count">
+                <div className="position-absolute">
+                  { recordsCount > 1 ? intl.get('xxx_records', { count: recordsCount }) : intl.get('1_record')}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+        {isShowEnlargeFormatter && (
+          <EnlargeFormatter { ...enlargeFormatterProps } closeEnlargeFormatter={this.closeEnlargeFormatter} />
+        )}
+      </Fragment>
     );
   }
 }

@@ -158,6 +158,32 @@
   width: 16px;
 }
 
+/* link */
+.sql-query-plugin .sql-query-result-table-cell .sql-query-link-formatter {
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  flex-wrap: nowrap;
+  width: 100%;
+  height: 100%;
+}
+
+.sql-query-plugin .sql-query-result-table-cell .sql-query-link-formatter .sql-query-link-item {
+  display: inline-flex;
+  height: 20px;
+  margin-right: 4px;
+  padding: 0 6px;
+  font-size: 13px;
+  max-width: 100%;
+  background: #eceff4;
+  border-radius: 3px;
+  align-items: center;
+  vertical-align: middle;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 /* records count */
 .sql-query-plugin .sql-query-result.success .sql-query-result-count {
   height: 32px;

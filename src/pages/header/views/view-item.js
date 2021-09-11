@@ -87,7 +87,7 @@ class ViewItem extends Component {
                 <span>{intl.get('Rename_view')}</span>
               </button>
               <button className="dropdown-item sql-query-view-dropdown-item" onClick={this.exportView}>
-                <i className="dtable-font dtable-icon-export sql-query-view-item-icon"></i>
+                <i className="dtable-font dtable-icon-export-to-new-table sql-query-view-item-icon"></i>
                 <span>{intl.get('Export_to_a_new_table')}</span>
               </button>
               <button className="dropdown-item sql-query-view-dropdown-item" onClick={this.deleteView}>
