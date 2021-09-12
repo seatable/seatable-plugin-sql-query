@@ -215,10 +215,10 @@ class App extends React.Component {
     return dtableWebAPI.getUserCommonInfo(email, avatar_size);
   }
 
-  sqlQuery = (sql, method) => {
+  sqlQuery = (sql) => {
     const { isDevelopment } = this.props;
     const dtableAPI = isDevelopment ? this.dtable.dtableStore.dtableAPI : window.app.dtableStore.dtableAPI;
-    return dtableAPI.sqlQuery(sql, method);
+    return dtableAPI.sqlQuery(sql);
   }
 
   render() {

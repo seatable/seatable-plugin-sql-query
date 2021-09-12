@@ -1,0 +1,64 @@
+.file-enlarge-formatter-dialog {
+  height: calc(100% - 130px);
+}
+
+.file-enlarge-formatter-dialog .modal-content {
+  width: 600px;
+  height: 100%;
+}
+
+.file-enlarge-formatter-dialog .modal-body {
+  padding: 0;
+  overflow-y: scroll;
+}
+
+.file-enlarge-formatter-dialog .enlarge-file-item {
+  height: 48px;
+  width: 100%;
+  padding: 0 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.file-enlarge-formatter-dialog .enlarge-file-item:last-child {
+  margin-bottom: 10px;
+}
+
+.file-enlarge-formatter-dialog .enlarge-file-item .enlarge-file-item-icon {
+  height: 100%;
+  line-height: 48px;
+  margin-right: 5px;
+  flex-shrink: 0;
+}
+
+.file-enlarge-formatter-dialog .enlarge-file-item .enlarge-file-item-icon img {
+  width: 36px;
+  height: 36px;
+}
+
+.file-enlarge-formatter-dialog .enlarge-file-item .enlarge-file-item-info {
+  font-size: 14px;
+  margin-top: 5px;
+  flex: 1;
+  overflow: hidden;
+  padding-right: 16px;
+}
+
+.file-enlarge-formatter-dialog .enlarge-file-item .enlarge-file-item-size {
+  color: silver;
+}
+
+.file-enlarge-formatter-dialog .enlarge-file-item .enlarge-file-item-operation {
+  height: 20px;
+  width: 20px;
+  text-align: center;
+  line-height: 20px;
+  color: #999;
+}
+
+.file-enlarge-formatter-dialog .enlarge-file-item .enlarge-file-item-operation:hover {
+  cursor: pointer;
+  color: #5a5a5a;
+}
