@@ -2,15 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FORMULA_RESULT_TYPE } from 'dtable-sdk';
 import { NumberFormatter, DateFormatter } from 'dtable-ui-component';
-
+import CellFormatter from './index';
 
 function FormulaFormatter(props) {
   const { value, containerClassName, column } = props;
   const { data: columnData } = column;
   const { result_type: resultType } = columnData;
+  const className = `dtable-ui cell-formatter-container formula-formatter ${containerClassName}`;
 
-  // need column data to format value
-  if (resultType === FORMULA_RESULT_TYPE.COLUMN) return props.renderEmptyFormatter();
+  if (resultType === FORMULA_RESULT_TYPE.COLUMN) {
+    const { display_column } = columnData || {};
+    if (!display_column) return props.renderEmptyFormatter();
+    return (
+      <CellFormatter
+        collaborators={window.app.state.collaborators}
+        cellValue={value}
+        column={display_column}
+        getOptionColors={props.getOptionColors}
+        getUserCommonInfo={props.getUserCommonInfo}
+      />
+    );
+  }
 
   if (resultType === FORMULA_RESULT_TYPE.NUMBER) {
     if (!value && value !== 0) return props.renderEmptyFormatter();
@@ -24,9 +36,9 @@ function FormulaFormatter(props) {
   }
 
   if (typeof value === 'object') return props.renderEmptyFormatter();
-  let formattedValue = Object.prototype.toString.call(value) === '[object Boolean]' ? value + '' : value;
+  const formattedValue = Object.prototype.toString.call(value) === '[object Boolean]' ? value + '' : value;
 
-  return <div className={`dtable-ui cell-formatter-container formula-formatter ${containerClassName}`}>{formattedValue}</div>;
+  return (<div className={className}>{formattedValue}</div>);
 }
 
 FormulaFormatter.propTypes = {
@@ -34,6 +46,8 @@ FormulaFormatter.propTypes = {
   value: PropTypes.any,
   containerClassName: PropTypes.string,
   renderEmptyFormatter: PropTypes.func,
+  getOptionColors: PropTypes.func,
+  getUserCommonInfo: PropTypes.func
 };
 
 export default FormulaFormatter;

@@ -143,6 +143,7 @@ class Body extends Component {
           records={results}
           getOptionColors={this.props.getOptionColors}
           getUserCommonInfo={this.props.getUserCommonInfo}
+          getTables={this.props.getTables}
         />
       );
     }
@@ -199,6 +200,7 @@ Body.propTypes = {
   getCurrentHistorySqlOptions: PropTypes.func,
   saveHistorySqlOptions: PropTypes.func,
   updateView: PropTypes.func,
+  getTables: PropTypes.func,
 };
 
 export default Body;

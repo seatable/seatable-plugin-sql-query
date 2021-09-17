@@ -13,8 +13,11 @@ export const QUERY_STATUS = {
 export const PER_DISPLAY_COUNT = 25;
 
 export const NOT_SUPPORT_COLUMN_TYPES = [
-  // CELL_TYPE.FORMULA,
-  CELL_TYPE.LINK_FORMULA,
+];
+
+export const FORMULA_COLUMN_TYPES = [
+  CELL_TYPE.FORMULA,
+  CELL_TYPE.LINK_FORMULA
 ];
 
 export const COLUMNS_ICONS = {

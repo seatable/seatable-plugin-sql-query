@@ -221,6 +221,10 @@ class App extends React.Component {
     return dtableAPI.sqlQuery(sql);
   }
 
+  getTables = () => {
+    return this.dtable.getTables();
+  }
+
   render() {
     const { showDialog, currentViewIdx, views } = this.state;
     if (!showDialog || !views[currentViewIdx]) return '';
@@ -240,13 +244,13 @@ class App extends React.Component {
         <Body
           ref={ref => this.bodyRef = ref}
           currentView={views[currentViewIdx]}
+          getTables={this.getTables}
           sqlQuery={this.sqlQuery}
           getOptionColors={this.getOptionColors}
           getUserCommonInfo={this.getUserCommonInfo}
           getCurrentHistorySqlOptions={this.getCurrentHistorySqlOptions}
           saveHistorySqlOptions={this.saveHistorySqlOptions}
           updateView={this.updateView}
-          
         />
       </div>
     );
