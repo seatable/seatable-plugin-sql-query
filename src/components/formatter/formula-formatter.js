@@ -3,14 +3,35 @@ import PropTypes from 'prop-types';
 import { FORMULA_RESULT_TYPE } from 'dtable-sdk';
 import { NumberFormatter, DateFormatter } from 'dtable-ui-component';
 
-
 function FormulaFormatter(props) {
   const { value, containerClassName, column } = props;
   const { data: columnData } = column;
   const { result_type: resultType } = columnData;
+  const className = `dtable-ui cell-formatter-container formula-formatter ${containerClassName}`;
 
-  // need column data to format value
-  if (resultType === FORMULA_RESULT_TYPE.COLUMN) return props.renderEmptyFormatter();
+  // now use value type, ** todo **: need column data to format value
+  if (resultType === FORMULA_RESULT_TYPE.COLUMN) {
+    const valueType = Object.prototype.toString.call(value).slice(8, -1);
+    switch(valueType) {
+      case 'String': {
+        return (<div className={className}>{value}</div>);
+      }
+      case 'Number': {
+        if (!value && value !== 0) return props.renderEmptyFormatter();
+        return <NumberFormatter value={value} data={columnData || {}} containerClassName={`${containerClassName} text-right`} />;
+      }
+      case 'Array': {
+        if (value.length === 0) return props.renderEmptyFormatter();
+        return (<div className={className}>{value.join(', ')}</div>);
+      }
+      case 'Boolean': {
+        return (<div className={className}>{value + ''}</div>);
+      }
+      default: {
+        return props.renderEmptyFormatter();
+      }
+    }
+  }
 
   if (resultType === FORMULA_RESULT_TYPE.NUMBER) {
     if (!value && value !== 0) return props.renderEmptyFormatter();
@@ -24,9 +45,9 @@ function FormulaFormatter(props) {
   }
 
   if (typeof value === 'object') return props.renderEmptyFormatter();
-  let formattedValue = Object.prototype.toString.call(value) === '[object Boolean]' ? value + '' : value;
+  const formattedValue = Object.prototype.toString.call(value) === '[object Boolean]' ? value + '' : value;
 
-  return <div className={`dtable-ui cell-formatter-container formula-formatter ${containerClassName}`}>{formattedValue}</div>;
+  return (<div className={className}>{formattedValue}</div>);
 }
 
 FormulaFormatter.propTypes = {

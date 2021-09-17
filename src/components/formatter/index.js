@@ -238,7 +238,8 @@ class CellFormatter extends React.Component {
       case CELL_TYPE.BUTTON: {
         return <ButtonFormatter data={column.data || {}} containerClassName={containerClassName} optionColors={this.props.getOptionColors()}/>;
       }
-      case CELL_TYPE.FORMULA: {
+      case CELL_TYPE.FORMULA:
+      case CELL_TYPE.LINK_FORMULA: {
         return <FormulaFormatter value={cellValue} column={column} collaborators={collaborators} containerClassName={containerClassName} renderEmptyFormatter={this.renderEmptyFormatter} />;
       }
       case CELL_TYPE.LINK: {
