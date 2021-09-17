@@ -15,6 +15,11 @@ export const PER_DISPLAY_COUNT = 25;
 export const NOT_SUPPORT_COLUMN_TYPES = [
 ];
 
+export const FORMULA_COLUMN_TYPES = [
+  CELL_TYPE.FORMULA,
+  CELL_TYPE.LINK_FORMULA
+];
+
 export const COLUMNS_ICONS = {
   [CELL_TYPE.DEFAULT]: 'dtable-font dtable-icon-single-line-text',
   [CELL_TYPE.TEXT]: 'dtable-font dtable-icon-single-line-text',

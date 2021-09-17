@@ -27,14 +27,6 @@ import { CELL_TYPE } from 'dtable-sdk';
 import { isValidEmail, getValueFromPluginConfig } from '../../utils/common-utils';
 import FormulaFormatter from './formula-formatter';
 
-const propTypes = {
-  column: PropTypes.object.isRequired,
-  cellValue: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number, PropTypes.string, PropTypes.object, PropTypes.array]),
-  collaborators: PropTypes.array,
-  getOptionColors: PropTypes.func,
-  getUserCommonInfo: PropTypes.func
-};
-
 class CellFormatter extends React.Component {
 
   constructor(props) {
@@ -240,7 +232,17 @@ class CellFormatter extends React.Component {
       }
       case CELL_TYPE.FORMULA:
       case CELL_TYPE.LINK_FORMULA: {
-        return <FormulaFormatter value={cellValue} column={column} collaborators={collaborators} containerClassName={containerClassName} renderEmptyFormatter={this.renderEmptyFormatter} />;
+        return (
+          <FormulaFormatter
+            value={cellValue}
+            column={column}
+            collaborators={collaborators}
+            containerClassName={containerClassName}
+            renderEmptyFormatter={this.renderEmptyFormatter}
+            getOptionColors={this.props.getOptionColors}
+            getUserCommonInfo={this.props.getUserCommonInfo}
+          />
+        );
       }
       case CELL_TYPE.LINK: {
         if (!Array.isArray(cellValue) || cellValue.length === 0) return null;
@@ -269,6 +271,12 @@ class CellFormatter extends React.Component {
   }
 }
 
-CellFormatter.propTypes = propTypes;
+CellFormatter.propTypes = {
+  column: PropTypes.object.isRequired,
+  cellValue: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number, PropTypes.string, PropTypes.object, PropTypes.array]),
+  collaborators: PropTypes.array,
+  getOptionColors: PropTypes.func,
+  getUserCommonInfo: PropTypes.func,
+};
 
 export default CellFormatter;

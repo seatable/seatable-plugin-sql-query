@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FORMULA_RESULT_TYPE } from 'dtable-sdk';
 import { NumberFormatter, DateFormatter } from 'dtable-ui-component';
+import CellFormatter from './index';
 
 function FormulaFormatter(props) {
   const { value, containerClassName, column } = props;
@@ -9,28 +10,18 @@ function FormulaFormatter(props) {
   const { result_type: resultType } = columnData;
   const className = `dtable-ui cell-formatter-container formula-formatter ${containerClassName}`;
 
-  // now use value type, ** todo **: need column data to format value
   if (resultType === FORMULA_RESULT_TYPE.COLUMN) {
-    const valueType = Object.prototype.toString.call(value).slice(8, -1);
-    switch(valueType) {
-      case 'String': {
-        return (<div className={className}>{value}</div>);
-      }
-      case 'Number': {
-        if (!value && value !== 0) return props.renderEmptyFormatter();
-        return <NumberFormatter value={value} data={columnData || {}} containerClassName={`${containerClassName} text-right`} />;
-      }
-      case 'Array': {
-        if (value.length === 0) return props.renderEmptyFormatter();
-        return (<div className={className}>{value.join(', ')}</div>);
-      }
-      case 'Boolean': {
-        return (<div className={className}>{value + ''}</div>);
-      }
-      default: {
-        return props.renderEmptyFormatter();
-      }
-    }
+    const { display_column } = columnData || {};
+    if (!display_column) return props.renderEmptyFormatter();
+    return (
+      <CellFormatter
+        collaborators={window.app.state.collaborators}
+        cellValue={value}
+        column={display_column}
+        getOptionColors={props.getOptionColors}
+        getUserCommonInfo={props.getUserCommonInfo}
+      />
+    );
   }
 
   if (resultType === FORMULA_RESULT_TYPE.NUMBER) {
@@ -55,6 +46,8 @@ FormulaFormatter.propTypes = {
   value: PropTypes.any,
   containerClassName: PropTypes.string,
   renderEmptyFormatter: PropTypes.func,
+  getOptionColors: PropTypes.func,
+  getUserCommonInfo: PropTypes.func
 };
 
 export default FormulaFormatter;
