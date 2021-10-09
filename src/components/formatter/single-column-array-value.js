@@ -24,18 +24,6 @@ function SingleColumnArrayValue(props) {
     });
   }).flat();
   if (!Array.isArray(cellValue) || cellValue.length === 0) return props.renderEmptyFormatter();
-  /*
-    export const DEFAULT = 'default';
-    // export const IMAGE = 'image';
-    // export const FILE = 'file';
-    // export const MULTIPLE_SELECT = 'multiple-select';
-    // export const COLLABORATOR = 'collaborator';
-    export const LINK = 'link';
-    export const FORMULA = 'formula';
-    export const LINK_FORMULA = 'link-formula';
-    export const BUTTON = 'button';
-    export const RATE = 'rate';
-  */
   const { type, data } = column;
   switch(type) {
     case CELL_TYPE.TEXT:

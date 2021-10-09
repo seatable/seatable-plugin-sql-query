@@ -74,7 +74,7 @@ class CellFormatter extends React.Component {
       }
       case CELL_TYPE.GEOLOCATION : {
         if (!cellValue) return this.renderEmptyFormatter();
-        return <GeolocationFormatter value={cellValue} containerClassName={containerClassName} />;
+        return <GeolocationFormatter value={cellValue} data={column.data || {}} containerClassName={containerClassName} />;
       }
       case CELL_TYPE.NUMBER: {
         if (!cellValue && cellValue !== 0) return this.renderEmptyFormatter();
