@@ -144,6 +144,8 @@ class Body extends Component {
           getOptionColors={this.props.getOptionColors}
           getUserCommonInfo={this.props.getUserCommonInfo}
           getTables={this.props.getTables}
+          getDurationDisplayString={this.props.getDurationDisplayString}
+          getGeolocationDisplayString={this.props.getGeolocationDisplayString}
         />
       );
     }
@@ -201,6 +203,8 @@ Body.propTypes = {
   saveHistorySqlOptions: PropTypes.func,
   updateView: PropTypes.func,
   getTables: PropTypes.func,
+  getDurationDisplayString: PropTypes.func,
+  getGeolocationDisplayString: PropTypes.func,
 };
 
 export default Body;

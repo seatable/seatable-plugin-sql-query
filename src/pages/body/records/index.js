@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import intl from 'react-intl-universal';
-import { FORMULA_RESULT_TYPE } from 'dtable-sdk';
+import { CELL_TYPE, FORMULA_RESULT_TYPE } from 'dtable-sdk';
 import { Loading, CellFormatter } from '../../../components';
 import { PER_DISPLAY_COUNT, NOT_SUPPORT_COLUMN_TYPES, FILE_COLUMN_TYPES, FORMULA_COLUMN_TYPES } from '../../../constants';
 import { getCellRecordWidth } from '../../../utils/common-utils';
@@ -37,7 +37,20 @@ class RecordList extends Component {
           return {
             ...column,
             width: getCellRecordWidth(column),
-            data: { ...data, display_column: display_column }
+            data: { ...data, display_column }
+          };
+        } else if (type === CELL_TYPE.LINK) {
+          const { linked_column_data, data, linked_column_type } = column;
+          const { display_column_key } = data;
+          const display_column = {
+            key: display_column_key || '0000',
+            type: linked_column_type || 'text',
+            data: linked_column_data || null
+          };
+          return {
+            ...column,
+            width: getCellRecordWidth(column),
+            data: { ...data, display_column }
           };
         }
         return {
@@ -131,6 +144,8 @@ class RecordList extends Component {
                                 column={column}
                                 getOptionColors={this.props.getOptionColors}
                                 getUserCommonInfo={this.props.getUserCommonInfo}
+                                getDurationDisplayString={this.props.getDurationDisplayString}
+                                getGeolocationDisplayString={this.props.getGeolocationDisplayString}
                               />
                             </div>
                           );
@@ -163,6 +178,8 @@ RecordList.propTypes = {
   getOptionColors: PropTypes.func,
   getUserCommonInfo: PropTypes.func,
   getTables: PropTypes.func,
+  getDurationDisplayString: PropTypes.func,
+  getGeolocationDisplayString: PropTypes.func,
 };
 
 export default RecordList;

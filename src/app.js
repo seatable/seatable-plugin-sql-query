@@ -73,6 +73,14 @@ class App extends React.Component {
     this.resetData();
   }
 
+  getDurationDisplayString = (value, columnData) => {
+    return this.dtable.getDurationDisplayString(value, columnData);
+  }
+
+  getGeolocationDisplayString = (value, columnData) => {
+    return this.dtable.getGeolocationDisplayString(value, columnData);
+  }
+
   resetData = () => {
     const views = this.getPluginSettings();
     let { currentViewIdx } = this.state;
@@ -251,6 +259,8 @@ class App extends React.Component {
           getCurrentHistorySqlOptions={this.getCurrentHistorySqlOptions}
           saveHistorySqlOptions={this.saveHistorySqlOptions}
           updateView={this.updateView}
+          getDurationDisplayString={this.getDurationDisplayString}
+          getGeolocationDisplayString={this.getGeolocationDisplayString}
         />
       </div>
     );

@@ -92,3 +92,12 @@ export const bytesToSize = bytes => {
   if (i === 0) return bytes + sizes[i];
   return (bytes / (1000 ** i)).toFixed(1) + sizes[i];
 };
+
+export function isArrayFormalColumn(columnType) {
+  return [
+    CELL_TYPE.IMAGE,
+    CELL_TYPE.FILE,
+    CELL_TYPE.MULTIPLE_SELECT,
+    CELL_TYPE.COLLABORATOR
+  ].includes(columnType);
+}
