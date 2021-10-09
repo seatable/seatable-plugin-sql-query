@@ -20,11 +20,12 @@ import {
   DurationFormatter,
   RateFormatter,
   ButtonFormatter,
+  FormulaFormatter
 } from 'dtable-ui-component';
-import { CELL_TYPE } from 'dtable-sdk';
-import FormulaFormatter from './formula-formatter';
+import { CELL_TYPE, FORMULA_RESULT_TYPE } from 'dtable-sdk';
 import CreatorFormatter from './creator-formatter';
 import LinkFormatter from './link-formatter';
+import { getFormulaArrayValue } from '../../utils/common-utils';
 
 class CellFormatter extends React.Component {
 
@@ -39,7 +40,7 @@ class CellFormatter extends React.Component {
   }
 
   renderFormatter = () => {
-    let { column, cellValue, collaborators } = this.props;
+    let { column, cellValue, collaborators, tables } = this.props;
     const { type: columnType } = column || {};
     const containerClassName = `sql-query-${columnType}-formatter`;
     
@@ -146,17 +147,25 @@ class CellFormatter extends React.Component {
       }
       case CELL_TYPE.FORMULA:
       case CELL_TYPE.LINK_FORMULA: {
+        const { linked_column_type, linked_column_data } = column;
+        let value = cellValue;
+        if (Array.isArray(cellValue)) {
+          value = getFormulaArrayValue(cellValue);
+          if (linked_column_type === CELL_TYPE.DATE) {
+            value = value.map(item => item.replace('T', ' ').replace('Z', ''));
+          } else if ((linked_column_type === CELL_TYPE.FORMULA || linked_column_type === CELL_TYPE.LINK_FORMULA)
+            && linked_column_data.result_type === FORMULA_RESULT_TYPE.DATE) {
+            value = value.map(item => item.replace('T', ' ').replace('Z', ''));
+          }
+        }
+
         return (
           <FormulaFormatter
-            value={cellValue}
+            value={value}
             column={column}
+            tables={tables}
             collaborators={collaborators}
             containerClassName={containerClassName}
-            renderEmptyFormatter={this.renderEmptyFormatter}
-            getOptionColors={this.props.getOptionColors}
-            getUserCommonInfo={this.props.getUserCommonInfo}
-            getDurationDisplayString={this.props.getDurationDisplayString}
-            getGeolocationDisplayString={this.props.getGeolocationDisplayString}
           />
         );
       }
@@ -171,8 +180,7 @@ class CellFormatter extends React.Component {
             renderEmptyFormatter={this.renderEmptyFormatter}
             getOptionColors={this.props.getOptionColors}
             getUserCommonInfo={this.props.getUserCommonInfo}
-            getDurationDisplayString={this.props.getDurationDisplayString}
-            getGeolocationDisplayString={this.props.getGeolocationDisplayString}
+            getCellValueDisplayString={this.props.getCellValueDisplayString}
           />
         );
       }
@@ -193,11 +201,11 @@ class CellFormatter extends React.Component {
 CellFormatter.propTypes = {
   column: PropTypes.object.isRequired,
   cellValue: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number, PropTypes.string, PropTypes.object, PropTypes.array]),
+  tables: PropTypes.array,
   collaborators: PropTypes.array,
   getOptionColors: PropTypes.func,
   getUserCommonInfo: PropTypes.func,
-  getDurationDisplayString: PropTypes.func,
-  getGeolocationDisplayString: PropTypes.func,
+  getCellValueDisplayString: PropTypes.func,
 };
 
 export default CellFormatter;

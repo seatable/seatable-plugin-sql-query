@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import intl from 'react-intl-universal';
-import { CELL_TYPE, FORMULA_RESULT_TYPE } from 'dtable-sdk';
+import { CELL_TYPE } from 'dtable-sdk';
 import { Loading, CellFormatter } from '../../../components';
-import { PER_DISPLAY_COUNT, NOT_SUPPORT_COLUMN_TYPES, FILE_COLUMN_TYPES, FORMULA_COLUMN_TYPES } from '../../../constants';
+import { PER_DISPLAY_COUNT, NOT_SUPPORT_COLUMN_TYPES, FILE_COLUMN_TYPES } from '../../../constants';
 import { getCellRecordWidth } from '../../../utils/common-utils';
 import EnlargeFormatter from '../../../components/formatter/enlarge-formatter';
 
@@ -19,27 +19,11 @@ class RecordList extends Component {
       isShowEnlargeFormatter: false,
       enlargeFormatterProps: {}
     };
-    const tables = props.getTables();
     this.disPlayColumns = props.columns
       .filter(column => !NOT_SUPPORT_COLUMN_TYPES.includes(column.type))
       .map(column => {
-        const { data, type } = column;
-        const { result_type: resultType } = data || {};
-        if (FORMULA_COLUMN_TYPES.includes(type) && resultType === FORMULA_RESULT_TYPE.COLUMN) {
-          const { linked_table_id, display_column_key } = data;
-          let display_column = null;
-          try {
-            const linkedTable = tables.find(table => table._id === linked_table_id);
-            display_column = linkedTable.columns.find(column => column.key === display_column_key);
-          } catch {
-            display_column = null;
-          }
-          return {
-            ...column,
-            width: getCellRecordWidth(column),
-            data: { ...data, display_column }
-          };
-        } else if (type === CELL_TYPE.LINK) {
+        const { type } = column;
+        if (type === CELL_TYPE.LINK) {
           const { linked_column_data, data, linked_column_type } = column;
           const { display_column_key } = data;
           const display_column = {
@@ -103,6 +87,7 @@ class RecordList extends Component {
     const { isLoading, displayRecordsCount, isShowEnlargeFormatter, enlargeFormatterProps } = this.state;
     const displayResults = records.slice(0, displayRecordsCount);
     const totalWidth = this.disPlayColumns.reduce((cur, nextItem) => { return (cur + nextItem.width); }, 0);
+    const tables = this.props.getTables();
 
     return (
       <Fragment>
@@ -142,10 +127,10 @@ class RecordList extends Component {
                                 collaborators={window.app.state.collaborators}
                                 cellValue={value}
                                 column={column}
+                                tables={tables}
                                 getOptionColors={this.props.getOptionColors}
                                 getUserCommonInfo={this.props.getUserCommonInfo}
-                                getDurationDisplayString={this.props.getDurationDisplayString}
-                                getGeolocationDisplayString={this.props.getGeolocationDisplayString}
+                                getCellValueDisplayString={this.props.getCellValueDisplayString}
                               />
                             </div>
                           );
@@ -178,8 +163,7 @@ RecordList.propTypes = {
   getOptionColors: PropTypes.func,
   getUserCommonInfo: PropTypes.func,
   getTables: PropTypes.func,
-  getDurationDisplayString: PropTypes.func,
-  getGeolocationDisplayString: PropTypes.func,
+  getCellValueDisplayString: PropTypes.func,
 };
 
 export default RecordList;

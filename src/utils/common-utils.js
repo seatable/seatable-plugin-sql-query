@@ -93,11 +93,38 @@ export const bytesToSize = bytes => {
   return (bytes / (1000 ** i)).toFixed(1) + sizes[i];
 };
 
-export function isArrayFormalColumn(columnType) {
+export const isArrayFormalColumn = (columnType) => {
   return [
     CELL_TYPE.IMAGE,
     CELL_TYPE.FILE,
     CELL_TYPE.MULTIPLE_SELECT,
     CELL_TYPE.COLLABORATOR
   ].includes(columnType);
-}
+};
+
+export const isValidCellValue = (value) => {
+  if (value === undefined) return false;
+  if (value === null) return false;
+  if (value === '') return false;
+  if (JSON.stringify(value) === '{}') return false;
+  if (JSON.stringify(value) === '[]') return false;
+  return true;
+};
+
+export const getFormulaArrayValue = (value) => {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map(item => {
+      const { display_value } = item;
+      if (!Array.isArray(display_value) || display_value.length === 0) return display_value;
+      return display_value.map(i => {
+        if (Object.prototype.toString.call(i) === '[object Object]') {
+          const { display_value } = i;
+          return display_value;
+        }
+        return i;
+      });
+    })
+    .flat()
+    .filter(item => isValidCellValue(item));
+};

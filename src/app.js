@@ -73,12 +73,74 @@ class App extends React.Component {
     this.resetData();
   }
 
-  getDurationDisplayString = (value, columnData) => {
-    return this.dtable.getDurationDisplayString(value, columnData);
-  }
+  getCollaboratorsName = (collaborators, cellVal) => {
+    if (cellVal) {
+      let collaboratorsName = [];
+      cellVal.forEach((v) => {
+        let collaborator = collaborators.find(c => c.email === v);
+        if (collaborator) {
+          collaboratorsName.push(collaborator.name);
+        }
+      });
+      if (collaboratorsName.length === 0) {
+        return null;
+      }
+      return collaboratorsName.join(', ');
+    }
+    return null;
+  };
 
-  getGeolocationDisplayString = (value, columnData) => {
-    return this.dtable.getGeolocationDisplayString(value, columnData);
+  getCellValueDisplayString(cellValue, column, {tables = [], collaborators = []} = {}) {
+    const { type, data } = column;
+    const newData = data || {};
+    switch (type) {
+      case CELL_TYPE.GEOLOCATION: {
+        return this.dtable.getGeolocationDisplayString(cellValue, data);
+      }
+      case CELL_TYPE.SINGLE_SELECT: {
+        if (!newData) return '';
+        let { options } = newData;
+        if (!cellValue || !options || !Array.isArray(options)) return null;
+        let option = options.find(option => option.id === cellValue);
+        return option ? option.name : null;
+      }
+      case CELL_TYPE.MULTIPLE_SELECT: {
+        if (!newData) return '';
+        let { options } = newData;
+        if (!cellValue || !options || !Array.isArray(options)) return null;
+        let selectedOptions = options.filter((option) => cellValue.includes(option.id));
+        if (selectedOptions.length === 0) return null;
+        return selectedOptions.map((option) => option.name).join(', ');
+      }
+      case CELL_TYPE.FORMULA:
+      case CELL_TYPE.LINK_FORMULA: {
+        return this.dtable.getFormulaDisplayString(cellValue, newData, { tables, collaborators });
+      }
+      case CELL_TYPE.LONG_TEXT: {
+        let { text } = cellValue || {};
+        if (!text) return null;
+        return text;
+      }
+      case CELL_TYPE.NUMBER: {
+        return this.dtable.getNumberDisplayString(cellValue, newData);
+      }
+      case CELL_TYPE.DATE: {
+        return this.dtable.getDateDisplayString(cellValue, newData);
+      }
+      case CELL_TYPE.CREATOR:
+      case CELL_TYPE.LAST_MODIFIER: {
+        return cellValue === 'anonymous' ? cellValue : this.getCollaboratorsName(collaborators, [cellValue]);
+      }
+      case CELL_TYPE.COLLABORATOR: {
+        return this.getCollaboratorsName(collaborators, cellValue);
+      }
+      case CELL_TYPE.DURATION: {
+        return this.dtable.getDurationDisplayString(cellValue, newData);
+      }
+      default: {
+        return cellValue ? cellValue + '' : '';
+      }
+    }
   }
 
   resetData = () => {
@@ -259,8 +321,7 @@ class App extends React.Component {
           getCurrentHistorySqlOptions={this.getCurrentHistorySqlOptions}
           saveHistorySqlOptions={this.saveHistorySqlOptions}
           updateView={this.updateView}
-          getDurationDisplayString={this.getDurationDisplayString}
-          getGeolocationDisplayString={this.getGeolocationDisplayString}
+          getCellValueDisplayString={this.getCellValueDisplayString}
         />
       </div>
     );
