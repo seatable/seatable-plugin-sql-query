@@ -1,4 +1,5 @@
 import { CELL_TYPE } from 'dtable-sdk';
+import getPreviewContent from './normalize-long-text-value';
 
 export const isValidEmail = (email) => {
   const reg = /^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,6}$/;
@@ -115,16 +116,27 @@ export const getFormulaArrayValue = (value) => {
   if (!Array.isArray(value)) return [];
   return value
     .map(item => {
+      if (Object.prototype.toString.call(item) !== '[object Object]') return item;
       const { display_value } = item;
       if (!Array.isArray(display_value) || display_value.length === 0) return display_value;
       return display_value.map(i => {
-        if (Object.prototype.toString.call(i) === '[object Object]') {
-          const { display_value } = i;
-          return display_value;
-        }
-        return i;
+        if (Object.prototype.toString.call(i) !== '[object Object]') return i;
+        const { display_value } = i;
+        return display_value;
       });
     })
     .flat()
     .filter(item => isValidCellValue(item));
+};
+
+export const getLongTextCellValueInDtable = (value) => {
+  const valueType = Object.prototype.toString.call(value);
+  if (valueType === '[object String]') {
+    const validValue = getPreviewContent(value);
+    return { ...validValue, text: value };
+  }
+  if (valueType === '[object Object]') {
+    return value;
+  }
+  return '';
 };
