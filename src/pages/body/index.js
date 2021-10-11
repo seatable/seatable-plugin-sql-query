@@ -144,6 +144,7 @@ class Body extends Component {
           getOptionColors={this.props.getOptionColors}
           getUserCommonInfo={this.props.getUserCommonInfo}
           getTables={this.props.getTables}
+          getCellValueDisplayString={this.props.getCellValueDisplayString}
         />
       );
     }
@@ -201,6 +202,7 @@ Body.propTypes = {
   saveHistorySqlOptions: PropTypes.func,
   updateView: PropTypes.func,
   getTables: PropTypes.func,
+  getCellValueDisplayString: PropTypes.func,
 };
 
 export default Body;

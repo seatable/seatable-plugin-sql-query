@@ -13,8 +13,6 @@ import {
   LongTextFormatter,
   GeolocationFormatter,
   CTimeFormatter,
-  CreatorFormatter,
-  LastModifierFormatter,
   MTimeFormatter,
   AutoNumberFormatter,
   UrlFormatter,
@@ -22,93 +20,14 @@ import {
   DurationFormatter,
   RateFormatter,
   ButtonFormatter,
+  FormulaFormatter
 } from 'dtable-ui-component';
-import { CELL_TYPE } from 'dtable-sdk';
-import { isValidEmail, getValueFromPluginConfig } from '../../utils/common-utils';
-import FormulaFormatter from './formula-formatter';
+import { CELL_TYPE, FORMULA_RESULT_TYPE } from 'dtable-sdk';
+import CreatorFormatter from './creator-formatter';
+import LinkFormatter from './link-formatter';
+import { getFormulaArrayValue } from '../../utils/common-utils';
 
 class CellFormatter extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      isDataLoaded: false,
-      collaborator: null
-    };
-  }
-
-  componentDidMount() {
-    this.calculateCollaboratorData(this.props);
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    this.calculateCollaboratorData(nextProps);
-  }
-
-  calculateCollaboratorData = (props) => {
-    const { cellValue, column } = props;
-    const { type } = column;
-    if (type === CELL_TYPE.LAST_MODIFIER) {
-      this.getCollaborator(cellValue);
-    } else if (type === CELL_TYPE.CREATOR) {
-      this.getCollaborator(cellValue);
-    }
-  }
-
-  getCollaborator = (value) => {
-    if (!value) {
-      this.setState({ isDataLoaded: true, collaborator: null });
-      return;
-    }
-    this.setState({ isDataLoaded: false, collaborator: null });
-    const { collaborators } = this.props;
-    let collaborator = collaborators && collaborators.find(c => c.email === value);
-    if (collaborator) {
-      this.setState({ isDataLoaded: true, collaborator });
-      return;
-    }
-
-    const mediaUrl = getValueFromPluginConfig('mediaUrl');
-    const defaultAvatarUrl = `${mediaUrl}/avatars/default.png`;
-    if (value === 'anonymous') {
-      collaborator = {
-        name: 'anonymous',
-        avatar_url: defaultAvatarUrl,
-      };
-      this.setState({ isDataLoaded: true, collaborator });
-      return;
-    }
-
-    let dtableCollaborators = window.app.collaboratorsCache;
-    collaborator = dtableCollaborators[value];
-    if (collaborator) {
-      this.setState({ isDataLoaded: true, collaborator });
-      return;
-    }
-
-    if (!isValidEmail(value)) {
-      collaborator = {
-        name: value,
-        avatar_url: defaultAvatarUrl,
-      };
-      dtableCollaborators[value] = collaborator;
-      this.setState({ isDataLoaded: true, collaborator });
-      return;
-    }
-    
-    this.props.getUserCommonInfo(value).then(res => {
-      collaborator = res.data;
-      dtableCollaborators[value] = collaborator;
-      this.setState({ isDataLoaded: true, collaborator });
-    }).catch(() => {
-      collaborator = {
-        name: value,
-        avatar_url: defaultAvatarUrl,
-      };
-      dtableCollaborators[value] = collaborator;
-      this.setState({ isDataLoaded: true, collaborator });
-    });
-  }
 
   renderEmptyFormatter = () => {
     return null;
@@ -121,9 +40,8 @@ class CellFormatter extends React.Component {
   }
 
   renderFormatter = () => {
-    let { column, cellValue, collaborators } = this.props;
+    let { column, cellValue, collaborators, tables } = this.props;
     const { type: columnType } = column || {};
-    const { isDataLoaded, collaborator } = this.state;
     const containerClassName = `sql-query-${columnType}-formatter`;
     
     switch(columnType) {
@@ -157,7 +75,7 @@ class CellFormatter extends React.Component {
       }
       case CELL_TYPE.GEOLOCATION : {
         if (!cellValue) return this.renderEmptyFormatter();
-        return <GeolocationFormatter value={cellValue} containerClassName={containerClassName} />;
+        return <GeolocationFormatter value={cellValue} data={column.data || {}} containerClassName={containerClassName} />;
       }
       case CELL_TYPE.NUMBER: {
         if (!cellValue && cellValue !== 0) return this.renderEmptyFormatter();
@@ -192,19 +110,16 @@ class CellFormatter extends React.Component {
         if (!cellValue) return this.renderEmptyFormatter();
         return <MTimeFormatter value={cellValue} containerClassName={containerClassName} />;
       }
-      case CELL_TYPE.CREATOR: {
-        if (!cellValue || !collaborator) return this.renderEmptyFormatter();
-        if (isDataLoaded) {
-          return <CreatorFormatter collaborators={[collaborator]} value={cellValue} containerClassName={containerClassName} />;
-        }
-        return this.renderEmptyFormatter();
-      }
+      case CELL_TYPE.CREATOR:
       case CELL_TYPE.LAST_MODIFIER: {
-        if (!cellValue || !collaborator) return this.renderEmptyFormatter();
-        if (isDataLoaded) {
-          return <LastModifierFormatter collaborators={[collaborator]} value={cellValue} containerClassName={containerClassName} />;
-        }
-        return this.renderEmptyFormatter();
+        if (!cellValue) return this.renderEmptyFormatter();
+        return <CreatorFormatter
+          collaborators={collaborators}
+          value={cellValue}
+          containerClassName={containerClassName}
+          getUserCommonInfo={this.props.getUserCommonInfo}
+          renderEmptyFormatter={this.renderEmptyFormatter}
+        />;
       }
       case CELL_TYPE.AUTO_NUMBER: {
         if (!cellValue) return this.renderEmptyFormatter();
@@ -232,8 +147,38 @@ class CellFormatter extends React.Component {
       }
       case CELL_TYPE.FORMULA:
       case CELL_TYPE.LINK_FORMULA: {
+        if (!cellValue && cellValue !== 0) return this.renderEmptyFormatter();
+        const { linked_column_type, linked_column_data, data } = column;
+        const { result_type: resultType } = data;
+        let value = cellValue;
+        if (Array.isArray(cellValue)) {
+          value = getFormulaArrayValue(cellValue);
+          if (linked_column_type === CELL_TYPE.DATE || resultType === FORMULA_RESULT_TYPE.DATE) {
+            value = value.map(item => item.replace('T', ' ').replace('Z', ''));
+          } else if ((linked_column_type === CELL_TYPE.FORMULA || linked_column_type === CELL_TYPE.LINK_FORMULA)
+            && linked_column_data.result_type === FORMULA_RESULT_TYPE.DATE) {
+            value = value.map(item => item.replace('T', ' ').replace('Z', ''));
+          }
+        } else {
+          if (resultType === FORMULA_RESULT_TYPE.DATE) {
+            value = value.replace('T', ' ').replace('Z', '');
+          }
+        }
+
         return (
           <FormulaFormatter
+            value={value}
+            column={column}
+            tables={tables}
+            collaborators={collaborators}
+            containerClassName={containerClassName}
+          />
+        );
+      }
+      case CELL_TYPE.LINK: {
+        if (!Array.isArray(cellValue) || cellValue.length === 0) return null;
+        return (
+          <LinkFormatter
             value={cellValue}
             column={column}
             collaborators={collaborators}
@@ -241,20 +186,8 @@ class CellFormatter extends React.Component {
             renderEmptyFormatter={this.renderEmptyFormatter}
             getOptionColors={this.props.getOptionColors}
             getUserCommonInfo={this.props.getUserCommonInfo}
+            getCellValueDisplayString={this.props.getCellValueDisplayString}
           />
-        );
-      }
-      case CELL_TYPE.LINK: {
-        if (!Array.isArray(cellValue) || cellValue.length === 0) return null;
-        return (
-          <div className={containerClassName}>
-            {cellValue.map((item, index) => {
-              const { display_value, row_id } = item;
-              return (
-                <div key={`${row_id}-${index}`} className="sql-query-link-item">{display_value}</div>
-              );
-            })}
-          </div>
         );
       }
       default:
@@ -274,9 +207,11 @@ class CellFormatter extends React.Component {
 CellFormatter.propTypes = {
   column: PropTypes.object.isRequired,
   cellValue: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number, PropTypes.string, PropTypes.object, PropTypes.array]),
+  tables: PropTypes.array,
   collaborators: PropTypes.array,
   getOptionColors: PropTypes.func,
   getUserCommonInfo: PropTypes.func,
+  getCellValueDisplayString: PropTypes.func,
 };
 
 export default CellFormatter;
