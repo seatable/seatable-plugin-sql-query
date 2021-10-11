@@ -1,5 +1,5 @@
 import { CELL_TYPE, FORMULA_RESULT_TYPE } from 'dtable-sdk';
-import { getFormulaArrayValue, convertValueToDtableLongTextValue } from './common-utils';
+import { getFormulaArrayValue, convertValueToDtableLongTextValue, isArrayFormalColumn } from './common-utils';
 
 class CellValueUtils {
 
@@ -21,14 +21,74 @@ class CellValueUtils {
       }
       return collaboratorsName.join(', ');
     }
-    return null;
+    return '';
   }
 
   getLongTextDisplayString = (cellValue) => {
-    let { text } = cellValue || {};
+    const value = convertValueToDtableLongTextValue(cellValue);
+    let { text } = value || {};
     if (!text) return '';
     return text;
   }
+
+  getNumberDisplayString = (cellValue, columnData) => {
+    if (Array.isArray(cellValue)) {
+      if (cellValue.length === 0) return '';
+      return cellValue.map(item => this.dtable.getNumberDisplayString(item, columnData)).join(', ');
+    }
+    return this.dtable.getNumberDisplayString(cellValue, columnData);
+  }
+
+  getDateDisplayString = (cellValue, columnData) => {
+    if (Array.isArray(cellValue)) {
+      if (cellValue.length === 0) return '';
+      const validCellValue = cellValue.filter(item => item && typeof item === 'string');
+      return validCellValue.map(item => this.dtable.getDateDisplayString(item.replace('T', ' ').replace('Z', ''), columnData));
+    }
+    if (!cellValue || typeof cellValue !== 'string') return '';
+    return this.dtable.getDateDisplayString(cellValue.replace('T', ' ').replace('Z', ''), columnData);
+  }
+
+  getFormulaDisplayString = (cellValue, column, { tables = [], collaborators = [] } = {}) => {
+    if (!column) return '';
+    const { data: columnData } = column;
+    if (!columnData) return '';
+    const { result_type } = columnData;
+    if (result_type === FORMULA_RESULT_TYPE.NUMBER) {
+      return this.getNumberDisplayString(cellValue, columnData);
+    }
+    if (result_type === FORMULA_RESULT_TYPE.DATE) {
+      return this.getDateDisplayString(cellValue, columnData);
+    }
+    if (result_type === FORMULA_RESULT_TYPE.COLUMN) {
+      const { linked_table_id, display_column_key } = columnData;
+      const linkedTable = tables.find(table => table._id === linked_table_id);
+      const linkedColumn = linkedTable && linkedTable.columns.find(column => column.key === display_column_key);
+      if (!linkedColumn) return '';
+      const { type: linkedColumnType, data: linkedColumnData } = linkedColumn;
+      if (linkedColumnType === CELL_TYPE.FORMULA || linkedColumnType === CELL_TYPE.LINK_FORMULA) {
+        if (linkedColumnData.result_type === FORMULA_RESULT_TYPE.COLUMN) return '';
+        if (Array.isArray(cellValue)) {
+          return cellValue.map((val) => {
+            return this.getFormulaDisplayString(val, linkedColumn, {tables, collaborators});
+          }).join(', ');
+        }
+        return this.getFormulaDisplayString(cellValue, linkedColumn, {tables, collaborators});
+      }
+      if (!isArrayFormalColumn(linkedColumnType) && Array.isArray(cellValue)) {
+        if (cellValue.length === 0) return '';
+        return cellValue.map((val) => {
+          return this.getCellValueDisplayString(val, linkedColumn, { tables, collaborators });
+        }).join(', ');
+      }
+  
+      return this.getCellValueDisplayString(cellValue, linkedColumn, { tables, collaborators });
+    }
+    if (Object.prototype.toString.call(cellValue) === '[object Boolean]') {
+      return cellValue + '';
+    }
+    return cellValue;
+  };
 
   getCellValueDisplayString = (cellValue, column, {tables = [], collaborators = []} = {}) => {
     const { type, data } = column;
@@ -64,24 +124,7 @@ class CellValueUtils {
       }
       case CELL_TYPE.FORMULA:
       case CELL_TYPE.LINK_FORMULA: {
-        const { linked_column_type, linked_column_data, data } = column;
-        const { result_type: currentResultType } = data;
-        let value = cellValue;
-        if (Array.isArray(cellValue)) {
-          if (linked_column_type === CELL_TYPE.DATE || currentResultType === FORMULA_RESULT_TYPE.DATE) {
-            value = cellValue.map(item => item.replace('T', ' ').replace('Z', ''));
-          } else if ((linked_column_type === CELL_TYPE.FORMULA || linked_column_type === CELL_TYPE.LINK_FORMULA)
-            && linked_column_data.result_type === FORMULA_RESULT_TYPE.DATE) {
-            value = cellValue.map(item => item.replace('T', ' ').replace('Z', ''));
-          } else if (linked_column_type === CELL_TYPE.LONG_TEXT) {
-            value = cellValue.map(item => convertValueToDtableLongTextValue(item));
-          }
-        } else {
-          if (currentResultType === FORMULA_RESULT_TYPE.DATE) {
-            value = cellValue.replace('T', ' ').replace('Z', '');
-          }
-        }
-        return this.dtable.getFormulaDisplayString(value, newData, { tables, collaborators });
+        return this.getFormulaDisplayString(cellValue, column, { tables, collaborators });
       }
       case CELL_TYPE.LONG_TEXT: {
         if (Array.isArray(cellValue)) {
@@ -91,20 +134,15 @@ class CellValueUtils {
         return this.getLongTextDisplayString(cellValue);
       }
       case CELL_TYPE.NUMBER: {
-        if (Array.isArray(cellValue)) {
-          if (cellValue.length === 0) return '';
-          return cellValue.map(item => this.getNumberDisplayString(item, newData)).join(', ');
-        }
-        return this.dtable.getNumberDisplayString(cellValue, newData);
+        return this.getNumberDisplayString(cellValue, newData);
       }
       case CELL_TYPE.DATE: {
-        if (Array.isArray(cellValue)) {
-          if (cellValue.length === 0) return '';
-          const validCellValue = cellValue.filter(item => item && typeof item === 'string');
-          return validCellValue.map(item => this.dtable.getDateDisplayString(item.replace('T', ' ').replace('Z', ''), newData));
-        }
-        if (!cellValue || typeof item !== 'string') return '';
-        return this.dtable.getDateDisplayString(cellValue.replace('T', ' ').replace('Z', ''), newData);
+        return this.getDateDisplayString(cellValue, newData);
+      }
+      case CELL_TYPE.CTIME:
+      case CELL_TYPE.MTIME: {
+        const formatObject = { format: 'YYYY-MM-DD HH:mm' };
+        return this.getDateDisplayString(cellValue, formatObject);
       }
       case CELL_TYPE.CREATOR:
       case CELL_TYPE.LAST_MODIFIER: {
@@ -144,6 +182,10 @@ class CellValueUtils {
         }
         return cellValue;
       }
+      case CELL_TYPE.IMAGE:
+      case CELL_TYPE.FILE: {
+        return '';
+      }
       default: {
         return cellValue ? cellValue + '' : '';
       }
@@ -171,7 +213,24 @@ class CellValueUtils {
           newRow[name] = this.getCellValueDisplayString(validCellValue, column, { tables, collaborators });
         }  else if (type === CELL_TYPE.FORMULA || type === CELL_TYPE.LINK_FORMULA) {
           const validCellValue = Array.isArray(cellValue) ? getFormulaArrayValue(cellValue) : cellValue;
-          newRow[name] = this.getCellValueDisplayString(validCellValue, column, { tables, collaborators });
+          const { data } = column;
+          const { result_type } = data || {};
+          if (Array.isArray(validCellValue)) {
+            newRow[name] = this.getCellValueDisplayString(validCellValue, column, { tables, collaborators });
+          } else {
+            if (result_type === FORMULA_RESULT_TYPE.NUMBER) {
+              newRow[name] = validCellValue;
+            } else if (result_type === FORMULA_RESULT_TYPE.DATE) {
+              let format = 'YYYY-MM-DD';
+              if (data && data.format ) {
+                format = data.format ;
+              }
+              format = format.indexOf('HH:mm') > -1 ? 'YYYY-MM-DD HH:mm' : 'YYYY-MM-DD';
+              newRow[name] = cellValue && typeof cellValue === 'string' ? this.dtable.getDateDisplayString(cellValue.replace('T', ' ').replace('Z', ''), { format }) : '';
+            } else {
+              newRow[name] = this.getCellValueDisplayString(validCellValue, column, { tables, collaborators });
+            }
+          }
         } else if (type === CELL_TYPE.BUTTON) {
           //
         } else {
@@ -185,9 +244,21 @@ class CellValueUtils {
   getExportColumns = (columns) => {
     if (!Array.isArray(columns)) return [];
     return columns.map(column => {
-      if (column.type === CELL_TYPE.LINK_FORMULA
-        || column.type === CELL_TYPE.FORMULA
-        || column.type === CELL_TYPE.LINK) {
+      const { type } = column;
+      if (type === CELL_TYPE.LINK) return { ...column, data: null, type: CELL_TYPE.TEXT };
+      if (column.type === CELL_TYPE.LINK_FORMULA || column.type === CELL_TYPE.FORMULA) {
+        const { data } = column;
+        const { result_type } = data || {};
+        if (result_type === FORMULA_RESULT_TYPE.NUMBER) {
+          return { ...column, data: { format: data.format, decimal: data.decimal, thousands: data.thousands, precision: data.precision, enable_precision: data.enable_precision } , type: CELL_TYPE.NUMBER };
+        }
+        if (result_type === FORMULA_RESULT_TYPE.DATE) {
+          let format = 'YYYY-MM-DD';
+          if (data && data.format ) {
+            format = data.format ;
+          }
+          return { ...column, data: { format }, type: CELL_TYPE.DATE };
+        }
         return { ...column, data: null, type: CELL_TYPE.TEXT };
       }
       return column;
