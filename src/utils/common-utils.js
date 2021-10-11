@@ -129,7 +129,7 @@ export const getFormulaArrayValue = (value) => {
     .filter(item => isValidCellValue(item));
 };
 
-export const getLongTextCellValueInDtable = (value) => {
+export const convertValueToDtableLongTextValue = (value) => {
   const valueType = Object.prototype.toString.call(value);
   if (valueType === '[object String]') {
     const validValue = getPreviewContent(value);

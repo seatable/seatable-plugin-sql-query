@@ -1,5 +1,5 @@
 import { CELL_TYPE, FORMULA_RESULT_TYPE } from 'dtable-sdk';
-import { getFormulaArrayValue, getLongTextCellValueInDtable } from './common-utils';
+import { getFormulaArrayValue, convertValueToDtableLongTextValue } from './common-utils';
 
 class CellValueUtils {
 
@@ -74,7 +74,7 @@ class CellValueUtils {
             && linked_column_data.result_type === FORMULA_RESULT_TYPE.DATE) {
             value = cellValue.map(item => item.replace('T', ' ').replace('Z', ''));
           } else if (linked_column_type === CELL_TYPE.LONG_TEXT) {
-            value = cellValue.map(item => getLongTextCellValueInDtable(item));
+            value = cellValue.map(item => convertValueToDtableLongTextValue(item));
           }
         } else {
           if (currentResultType === FORMULA_RESULT_TYPE.DATE) {
@@ -165,7 +165,7 @@ class CellValueUtils {
         const { name, type } = column;
         const cellValue = row[key];
         if (type === CELL_TYPE.LONG_TEXT) {
-          newRow[name] = getLongTextCellValueInDtable(cellValue);
+          newRow[name] = convertValueToDtableLongTextValue(cellValue);
         } else if (type === CELL_TYPE.LINK) {
           const validCellValue = getFormulaArrayValue(cellValue);
           newRow[name] = this.getCellValueDisplayString(validCellValue, column, { tables, collaborators });

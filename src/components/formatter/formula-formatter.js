@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormulaFormatter as DtableFormulaFormatter } from 'dtable-ui-component';
 import { FORMULA_RESULT_TYPE, CELL_TYPE } from 'dtable-sdk';
-import { getFormulaArrayValue, getLongTextCellValueInDtable } from '../../utils/common-utils';
+import { getFormulaArrayValue, convertValueToDtableLongTextValue } from '../../utils/common-utils';
 
 function FormulaFormatter(props) {
   const { cellValue, column, tables, collaborators, containerClassName } = props;
@@ -18,7 +18,7 @@ function FormulaFormatter(props) {
       && linked_column_data.result_type === FORMULA_RESULT_TYPE.DATE) {
       value = value.map(item => item.replace('T', ' ').replace('Z', ''));
     } else if (linked_column_type === CELL_TYPE.LONG_TEXT) {
-      value = cellValue.map(item => getLongTextCellValueInDtable(item));
+      value = cellValue.map(item => convertValueToDtableLongTextValue(item));
     }
   } else {
     if (resultType === FORMULA_RESULT_TYPE.DATE) {
