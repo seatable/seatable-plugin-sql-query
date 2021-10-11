@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CELL_TYPE } from 'dtable-sdk';
+import { CELL_TYPE, FORMULA_RESULT_TYPE } from 'dtable-sdk';
 import {
   MultipleSelectFormatter,
   NumberFormatter,
@@ -179,9 +179,26 @@ function LinkFormatter(props) {
     }
     case CELL_TYPE.FORMULA:
     case CELL_TYPE.LINK_FORMULA: {
+      if (!cellValue && cellValue !== 0) return this.renderEmptyFormatter();
+      const { linked_column_type, linked_column_data, data } = column;
+      const { result_type: resultType } = data;
+      let value = cellValue;
+      if (Array.isArray(cellValue)) {
+        value = getFormulaArrayValue(cellValue);
+        if (linked_column_type === CELL_TYPE.DATE || resultType === FORMULA_RESULT_TYPE.DATE) {
+          value = value.map(item => item.replace('T', ' ').replace('Z', ''));
+        } else if ((linked_column_type === CELL_TYPE.FORMULA || linked_column_type === CELL_TYPE.LINK_FORMULA)
+          && linked_column_data.result_type === FORMULA_RESULT_TYPE.DATE) {
+          value = value.map(item => item.replace('T', ' ').replace('Z', ''));
+        }
+      } else {
+        if (resultType === FORMULA_RESULT_TYPE.DATE) {
+          value = value.replace('T', ' ').replace('Z', '');
+        }
+      }
       return (
         <FormulaFormatter
-          value={cellValue}
+          value={value}
           column={display_column}
           tables={tables}
           collaborators={collaborators}
