@@ -33,7 +33,8 @@ class Body extends Component {
         sql: currentView.sql,
         result: {},
         isOpen: false,
-        displayHistoryOptions: this.props.getCurrentHistorySqlOptions()
+        displayHistoryOptions: this.props.getCurrentHistorySqlOptions(),
+        queryStatus: QUERY_STATUS.READY,
       }, () => {
         this.onQuery();
       });
