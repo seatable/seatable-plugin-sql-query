@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import DTable from 'dtable-sdk';
 import deepCopy from 'deep-copy';
 import intl from 'react-intl-universal';
+import { toaster } from 'dtable-ui-component';
 import './locale/index.js';
 import { PLUGIN_NAME, DEFAULT_SETTINGS, NOT_SUPPORT_COLUMN_TYPES } from './constants';
 import { Header, Body } from './pages';
 import SqlOptionsLocalStorage from './api/sql-options-local-storage';
 import { generatorViewId } from './utils/common-utils';
 import { View } from './model';
-import { toaster } from './components';
 import CellValueUtils from './utils/cell-value-utils';
 
 import './assets/css/app.css';
