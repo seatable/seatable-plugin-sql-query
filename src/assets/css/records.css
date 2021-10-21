@@ -222,16 +222,17 @@
   max-width: 100%;
 }
 
-.sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item.simple-cell-formatter .text-formatter,
-.sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item.simple-cell-formatter .number-formatter,
-.sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item.simple-cell-formatter .date-formatter,
-.sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item.simple-cell-formatter .url-formatter,
-.sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item.simple-cell-formatter .email-formatter,
-.sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item.simple-cell-formatter .duration-formatter,
-.sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item.simple-cell-formatter .geolocation-formatter,
-.sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item.simple-cell-formatter .ctime-formatter,
-.sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item.simple-cell-formatter .mtime-formatter,
-.sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item.simple-cell-formatter .auto-number-formatter {
+.sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item .text-formatter,
+.sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item .number-formatter,
+.sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item .date-formatter,
+.sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item .url-formatter,
+.sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item .email-formatter,
+.sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item .duration-formatter,
+.sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item .geolocation-formatter,
+.sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item .ctime-formatter,
+.sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item .mtime-formatter,
+.sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item .auto-number-formatter,
+.sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item .rate-formatter {
   line-height: 20px;
 }
 
@@ -241,7 +242,10 @@
   margin-right: 0 !important;
 }
 
-.sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item .checkbox-formatter,
+.sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item .checkbox-formatter {
+  line-height: 24px;
+}
+
 .sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item .creator-formatter,
 .sql-query-plugin .sql-query-result-table-cell .formula-formatter.multiple .formula-formatter-content-item .last-modified-formatter {
   line-height: 1;

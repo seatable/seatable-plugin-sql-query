@@ -116,13 +116,19 @@ export const getFormulaArrayValue = (value) => {
   if (!Array.isArray(value)) return [];
   return value
     .map(item => {
-      if (Object.prototype.toString.call(item) !== '[object Object]') return item;
+      if (Object.prototype.toString.call(item) !== '[object Object]') {
+        return item;
+      }
+      if (!Object.prototype.hasOwnProperty.call(item, 'display_value')) return item;
       const { display_value } = item;
       if (!Array.isArray(display_value) || display_value.length === 0) return display_value;
       return display_value.map(i => {
-        if (Object.prototype.toString.call(i) !== '[object Object]') return i;
-        const { display_value } = i;
-        return display_value;
+        if (Object.prototype.toString.call(i) === '[object Object]') {
+          if (!Object.prototype.hasOwnProperty.call(i, 'display_value')) return i;
+          const { display_value } = i;
+          return display_value;
+        }
+        return i;
       });
     })
     .flat()

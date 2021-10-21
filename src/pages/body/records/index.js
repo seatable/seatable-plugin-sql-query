@@ -87,7 +87,6 @@ class RecordList extends Component {
     const { isLoading, displayRecordsCount, isShowEnlargeFormatter, enlargeFormatterProps } = this.state;
     const displayResults = records.slice(0, displayRecordsCount);
     const totalWidth = this.disPlayColumns.reduce((cur, nextItem) => { return (cur + nextItem.width); }, 0);
-    const tables = this.props.getTables();
 
     return (
       <Fragment>
@@ -127,7 +126,6 @@ class RecordList extends Component {
                                 collaborators={window.app.state.collaborators}
                                 cellValue={value}
                                 column={column}
-                                tables={tables}
                                 getOptionColors={this.props.getOptionColors}
                                 getUserCommonInfo={this.props.getUserCommonInfo}
                                 getCellValueDisplayString={this.props.getCellValueDisplayString}

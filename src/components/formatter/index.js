@@ -39,7 +39,7 @@ class CellFormatter extends React.Component {
   }
 
   renderFormatter = () => {
-    let { column, cellValue, collaborators, tables } = this.props;
+    let { column, cellValue, collaborators } = this.props;
     const { type: columnType } = column || {};
     const containerClassName = `sql-query-${columnType}-formatter`;
     
@@ -150,7 +150,6 @@ class CellFormatter extends React.Component {
           <FormulaFormatter
             cellValue={cellValue}
             column={column}
-            tables={tables}
             collaborators={collaborators}
             containerClassName={containerClassName}
             renderEmptyFormatter={this.renderEmptyFormatter}
@@ -189,7 +188,6 @@ class CellFormatter extends React.Component {
 CellFormatter.propTypes = {
   column: PropTypes.object.isRequired,
   cellValue: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number, PropTypes.string, PropTypes.object, PropTypes.array]),
-  tables: PropTypes.array,
   collaborators: PropTypes.array,
   getOptionColors: PropTypes.func,
   getUserCommonInfo: PropTypes.func,
