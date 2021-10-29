@@ -1,10 +1,10 @@
 {
   "name": "sql-query",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "private": true,
   "dependencies": {
     "deep-copy": "^1.4.2",
-    "dtable-sdk": "0.0.113",
+    "dtable-sdk": "0.0.115",
     "dtable-ui-component": "0.1.60",
     "glamor": "^2.20.40",
     "is-hotkey": "^0.1.4",
@@ -13,7 +13,7 @@
     "react-app-polyfill": "^1.0.6",
     "react-dom": "16.12",
     "react-intl-universal": "^2.2.2",
-    "reactstrap": "8.8.1"
+    "reactstrap": "8.9.0"
   },
   "scripts": {
     "clean": "rm -rf plugin-zip && mkdir plugin-zip",

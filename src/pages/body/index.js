@@ -5,6 +5,7 @@ import { Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 're
 import isHotkey from 'is-hotkey';
 import { QUERY_STATUS } from '../../constants';
 import RecordList from './records';
+import ExportButton from './widgets/export-button';
 
 class Body extends Component {
 
@@ -187,6 +188,9 @@ class Body extends Component {
           >
             {intl.get('Query')}
           </Button>
+          <ExportButton
+            export={this.props.export}
+          />
         </div>
         {this.renderResult()}
       </div>
@@ -204,6 +208,7 @@ Body.propTypes = {
   updateView: PropTypes.func,
   getTables: PropTypes.func,
   getCellValueDisplayString: PropTypes.func,
+  export: PropTypes.func,
 };
 
 export default Body;
