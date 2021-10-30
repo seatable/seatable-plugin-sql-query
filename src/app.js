@@ -117,7 +117,7 @@ class App extends React.Component {
     this.updateViews(currentViewIdx, newViews);
   }
 
-  exportView = async () => {
+  export = async () => {
     const result = this.bodyRef.getResult();
     const { currentViewIdx, views } = this.state;
     const view = views[currentViewIdx];
@@ -215,7 +215,6 @@ class App extends React.Component {
           addView={this.addView}
           deleteView={this.deleteView}
           updateView={this.updateView}
-          exportView={this.exportView}
           onCloseToggle={this.onCloseToggle}
         />
         <Body
@@ -229,6 +228,7 @@ class App extends React.Component {
           saveHistorySqlOptions={this.saveHistorySqlOptions}
           updateView={this.updateView}
           getCellValueDisplayString={this.getCellValueDisplayString}
+          export={this.export}
         />
       </div>
     );

@@ -59,10 +59,6 @@ class ViewItem extends Component {
     this.props.deleteView();
   }
 
-  exportView = () => {
-    this.props.exportView();
-  }
-
   render() {
     const { view, isSelect } = this.props;
     const { name } = view;
@@ -86,10 +82,10 @@ class ViewItem extends Component {
                 <i className="dtable-font dtable-icon-rename sql-query-view-item-icon"></i>
                 <span>{intl.get('Rename_view')}</span>
               </button>
-              <button className="dropdown-item sql-query-view-dropdown-item" onClick={this.exportView}>
+              {/* <button className="dropdown-item sql-query-view-dropdown-item" onClick={this.exportView}>
                 <i className="dtable-font dtable-icon-export-to-new-table sql-query-view-item-icon"></i>
                 <span>{intl.get('Export_to_a_new_table')}</span>
-              </button>
+              </button> */}
               <button className="dropdown-item sql-query-view-dropdown-item" onClick={this.deleteView}>
                 <i className="dtable-font dtable-icon-delete sql-query-view-item-icon"></i>
                 <span>{intl.get('Delete_view')}</span>
@@ -116,7 +112,6 @@ ViewItem.propTypes = {
   setViewItem: PropTypes.func,
   deleteView: PropTypes.func,
   updateView: PropTypes.func,
-  exportView: PropTypes.func,
 };
 
 

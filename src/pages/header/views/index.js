@@ -78,7 +78,6 @@ class Views extends Component {
                 setViewItem={(view) => this.setViews(viewIdx, view)}
                 deleteView={this.props.deleteView}
                 updateView={this.props.updateView}
-                exportView={this.props.exportView}
               />
             );
           })}
@@ -97,7 +96,6 @@ Views.propTypes = {
   onSelectView: PropTypes.func,
   deleteView: PropTypes.func,
   updateView: PropTypes.func,
-  exportView: PropTypes.func,
 };
 
 export default Views;

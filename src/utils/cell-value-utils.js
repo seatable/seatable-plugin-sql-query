@@ -60,32 +60,23 @@ class CellValueUtils {
     if (result_type === FORMULA_RESULT_TYPE.DATE) {
       return this.getDateDisplayString(cellValue, columnData);
     }
-    if (result_type === FORMULA_RESULT_TYPE.COLUMN) {
-      const { linked_table_id, display_column_key } = columnData;
-      const linkedTable = tables.find(table => table._id === linked_table_id);
-      const linkedColumn = linkedTable && linkedTable.columns.find(column => column.key === display_column_key);
-      if (!linkedColumn) return '';
-      const { type: linkedColumnType, data: linkedColumnData } = linkedColumn;
-      if (linkedColumnType === CELL_TYPE.FORMULA || linkedColumnType === CELL_TYPE.LINK_FORMULA) {
-        if (linkedColumnData.result_type === FORMULA_RESULT_TYPE.COLUMN) return '';
-        if (Array.isArray(cellValue)) {
-          return cellValue.map((val) => {
-            return this.getFormulaDisplayString(val, linkedColumn, {tables, collaborators});
-          }).join(', ');
-        }
-        return this.getFormulaDisplayString(cellValue, linkedColumn, {tables, collaborators});
-      }
-      if (!isArrayFormalColumn(linkedColumnType) && Array.isArray(cellValue)) {
+    if (result_type === FORMULA_RESULT_TYPE.ARRAY) {
+      const { array_type, array_data } = columnData;
+      if (!array_type && !array_data) return '';
+      const arrayColumn = { type: array_type, data: array_data };
+      if (!isArrayFormalColumn(array_type) && Array.isArray(cellValue)) {
         if (cellValue.length === 0) return '';
         return cellValue.map((val) => {
-          return this.getCellValueDisplayString(val, linkedColumn, { tables, collaborators });
+          return this.getCellValueDisplayString(val, arrayColumn, { tables, collaborators });
         }).join(', ');
       }
-  
-      return this.getCellValueDisplayString(cellValue, linkedColumn, { tables, collaborators });
+      return this.getCellValueDisplayString(cellValue, arrayColumn, { tables, collaborators });
     }
     if (Object.prototype.toString.call(cellValue) === '[object Boolean]') {
       return cellValue + '';
+    }
+    if (Array.isArray(cellValue)) {
+      return cellValue.join(', ');
     }
     return cellValue;
   };
@@ -134,14 +125,23 @@ class CellValueUtils {
         return this.getLongTextDisplayString(cellValue);
       }
       case CELL_TYPE.NUMBER: {
+        if (Array.isArray(cellValue)) {
+          return cellValue.map(item => this.getNumberDisplayString(item, newData)).join(', ');
+        }
         return this.getNumberDisplayString(cellValue, newData);
       }
       case CELL_TYPE.DATE: {
+        if (Array.isArray(cellValue)) {
+          return cellValue.map(item => this.getDateDisplayString(item, newData)).join(', ');
+        }
         return this.getDateDisplayString(cellValue, newData);
       }
       case CELL_TYPE.CTIME:
       case CELL_TYPE.MTIME: {
         const formatObject = { format: 'YYYY-MM-DD HH:mm' };
+        if (Array.isArray(cellValue)) {
+          return cellValue.map(item => this.getDateDisplayString(item, formatObject)).join(', ');
+        }
         return this.getDateDisplayString(cellValue, formatObject);
       }
       case CELL_TYPE.CREATOR:
