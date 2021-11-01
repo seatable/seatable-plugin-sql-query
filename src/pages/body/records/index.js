@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import intl from 'react-intl-universal';
 import { CELL_TYPE } from 'dtable-sdk';
-import { Loading, CellFormatter } from '../../../components';
+import { Loading, CellFormatter, RecordExpandDialog } from '../../../components';
 import { PER_DISPLAY_COUNT, NOT_SUPPORT_COLUMN_TYPES, FILE_COLUMN_TYPES } from '../../../constants';
 import { getCellRecordWidth } from '../../../utils/common-utils';
 import EnlargeFormatter from '../../../components/formatter/enlarge-formatter';
@@ -19,7 +19,7 @@ class RecordList extends Component {
       isShowEnlargeFormatter: false,
       enlargeFormatterProps: {}
     };
-    this.disPlayColumns = props.columns
+    this.displayColumns = props.columns
       .filter(column => !NOT_SUPPORT_COLUMN_TYPES.includes(column.type))
       .map(column => {
         const { type } = column;
@@ -72,6 +72,15 @@ class RecordList extends Component {
     });
   }
 
+  onOpenRecordExpandDialog = (record) => {
+    this.setState({ isShowRecordExpandDialog: true, expandedRecord: record });
+  }
+
+  closeRecordExpandDialog = () => {
+    this.setState({ isShowRecordExpandDialog: false, expandedRecord: {} });
+  }
+
+
   render() {
     const { records } = this.props;
     if (!Array.isArray(records) || records.length === 0) {
@@ -84,9 +93,10 @@ class RecordList extends Component {
       );
     }
     const recordsCount = records.length;
-    const { isLoading, displayRecordsCount, isShowEnlargeFormatter, enlargeFormatterProps } = this.state;
-    const displayResults = records.slice(0, displayRecordsCount);
-    const totalWidth = this.disPlayColumns.reduce((cur, nextItem) => { return (cur + nextItem.width); }, 0);
+    const { isLoading, displayRecordsCount, isShowEnlargeFormatter, enlargeFormatterProps, isShowRecordExpandDialog, expandedRecord } = this.state;
+    const displayRecords = records.slice(0, displayRecordsCount);
+    const totalWidth = this.displayColumns.reduce((cur, nextItem) => { return (cur + nextItem.width); }, 0) + 90;
+    const collaborators = window.app.state.collaborators;
 
     return (
       <Fragment>
@@ -95,7 +105,8 @@ class RecordList extends Component {
             <div className="sql-query-result-content" style={{ width: totalWidth }}>
               <div className="static-sql-query-result-content">
                 <div className="sql-query-result-table-row">
-                  {this.disPlayColumns.map(column => {
+                  <div className="sql-query-result-table-cell column index"></div>
+                  {this.displayColumns.map(column => {
                     const { key, name, width } = column;
                     return (
                       <div className="sql-query-result-table-cell" key={`${key}--1`} style={{width, maxWidth: width, minWidth: width}}>
@@ -109,12 +120,20 @@ class RecordList extends Component {
               </div>
               <div className="sql-query-result-table-content" onScroll={this.getMoreResults} ref={ref => this.sqlQueryResultContentRef = ref}>
                 <div className="sql-query-result-table" ref={ref => this.sqlQueryResultRef = ref}>
-                  {displayResults.map((result, index) => {
+                  {displayRecords.map((record, index) => {
                     return (
-                      <div className="sql-query-result-table-row" key={result._id || index}>
-                        {this.disPlayColumns.map(column => {
+                      <div className="sql-query-result-table-row" key={record._id || index}>
+                        <div className="sql-query-result-table-cell index">
+                          <div className="sql-query-row-index-container">
+                            <div className="sql-query-row-index-content">{index + 1}</div>
+                            <div className="sql-query-row-expand" onClick={() => this.onOpenRecordExpandDialog(record)}>
+                              <i className="dtable-font dtable-icon-open"></i>
+                            </div>
+                          </div>
+                        </div>
+                        {this.displayColumns.map(column => {
                           const { key, name, width, type } = column;
-                          const value = (result[name] || result[name] === 0) ? result[name] : result[key];
+                          const value = (record[name] || record[name] === 0) ? record[name] : record[key];
                           return (
                             <div
                               className="sql-query-result-table-cell"
@@ -123,7 +142,7 @@ class RecordList extends Component {
                               onDoubleClick={FILE_COLUMN_TYPES.includes(type) ? () => this.openEnlargeFormatter(column, value) : () => {}}
                             >
                               <CellFormatter
-                                collaborators={window.app.state.collaborators}
+                                collaborators={collaborators}
                                 cellValue={value}
                                 column={column}
                                 getOptionColors={this.props.getOptionColors}
@@ -150,6 +169,17 @@ class RecordList extends Component {
         {isShowEnlargeFormatter && (
           <EnlargeFormatter { ...enlargeFormatterProps } closeEnlargeFormatter={this.closeEnlargeFormatter} />
         )}
+        {isShowRecordExpandDialog &&
+          <RecordExpandDialog
+            record={expandedRecord}
+            columns={this.displayColumns}
+            collaborators={collaborators}
+            closeRecordExpandDialog={this.closeRecordExpandDialog}
+            getOptionColors={this.props.getOptionColors}
+            getUserCommonInfo={this.props.getUserCommonInfo}
+            openEnlargeFormatter={this.openEnlargeFormatter}
+          />
+        }
       </Fragment>
     );
   }

@@ -1,6 +1,6 @@
 import Loading from './loading';
 import CellFormatter from './formatter';
-import { NewViewDialog, RenameViewDialog } from './dialog';
+import { NewViewDialog, RenameViewDialog, RecordExpandDialog } from './dialog';
 import ModalPortal from './modal-portal';
 
 export {
@@ -8,5 +8,6 @@ export {
   CellFormatter,
   NewViewDialog,
   RenameViewDialog,
+  RecordExpandDialog,
   ModalPortal,
 };
