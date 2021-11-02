@@ -24,7 +24,8 @@ const zh_CN = {
   "The_number_of_columns_must_be_more_than_0": "列数量必须大于0。",
   "The_number_of_columns_in_the_current_table_exceeds_the_limit": "当前子表中的列数超过了限制。",
   "Rows_must_be_array": "行必须是一个数组。",
-  "All_files": "全部文件"
+  "All_files": "全部文件",
+  "Record_details": "记录详情信息"
 };
 
 export default zh_CN;

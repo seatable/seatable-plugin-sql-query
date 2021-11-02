@@ -24,5 +24,6 @@
   "The_number_of_columns_must_be_more_than_0": "Le nombre de colonnes doit être supérieur à 0.",
   "The_number_of_columns_in_the_current_table_exceeds_the_limit": "Le nombre de colonnes dans le tableau actuel dépasse la limite.",
   "Rows_must_be_array": "Les lignes doivent être un array.",
-  "All_files": "All files"
+  "All_files": "Tous les fichiers",
+  "Record_details": "Record details"
 }

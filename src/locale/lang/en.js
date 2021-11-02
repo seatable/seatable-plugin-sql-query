@@ -24,7 +24,8 @@ const en = {
   "The_number_of_columns_must_be_more_than_0": "The number of columns must be more than 0.",
   "The_number_of_columns_in_the_current_table_exceeds_the_limit": "The number of columns in the current table exceeds the limit.",
   "Rows_must_be_array": "Rows must be an array.",
-  "All_files": "All files"
+  "All_files": "All files",
+  "Record_details": "Record details"
 };
 
 export default en;
