@@ -7,7 +7,7 @@ class CellValueUtils {
     this.dtable = dtable;
   }
 
-  getCollaboratorsName(collaborators, cellVal) {
+  getCollaboratorsName = (collaborators, cellVal) => {
     if (cellVal) {
       let collaboratorsName = [];
       cellVal.forEach((v) => {
@@ -24,14 +24,14 @@ class CellValueUtils {
     return '';
   }
 
-  getLongTextDisplayString(cellValue) {
+  getLongTextDisplayString = (cellValue) => {
     const value = convertValueToDtableLongTextValue(cellValue);
     let { text } = value || {};
     if (!text) return '';
     return text;
   }
 
-  getNumberDisplayString(cellValue, columnData) {
+  getNumberDisplayString = (cellValue, columnData) => {
     if (Array.isArray(cellValue)) {
       if (cellValue.length === 0) return '';
       return cellValue.map(item => this.dtable.getNumberDisplayString(item, columnData)).join(', ');
@@ -39,7 +39,7 @@ class CellValueUtils {
     return this.dtable.getNumberDisplayString(cellValue, columnData);
   }
 
-  getDateDisplayString(cellValue, columnData) {
+  getDateDisplayString = (cellValue, columnData) => {
     if (Array.isArray(cellValue)) {
       if (cellValue.length === 0) return '';
       const validCellValue = cellValue.filter(item => item && typeof item === 'string');
@@ -49,14 +49,14 @@ class CellValueUtils {
     return this.dtable.getDateDisplayString(cellValue.replace('T', ' ').replace('Z', ''), columnData);
   }
 
-  getMultipleOptionName(options, cellVal) {
+  getMultipleOptionName = (options, cellVal) => {
     if (!cellVal || !options || !Array.isArray(options)) return null;
     let selectedOptions = options.filter((option) => cellVal.includes(option.id));
     if (selectedOptions.length === 0) return null;
     return selectedOptions.map((option) => option.name).join(', ');
   }
 
-  getFormulaDisplayString(cellValue, column, { tables = [], collaborators = [] } = {}) {
+  getFormulaDisplayString = (cellValue, column, { tables = [], collaborators = [] } = {}) => {
     if (!column) return '';
     const { data: columnData } = column;
     if (!columnData) return '';
@@ -88,7 +88,7 @@ class CellValueUtils {
     return cellValue;
   }
 
-  getCellValueDisplayString(cellValue, column, {tables = [], collaborators = []} = {}) {
+  getCellValueDisplayString = (cellValue, column, {tables = [], collaborators = []} = {}) => {
     const { type, data } = column;
     const newData = data || {};
     switch (type) {
@@ -205,7 +205,7 @@ class CellValueUtils {
     }
   }
 
-  getExportRows(columns, rows, { tables = [], collaborators = [] } = {}) {
+  getExportRows = (columns, rows, { tables = [], collaborators = [] } = {}) => {
     let columnsKeyNameMap = {};
     Array.isArray(columns) && columns.forEach(column => {
       const { key, name } = column;
@@ -254,7 +254,7 @@ class CellValueUtils {
     }) : [];
   }
 
-  getExportColumns(columns) {
+  getExportColumns = (columns) => {
     if (!Array.isArray(columns)) return [];
     return columns.map(column => {
       const { type } = column;
