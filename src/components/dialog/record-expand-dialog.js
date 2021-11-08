@@ -64,6 +64,7 @@ class RecordExpandDialog extends Component {
                   }}
                   getUserCommonInfo={this.props.getUserCommonInfo}
                   getOptionColors={this.props.getOptionColors}
+                  getCellValueDisplayString={this.props.getCellValueDisplayString}
                 />
               </div>
             );
@@ -82,6 +83,7 @@ RecordExpandDialog.propTypes = {
   getUserCommonInfo: PropTypes.func.isRequired,
   getOptionColors: PropTypes.func.isRequired,
   openEnlargeFormatter: PropTypes.func,
+  getCellValueDisplayString: PropTypes.func,
 };
 
 export default RecordExpandDialog;

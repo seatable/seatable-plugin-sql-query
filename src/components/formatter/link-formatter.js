@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CELL_TYPE } from 'dtable-sdk';
+import { CELL_TYPE, FORMULA_RESULT_TYPE } from 'dtable-sdk';
 import {
   MultipleSelectFormatter,
   NumberFormatter,
@@ -11,19 +11,19 @@ import {
   LongTextFormatter,
 } from 'dtable-ui-component';
 import CollaboratorItemFormatter from './collaborator-item-formatter';
-import { getFormulaArrayValue } from '../../utils/common-utils';
-import FormulaFormatter from './formula-formatter';
+import { getFormulaArrayValue, isArrayFormalColumn } from '../../utils/common-utils';
 
 function LinkFormatter(props) {
   const { column, value, containerClassName, collaborators, tables } = props;
   const { data } = column;
   if (!Array.isArray(value) || value.length === 0) return props.renderEmptyFormatter();
-  let { display_column } = data || {};
-  if (!display_column) return props.renderEmptyFormatter();
-  const cellValue = getFormulaArrayValue(value);
+  let { display_column: displayColumn } = data || {};
+  if (!displayColumn) return props.renderEmptyFormatter();
+  const { type: displayColumnType , data: displayColumnData } = displayColumn;
+  const cellValue = getFormulaArrayValue(value, !isArrayFormalColumn(displayColumnType));
   if (!Array.isArray(cellValue) || cellValue.length === 0) return props.renderEmptyFormatter();
-  const { type, data: displayColumnData } = display_column;
-  switch(type) {
+  
+  switch(displayColumnType) {
     case CELL_TYPE.TEXT:
     case CELL_TYPE.AUTO_NUMBER:
     case CELL_TYPE.EMAIL:
@@ -33,7 +33,7 @@ function LinkFormatter(props) {
           {cellValue.map((value, index) => {
             if (!value) return null;
             return (
-              <div key={`link-${type}-${index}`} className="sql-query-link-item">
+              <div key={`link-${displayColumnType}-${index}`} className="sql-query-link-item">
                 {value}
               </div>
             );
@@ -47,7 +47,7 @@ function LinkFormatter(props) {
           {cellValue.map((value, index) => {
             if (!value && value !== 0) return null;
             return <NumberFormatter
-              key={`link-${type}-${index}`}
+              key={`link-${displayColumnType}-${index}`}
               containerClassName="sql-query-link-item"
               data={displayColumnData || {}}
               value={value}
@@ -63,7 +63,7 @@ function LinkFormatter(props) {
             if (!value || typeof value !== 'string') return null;
             const { format } = displayColumnData || {};
             return <DateFormatter
-              key={`link-${type}-${index}`}
+              key={`link-${displayColumnType}-${index}`}
               value={value.replace('T', ' ').replace('Z', '')}
               format={format}
               containerClassName="sql-query-link-item"
@@ -78,7 +78,7 @@ function LinkFormatter(props) {
           {cellValue.map((value, index) => {
             if (!value) return null;
             return <CTimeFormatter
-              key={`link-${type}-${index}`}
+              key={`link-${displayColumnType}-${index}`}
               value={value}
               containerClassName="sql-query-link-item"
             />;
@@ -92,7 +92,7 @@ function LinkFormatter(props) {
           {cellValue.map((value, index) => {
             if (!value) return null;
             return <MTimeFormatter
-              key={`link-${type}-${index}`}
+              key={`link-${displayColumnType}-${index}`}
               value={value}
               containerClassName="sql-query-link-item"
             />;
@@ -105,8 +105,8 @@ function LinkFormatter(props) {
         <div className={containerClassName}>
           {cellValue.map((value, index) => {
             if (!value) return null;
-            return <div key={`link-${type}-${index}`} className="sql-query-link-item">
-              {props.getCellValueDisplayString(value, displayColumnData)}
+            return <div key={`link-${displayColumnType}-${index}`} className="sql-query-link-item">
+              {props.getCellValueDisplayString(value, displayColumn)}
             </div>;
           })}
         </div>
@@ -119,7 +119,7 @@ function LinkFormatter(props) {
           {cellValue.map((value, index) => {
             if (!value) return null;
             return <CollaboratorItemFormatter
-              key={`link-${type}-${index}`}
+              key={`link-${displayColumnType}-${index}`}
               cellValue={value}
               collaborators={collaborators}
               getUserCommonInfo={props.getUserCommonInfo}
@@ -131,17 +131,55 @@ function LinkFormatter(props) {
     }
     case CELL_TYPE.SINGLE_SELECT: {
       if (!cellValue || cellValue.length === 0) return props.renderEmptyFormatter();
-      const { options } = displayColumnData || {};
-      return <MultipleSelectFormatter value={cellValue} options={options || []} containerClassName={`sql-query-${type}-formatter`} />;
+      const options = displayColumnData && Array.isArray(displayColumnData.options) ? displayColumnData.options : [];
+      return <MultipleSelectFormatter value={cellValue} options={options || []} containerClassName={`sql-query-${displayColumnType}-formatter`} />;
+    }
+    case CELL_TYPE.MULTIPLE_SELECT: {
+      if (!cellValue || cellValue.length === 0) return props.renderEmptyFormatter();
+      return (
+        <div className={containerClassName}>
+          {cellValue.map((value, index) => {
+            if (!value) return null;
+            const valueDisplayString = Array.isArray(value) ? 
+              props.getCellValueDisplayString(value, displayColumn)
+              :
+              props.getCellValueDisplayString([value], displayColumn);
+            return (
+              <div key={`link-${displayColumnType}-${index}`} className="sql-query-link-item">
+                {valueDisplayString}
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
+    case CELL_TYPE.COLLABORATOR: {
+      if (!cellValue || cellValue.length === 0) return props.renderEmptyFormatter();
+      return (
+        <div className={containerClassName}>
+          {cellValue.map((value, index) => {
+            if (!value) return null;
+            const valueDisplayString = Array.isArray(value) ? 
+              props.getCellValueDisplayString(value, displayColumn, { collaborators })
+              :
+              props.getCellValueDisplayString([value], displayColumn, { collaborators });
+            return (
+              <div key={`link-${displayColumnType}-${index}`} className="sql-query-link-item">
+                {valueDisplayString}
+              </div>
+            );
+          })}
+        </div>
+      );
     }
     case CELL_TYPE.CHECKBOX: {
       return (
         <div className={containerClassName}>
           {cellValue.map((value, index) => {
             return <CheckboxFormatter
-              key={`link-${type}-${index}`}
+              key={`link-${displayColumnType}-${index}`}
               value={Boolean(value)}
-              containerClassName={`sql-query-${type}-item`}
+              containerClassName={`sql-query-${displayColumnType}-item`}
             />;
           })}
         </div>
@@ -153,8 +191,8 @@ function LinkFormatter(props) {
           {cellValue.map((value, index) => {
             if (!value) return null;
             return (
-              <div key={`link-${type}-${index}`} className="sql-query-link-item">
-                {props.getCellValueDisplayString(value, displayColumnData)}
+              <div key={`link-${displayColumnType}-${index}`} className="sql-query-link-item">
+                {props.getCellValueDisplayString(value, displayColumn)}
               </div>
             );
           })}
@@ -168,9 +206,9 @@ function LinkFormatter(props) {
             if (!value) return null;
             return (
               <LongTextFormatter
-                key={`link-${type}-${index}`}
+                key={`link-${displayColumnType}-${index}`}
                 value={value}
-                containerClassName={`sql-query-${type}-item`}
+                containerClassName={`sql-query-${displayColumnType}-item`}
               />
             );
           })}
@@ -180,17 +218,45 @@ function LinkFormatter(props) {
     case CELL_TYPE.FORMULA:
     case CELL_TYPE.LINK_FORMULA: {
       return (
-        <FormulaFormatter
-          value={value}
-          column={display_column}
-          tables={tables}
-          collaborators={collaborators}
-          containerClassName={containerClassName}
-          renderEmptyFormatter={props.renderEmptyFormatter}
-        />
+        <div className={containerClassName}>
+          {cellValue.map((value, index) => {
+            if (!value) return null;
+            return (
+              <div key={`link-${displayColumnType}-${index}`} className="sql-query-link-item">
+                {props.getCellValueDisplayString(value, displayColumn, { collaborators, tables })}
+              </div>
+            );
+          })}
+        </div>
       );
     }
-
+    case FORMULA_RESULT_TYPE.BOOL: {
+      return (
+        <div className={containerClassName}>
+          {cellValue.map((value, index) => {
+            return (
+              <div key={`link-${displayColumnType}-${index}`} className="sql-query-link-item">
+                {value + ''}
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
+    case FORMULA_RESULT_TYPE.STRING: {
+      return (
+        <div className={containerClassName}>
+          {cellValue.map((value, index) => {
+            if (!value) return null;
+            return (
+              <div key={`link-${displayColumnType}-${index}`} className="sql-query-link-item">
+                {value}
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
     default: {
       return props.renderEmptyFormatter();
     }
