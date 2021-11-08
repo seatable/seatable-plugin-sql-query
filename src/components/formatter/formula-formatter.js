@@ -6,7 +6,7 @@ import { getFormulaArrayValue, convertValueToDtableLongTextValue } from '../../u
 
 function FormulaFormatter(props) {
   const { cellValue, column, collaborators, containerClassName } = props;
-  if (!cellValue && cellValue !== 0) return props.renderEmptyFormatter();
+  if (!cellValue && cellValue !== 0 && cellValue !== false) return props.renderEmptyFormatter();
   const { data } = column;
   const { result_type: resultType, array_type } = data;
   let value = cellValue;

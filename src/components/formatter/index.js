@@ -114,7 +114,7 @@ class CellFormatter extends React.Component {
         if (!cellValue) return this.renderEmptyFormatter();
         return <CreatorFormatter
           collaborators={collaborators}
-          value={cellValue}
+          cellValue={cellValue}
           containerClassName={containerClassName}
           getUserCommonInfo={this.props.getUserCommonInfo}
           renderEmptyFormatter={this.renderEmptyFormatter}

@@ -74,7 +74,7 @@ class App extends React.Component {
     this.resetData();
   }
 
-  getCellValueDisplayString(cellValue, column, {tables = [], collaborators = []} = {}) {
+  getCellValueDisplayString = (cellValue, column, {tables = [], collaborators = []} = {}) => {
     return this.cellValueUtils.getCellValueDisplayString(cellValue, column, { tables, collaborators });
   }
 

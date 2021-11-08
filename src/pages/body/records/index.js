@@ -24,12 +24,12 @@ class RecordList extends Component {
       .map(column => {
         const { type } = column;
         if (type === CELL_TYPE.LINK) {
-          const { linked_column_data, data, linked_column_type } = column;
-          const { display_column_key } = data;
+          const { data } = column;
+          const { display_column_key, array_type, array_data } = data;
           const display_column = {
             key: display_column_key || '0000',
-            type: linked_column_type || 'text',
-            data: linked_column_data || null
+            type: array_type || CELL_TYPE.TEXT,
+            data: array_data || null
           };
           return {
             ...column,
@@ -178,6 +178,7 @@ class RecordList extends Component {
             getOptionColors={this.props.getOptionColors}
             getUserCommonInfo={this.props.getUserCommonInfo}
             openEnlargeFormatter={this.openEnlargeFormatter}
+            getCellValueDisplayString={this.props.getCellValueDisplayString}
           />
         }
       </Fragment>

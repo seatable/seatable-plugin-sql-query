@@ -152,6 +152,8 @@
   padding: 5px;
   border: none;
   text-align: left;
+  white-space: unset;
+  line-height: 1.5;
 }
 
 .sql-query-plugin-record-expand-dialog .sql-query-record-expand-item .multiple-select-formatter,

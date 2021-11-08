@@ -49,6 +49,13 @@ class CellValueUtils {
     return this.dtable.getDateDisplayString(cellValue.replace('T', ' ').replace('Z', ''), columnData);
   }
 
+  getMultipleOptionName = (options, cellVal) => {
+    if (!cellVal || !options || !Array.isArray(options)) return null;
+    let selectedOptions = options.filter((option) => cellVal.includes(option.id));
+    if (selectedOptions.length === 0) return null;
+    return selectedOptions.map((option) => option.name).join(', ');
+  }
+
   getFormulaDisplayString = (cellValue, column, { tables = [], collaborators = [] } = {}) => {
     if (!column) return '';
     const { data: columnData } = column;
@@ -79,7 +86,7 @@ class CellValueUtils {
       return cellValue.join(', ');
     }
     return cellValue;
-  };
+  }
 
   getCellValueDisplayString = (cellValue, column, {tables = [], collaborators = []} = {}) => {
     const { type, data } = column;
@@ -166,12 +173,12 @@ class CellValueUtils {
       }
       case CELL_TYPE.LINK: {
         if (!Array.isArray(cellValue) || cellValue.length === 0) return '';
-        const { linked_column_data, data, linked_column_type } = column;
-        const { display_column_key } = data;
+        const { data } = column;
+        const { display_column_key, array_type, array_data } = data;
         const display_column = {
           key: display_column_key || '0000',
-          type: linked_column_type || 'text',
-          data: linked_column_data || null
+          type: array_type || CELL_TYPE.TEXT,
+          data: array_data || null
         };
         return this.getCellValueDisplayString(cellValue, display_column, { tables, collaborators });
       }
@@ -186,8 +193,14 @@ class CellValueUtils {
       case CELL_TYPE.FILE: {
         return '';
       }
+      case FORMULA_RESULT_TYPE.BOOL: {
+        return Array.isArray(cellValue) ? cellValue.map(item => item + '').filter(item => item).join(', ') : cellValue + '';
+      }
+      case FORMULA_RESULT_TYPE.STRING: {
+        return Array.isArray(cellValue) ? cellValue.map(item => item).filter(item => item).join(', ') : cellValue;
+      }
       default: {
-        return cellValue ? cellValue + '' : '';
+        return Array.isArray(cellValue) ? cellValue.map(item => item + '').filter(item => item).join(', ') : cellValue + '';
       }
     }
   }
