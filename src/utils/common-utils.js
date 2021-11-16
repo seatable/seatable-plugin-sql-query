@@ -1,5 +1,6 @@
 import { CELL_TYPE } from 'dtable-sdk';
-import getPreviewContent from './normalize-long-text-value';
+import getPreviewContent from 'dtable-ui-component/lib/utils/normalize-long-text-value';
+import { deserialize } from 'dtable-ui-component/lib/utils/slate2markdown';
 
 export const isValidEmail = (email) => {
   const reg = /^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,6}$/;
@@ -159,9 +160,10 @@ const getTwoDimensionArrayValue = (value) => {
 
 export const convertValueToDtableLongTextValue = (value) => {
   const valueType = Object.prototype.toString.call(value);
-  if (valueType === '[object String]') {
-    const validValue = getPreviewContent(value);
-    return { ...validValue, text: value };
+  if (value && valueType === '[object String]') {
+    const content = deserialize(value);
+    const { previewText, images, links, checklist } = getPreviewContent(content);
+    return Object.assign({}, { text: value, preview: previewText, images, links, checklist });
   }
   if (valueType === '[object Object]') {
     return value;
