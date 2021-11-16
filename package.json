@@ -1,11 +1,11 @@
 {
   "name": "sql-query",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "private": true,
   "dependencies": {
     "deep-copy": "^1.4.2",
     "dtable-sdk": "0.0.115",
-    "dtable-ui-component": "0.1.60",
+    "dtable-ui-component": "0.1.69",
     "glamor": "^2.20.40",
     "is-hotkey": "^0.1.4",
     "moment": "^2.24.0",
