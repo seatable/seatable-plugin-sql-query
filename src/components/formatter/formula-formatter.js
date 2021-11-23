@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormulaFormatter as DtableFormulaFormatter } from 'dtable-ui-component';
+import { FormulaFormatter } from 'dtable-ui-component';
 import { FORMULA_RESULT_TYPE, CELL_TYPE } from 'dtable-sdk';
 import { getFormulaArrayValue, convertValueToDtableLongTextValue } from '../../utils/common-utils';
 
-function FormulaFormatter(props) {
+function DtableFormulaFormatter(props) {
   const { cellValue, column, collaborators, containerClassName } = props;
   if (!cellValue && cellValue !== 0 && cellValue !== false) return props.renderEmptyFormatter();
   const { data } = column;
@@ -23,7 +23,7 @@ function FormulaFormatter(props) {
     }
   }
   return (
-    <DtableFormulaFormatter
+    <FormulaFormatter
       value={value}
       column={column}
       collaborators={collaborators}
@@ -32,7 +32,7 @@ function FormulaFormatter(props) {
   );
 }
 
-FormulaFormatter.propTypes = {
+DtableFormulaFormatter.propTypes = {
   cellValue: PropTypes.any,
   column: PropTypes.object,
   collaborators: PropTypes.array,
@@ -40,4 +40,4 @@ FormulaFormatter.propTypes = {
   renderEmptyFormatter: PropTypes.func,
 };
 
-export default FormulaFormatter;
+export default DtableFormulaFormatter;
