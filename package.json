@@ -9,9 +9,9 @@
     "glamor": "^2.20.40",
     "is-hotkey": "^0.1.4",
     "moment": "^2.24.0",
-    "react": "^16.12.0",
+    "react": "16.14.0",
     "react-app-polyfill": "^1.0.6",
-    "react-dom": "16.12",
+    "react-dom": "16.14.0",
     "react-intl-universal": "^2.2.2",
     "reactstrap": "8.9.0"
   },
