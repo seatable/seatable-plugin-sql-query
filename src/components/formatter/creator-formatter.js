@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { CreatorFormatter as DtableCreatorFormatter } from 'dtable-ui-component';
+import { CreatorFormatter } from 'dtable-ui-component';
 import { isValidEmail, getValueFromPluginConfig } from '../../utils/common-utils';
 
-class CreatorFormatter extends Component {
+class DtableCreatorFormatter extends Component {
 
   constructor(props) {
     super(props);
@@ -84,7 +84,7 @@ class CreatorFormatter extends Component {
     if (!cellValue || !collaborator) return this.props.renderEmptyFormatter();
     if (!isDataLoaded) return this.props.renderEmptyFormatter();
     return (
-      <DtableCreatorFormatter
+      <CreatorFormatter
         collaborators={[collaborator]}
         value={cellValue}
         containerClassName={containerClassName}
@@ -93,7 +93,7 @@ class CreatorFormatter extends Component {
   }
 }
 
-CreatorFormatter.propTypes = {
+DtableCreatorFormatter.propTypes = {
   cellValue: PropTypes.string,
   containerClassName: PropTypes.string,
   collaborators: PropTypes.array,
@@ -101,4 +101,4 @@ CreatorFormatter.propTypes = {
   renderEmptyFormatter: PropTypes.func,
 };
 
-export default CreatorFormatter;
+export default DtableCreatorFormatter;

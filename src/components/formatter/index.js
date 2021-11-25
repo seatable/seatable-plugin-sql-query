@@ -39,7 +39,7 @@ class CellFormatter extends React.Component {
   }
 
   renderFormatter = () => {
-    let { column, cellValue, collaborators } = this.props;
+    let { column, cellValue, collaborators, isSample } = this.props;
     const { type: columnType } = column || {};
     const containerClassName = `sql-query-${columnType}-formatter`;
     
@@ -56,7 +56,7 @@ class CellFormatter extends React.Component {
       }
       case CELL_TYPE.LONG_TEXT: {
         if (!cellValue) return this.renderEmptyFormatter();
-        return <LongTextFormatter value={cellValue} containerClassName={containerClassName} />;
+        return <LongTextFormatter isSample={isSample} value={cellValue} containerClassName={containerClassName} />;
       }
       case CELL_TYPE.IMAGE: {
         if (!cellValue || (Array.isArray(cellValue) && cellValue.length === 0)) return this.renderEmptyFormatter();
@@ -186,6 +186,7 @@ class CellFormatter extends React.Component {
 }
 
 CellFormatter.propTypes = {
+  isSample: PropTypes.bool,
   column: PropTypes.object.isRequired,
   cellValue: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number, PropTypes.string, PropTypes.object, PropTypes.array]),
   collaborators: PropTypes.array,
