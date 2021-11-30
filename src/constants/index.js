@@ -15,6 +15,20 @@ export const PER_DISPLAY_COUNT = 25;
 export const NOT_SUPPORT_COLUMN_TYPES = [
 ];
 
+export const NOT_DISPLAY_COLUMN_KEYS = [
+  '_locked',
+  '_locked_by',
+  '_participants',
+  '_id',
+];
+
+export const PRIVATE_COLUMN_KEY_TYPE_MAP = {
+  '_creator': CELL_TYPE.CREATOR,
+  '_last_modifier': CELL_TYPE.LAST_MODIFIER,
+  '_ctime': CELL_TYPE.CTIME,
+  '_mtime': CELL_TYPE.MTIME,
+};
+
 export const FORMULA_COLUMN_TYPES = [
   CELL_TYPE.FORMULA,
   CELL_TYPE.LINK_FORMULA
