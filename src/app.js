@@ -5,10 +5,10 @@ import deepCopy from 'deep-copy';
 import intl from 'react-intl-universal';
 import { toaster } from 'dtable-ui-component';
 import './locale/index.js';
-import { PLUGIN_NAME, DEFAULT_SETTINGS, NOT_SUPPORT_COLUMN_TYPES } from './constants';
+import { PLUGIN_NAME, DEFAULT_SETTINGS } from './constants';
 import { Header, Body } from './pages';
 import SqlOptionsLocalStorage from './api/sql-options-local-storage';
-import { generatorViewId } from './utils/common-utils';
+import { generatorViewId, getDisplayColumns } from './utils/common-utils';
 import { View } from './model';
 import CellValueUtils from './utils/cell-value-utils';
 
@@ -127,7 +127,7 @@ class App extends React.Component {
       try {
         const tables = this.dtable.getTables();
         const collaborators = window.app.state.collaborators;
-        const supportColumns = columns.filter(column => !NOT_SUPPORT_COLUMN_TYPES.includes(column.type));
+        const supportColumns = getDisplayColumns(columns);
         const validResults = this.cellValueUtils.getExportRows(supportColumns, results, { tables, collaborators });
         const validColumns = this.cellValueUtils.getExportColumns(supportColumns);
         await this.dtable.importDataIntoNewTable(name, validColumns, validResults);

@@ -224,7 +224,7 @@ class CellValueUtils {
         } else if (type === CELL_TYPE.LINK) {
           const validCellValue = getFormulaArrayValue(cellValue);
           newRow[name] = this.getCellValueDisplayString(validCellValue, column, { tables, collaborators });
-        }  else if (type === CELL_TYPE.FORMULA || type === CELL_TYPE.LINK_FORMULA) {
+        } else if (type === CELL_TYPE.FORMULA || type === CELL_TYPE.LINK_FORMULA) {
           const validCellValue = Array.isArray(cellValue) ? getFormulaArrayValue(cellValue) : cellValue;
           const { data } = column;
           const { result_type } = data || {};
