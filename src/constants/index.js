@@ -18,15 +18,19 @@ export const NOT_SUPPORT_COLUMN_TYPES = [
 export const NOT_DISPLAY_COLUMN_KEYS = [
   '_locked',
   '_locked_by',
-  '_participants',
-  '_id',
 ];
+
+export const PARTICIPANTS_TYPE = 'participants';
 
 export const PRIVATE_COLUMN_KEY_TYPE_MAP = {
   '_creator': CELL_TYPE.CREATOR,
   '_last_modifier': CELL_TYPE.LAST_MODIFIER,
   '_ctime': CELL_TYPE.CTIME,
   '_mtime': CELL_TYPE.MTIME,
+  '_locked': CELL_TYPE.CHECKBOX,
+  '_locked_by': CELL_TYPE.CREATOR,
+  '_id': CELL_TYPE.TEXT,
+  '_participants': PARTICIPANTS_TYPE, // Currently, the content of the _participants attribute is not returned
 };
 
 export const FORMULA_COLUMN_TYPES = [

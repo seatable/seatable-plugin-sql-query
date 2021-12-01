@@ -1,6 +1,6 @@
 import { CELL_TYPE } from 'dtable-sdk';
 import getPreviewContent from 'dtable-ui-component/lib/SimpleLongTextFormatter/normalize-long-text-value';
-import { NOT_SUPPORT_COLUMN_TYPES, NOT_DISPLAY_COLUMN_KEYS, PRIVATE_COLUMN_KEY_TYPE_MAP } from '../constants';
+import { NOT_SUPPORT_COLUMN_TYPES, NOT_DISPLAY_COLUMN_KEYS } from '../constants';
 
 export const isValidEmail = (email) => {
   const reg = /^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,6}$/;
@@ -175,7 +175,6 @@ export const getDisplayColumns = (columns) => {
     const { type, key } = column;
     if (NOT_SUPPORT_COLUMN_TYPES.includes(type)) return false;
     if (NOT_DISPLAY_COLUMN_KEYS.includes(key)) return false;
-    if (PRIVATE_COLUMN_KEY_TYPE_MAP[key] && PRIVATE_COLUMN_KEY_TYPE_MAP[key] !== type) return false;
     return true;
   });
 };

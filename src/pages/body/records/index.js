@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import intl from 'react-intl-universal';
 import { CELL_TYPE } from 'dtable-sdk';
 import { Loading, CellFormatter, RecordExpandDialog } from '../../../components';
-import { PER_DISPLAY_COUNT, FILE_COLUMN_TYPES } from '../../../constants';
+import { PER_DISPLAY_COUNT, FILE_COLUMN_TYPES, PRIVATE_COLUMN_KEY_TYPE_MAP } from '../../../constants';
 import { getCellRecordWidth, getDisplayColumns } from '../../../utils/common-utils';
 import EnlargeFormatter from '../../../components/formatter/enlarge-formatter';
 
@@ -20,7 +20,12 @@ class RecordList extends Component {
       enlargeFormatterProps: {}
     };
     const displayColumns = getDisplayColumns(props.columns);
-    this.displayColumns = displayColumns.map(column => {
+    this.displayColumns = displayColumns.map(column => { // Fix the type of private column
+      const privateColumnKeyType = PRIVATE_COLUMN_KEY_TYPE_MAP[column.key];
+      if (!privateColumnKeyType) return column;
+      if (privateColumnKeyType !== column.type) return { ...column, type: privateColumnKeyType };
+      return column;
+    }).map(column => {
       const { type } = column;
       if (type === CELL_TYPE.LINK) {
         const { data } = column;
@@ -131,8 +136,8 @@ class RecordList extends Component {
                           </div>
                         </div>
                         {this.displayColumns.map(column => {
-                          const { key, name, width, type } = column;
-                          const value = (record[name] || record[name] === 0) ? record[name] : record[key];
+                          const { key, width, type } = column;
+                          const value = record[key];
                           return (
                             <div
                               className="sql-query-result-table-cell"
