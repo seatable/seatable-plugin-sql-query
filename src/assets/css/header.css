@@ -51,6 +51,39 @@
   height: 0;
 }
 
+.sql-query-plugin .views-scroll-control {
+  display: flex;
+  align-items: center;
+  padding: 0 .25rem;
+}
+
+.sql-query-plugin .scroll-control-btn {
+  cursor: default;
+}
+
+.sql-query-plugin .scroll-control-btn:first-child {
+  margin-right: .1rem;
+}
+
+.sql-query-plugin .scroll-active {
+  cursor: pointer;
+}
+
+.sql-query-plugin .btn-scroll-icon {
+  color: #c2c2c2;
+  font-size: 12px;
+  line-height: 24px;
+}
+
+.sql-query-plugin .scroll-active .btn-scroll-icon {
+  color: #8c8c8c;
+}
+
+.sql-query-plugin .scroll-active:hover .btn-scroll-icon {
+  color: #000;
+  opacity: .75;
+}
+
 .sql-query-plugin .sql-query-plugin-header .sql-query-plugin-header-view-add {
   width: 24px;
   height: 24px;
