@@ -119,8 +119,8 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  text-align: center;
-  line-height: 20px;
+  align-items: center;
+  justify-content: center;
 }
 
 .sql-query-plugin .sql-query-result.success .sql-query-result-table-cell.index .sql-query-row-expand i {
@@ -134,7 +134,7 @@
 }
 
 .sql-query-plugin .sql-query-result.success .sql-query-result-table-row:hover .sql-query-result-table-cell.index .sql-query-row-expand {
-  display: block;
+  display: flex;
 }
 
 .sql-query-plugin .sql-query-result.success .sql-query-result-table-row .sql-query-result-table-cell:last-child {

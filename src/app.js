@@ -202,12 +202,27 @@ class App extends React.Component {
     return this.dtable.getTables();
   }
 
+  getPluginMarginTop = () => {
+    // 48: view toolbar height, 7: plugin wrapper occludes the height of tables bar
+    let marginTop = 48 + 7;
+    let currentTable = this.dtable.dtableStore.currentTable;
+    if (!currentTable) {
+      const tables = this.getTables();
+      currentTable = tables[0];
+    }
+    const { header_settings } = currentTable;
+    const { header_height } = header_settings || {};
+    if (header_height === 'double') return marginTop + 56;
+    return marginTop + 32;
+  }
+
   render() {
     const { showDialog, currentViewIdx, views } = this.state;
     if (!showDialog || !views[currentViewIdx]) return '';
-    
+    const marginTop = this.getPluginMarginTop();
+
     return (
-      <div className="dtable-plugin sql-query-plugin">
+      <div className="dtable-plugin sql-query-plugin" style={{ height: `calc(100% - ${marginTop}px)`, marginTop: marginTop }}>
         <Header
           views={views}
           currentViewIdx={currentViewIdx}

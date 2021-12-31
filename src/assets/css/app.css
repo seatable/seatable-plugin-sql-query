@@ -1,6 +1,4 @@
 .dtable-plugin.sql-query-plugin {
-  height: calc(100% - 87px);
-  margin-top: 87px;
   width: 100%;
   flex: 1 1;
   display: flex;

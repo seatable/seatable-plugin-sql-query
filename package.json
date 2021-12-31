@@ -1,6 +1,6 @@
 {
   "name": "sql-query",
-  "version": "0.0.33",
+  "version": "0.0.34",
   "private": true,
   "dependencies": {
     "babel-plugin-on-demand-loading": "^0.0.9",

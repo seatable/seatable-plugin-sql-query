@@ -25,7 +25,7 @@ const de = {
   "The_number_of_columns_in_the_current_table_exceeds_the_limit": "Die Anzahl der Spalten in der aktuellen Tabelle überschreitet das Limit.",
   "Rows_must_be_array": "Zeilen müssen ein Array sein.",
   "All_files": "Alle Dateien",
-  "Record_details": "Record details"
+  "Record_details": "Details des Eintrags"
 };
 
 export default de;
