@@ -46,11 +46,11 @@
   position: sticky;
   left: 0;
   top: 0;
-  z-index: 3;
+  z-index: 2;
 }
 
 .sql-query-plugin .sql-query-result.success .sql-query-result-table-fix-left-cell {
-  z-index: 2;
+  z-index: 1;
   background-color: inherit;
 }
 
@@ -340,7 +340,7 @@
   position: sticky;
   bottom: 0;
   left: 0;
-  z-index: 3;
+  z-index: 2;
   height: 32px;
   overflow: visible;
   line-height: 32px;
