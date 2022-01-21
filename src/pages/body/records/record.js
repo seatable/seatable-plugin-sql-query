@@ -5,28 +5,35 @@ import { CELL_TYPE } from 'dtable-sdk';
 import { INDEX_COLUMN_TYPE, FILE_COLUMN_TYPES } from '../../../constants';
 
 function Record(props) {
-  const { fields, record, index, collaborators } = props;
+  const { columns, record, index, collaborators } = props;
   let totalWidth = 0;
 
   return (
     <div className="sql-query-result-table-row record-height-default">
-      {fields.map((field) => {
-        const { key, name, width, type, data } = field;
+      {columns.map((column) => {
+        const { key, name, width, type, data, isFrozen, isLastFrozen } = column;
         let style = {};
         let className = 'sql-query-result-table-cell ';
-        if (field.isFrozen) {
+        if (isFrozen) {
           style['position'] = 'sticky';
           style['left'] = totalWidth;
-          totalWidth += field.width;
+          totalWidth += width;
           className = className + 'sql-query-result-table-fix-left-cell ';
         }
-        if (field.isFrozen && field.isLastFrozen) {
+        if (isFrozen && isLastFrozen) {
           className = className + 'sql-query-result-table-last-fix-left-cell ';
         }
         if (type === INDEX_COLUMN_TYPE) {
           return (
-            <div className={`${className} index`} key={`${key}-${{index}}`} style={{ ...style, width, maxWidth: width, minWidth: width }}>
-              <div className="sql-query-row-index-container" style={{width, maxWidth: width, minWidth: width}}>
+            <div
+              key={`${key}-${{index}}`}
+              className={`${className} index`}
+              style={{ ...style, width, maxWidth: width, minWidth: width }}
+            >
+              <div
+                className="sql-query-row-index-container"
+                style={{ width, maxWidth: width, minWidth: width }}
+              >
                 <div className="sql-query-row-index-content">{index + 1}</div>
                 <div className="sql-query-row-expand" onClick={() => props.onOpenRecordExpandDialog(record)}>
                   <i className="dtable-font dtable-icon-open"></i>
@@ -50,12 +57,12 @@ function Record(props) {
             key={`${key}-${{index}}`}
             className={className}
             style={{ ...style, width, maxWidth: width, minWidth: width }}
-            onDoubleClick={FILE_COLUMN_TYPES.includes(type) ? () => props.openEnlargeFormatter(field, value) : () => {}}
+            onDoubleClick={FILE_COLUMN_TYPES.includes(type) ? () => props.openEnlargeFormatter(column, value) : () => {}}
           >
             <CellFormatter
               collaborators={collaborators}
               cellValue={value}
-              column={field}
+              column={column}
               getOptionColors={props.getOptionColors}
               getUserCommonInfo={props.getUserCommonInfo}
               getCellValueDisplayString={props.getCellValueDisplayString}
@@ -68,7 +75,7 @@ function Record(props) {
 }
 
 Record.propTypes = {
-  fields: PropTypes.array.isRequired,
+  columns: PropTypes.array.isRequired,
   record: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
   collaborators: PropTypes.array,

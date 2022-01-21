@@ -33,17 +33,13 @@
   align-items: flex-start;
 }
 
-.sql-query-app-container .sql-query-result-table-content .sql-query-result-table-row {
-  background-color: #FFF;
-}
-
 .sql-query-plugin .sql-query-result.success .sql-query-result-table-row:hover {
   background-color: #F9F9F9;
   transition: all .3s;
 }
 
-/* record header --- filed */
-.sql-query-plugin .sql-query-result.success .sql-query-result-table-header-row {
+/* record header --- columns */
+.sql-query-plugin .sql-query-result.success .sql-query-result-table-row.sql-query-result-table-header-row {
   height: 33px;
   background-color: #F9F9F9;
   width: fit-content;

@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Field from './field';
+import Field from './column';
 
 function HeaderRecord(props) {
-  const { fields } = props;
+  const { columns } = props;
   let totalWidth = 0;
   return (
     <div className="sql-query-result-table-row sql-query-result-table-header-row">
-      {fields.map(column => {
+      {columns.map(column => {
         let style = {};
         let className = '';
         if (column.isFrozen) {
@@ -24,7 +24,7 @@ function HeaderRecord(props) {
             key={`${column.key}-row--1`}
             className={className}
             style={style}
-            field={column}
+            column={column}
           />
         );
       })}
@@ -33,7 +33,7 @@ function HeaderRecord(props) {
 }
 
 HeaderRecord.propTypes = {
-  fields: PropTypes.array,
+  columns: PropTypes.array,
 };
 
 export default HeaderRecord;

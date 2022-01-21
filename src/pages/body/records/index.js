@@ -129,12 +129,12 @@ class RecordList extends Component {
             <div className="sql-query-result-content">
               <div className="sql-query-result-table-content" onScroll={this.getMoreResults} ref={ref => this.sqlQueryResultContentRef = ref}>
                 <div className="sql-query-result-table" ref={ref => this.sqlQueryResultRef = ref}>
-                  <HeaderRecord fields={this.displayColumns} />
+                  <HeaderRecord columns={this.displayColumns} />
                   {displayRecords.map((record, index) => {
                     return (
                       <Record
                         key={record._id || index}
-                        fields={this.displayColumns}
+                        columns={this.displayColumns}
                         record={record}
                         index={index}
                         collaborators={collaborators}

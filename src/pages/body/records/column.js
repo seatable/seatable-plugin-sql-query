@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { INDEX_COLUMN_TYPE } from '../../../constants';
 
-function Field(props) {
-  const { field, className, style } = props;
-  const { name, width, type } = field;
+function Column(props) {
+  const { column, className, style } = props;
+  const { name, width, type } = column;
 
   return (
     <div
@@ -18,10 +18,10 @@ function Field(props) {
   );
 }
 
-Field.propTypes = {
-  field: PropTypes.object.isRequired,
+Column.propTypes = {
+  column: PropTypes.object.isRequired,
   className: PropTypes.string,
   style: PropTypes.object, 
 };
 
-export default Field;
+export default Column;
