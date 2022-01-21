@@ -11,10 +11,6 @@
   margin-bottom: 30px;
 }
 
-.sql-query-plugin-record-expand-dialog .sql-query-record-expand-item:last-child {
-  margin-bottom: 0;
-}
-
 .sql-query-plugin-record-expand-dialog .sql-query-record-expand-item label {
   font-size: 14px;
   color: #202428;
