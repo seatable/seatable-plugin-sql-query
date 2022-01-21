@@ -1,6 +1,7 @@
 import { CELL_TYPE } from 'dtable-sdk';
 import { View } from '../model';
 export { FILE_COLUMN_TYPES, START, FILES_SLICE_LENGTH, END, DOWNLOAD_NAME_COLUMN_TYPES } from './download-file';
+export { INDEX_COLUMN_TYPE, INDEX_COLUMN } from './index-column';
 
 export const PLUGIN_NAME = 'sql-query';
 
