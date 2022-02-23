@@ -5,7 +5,7 @@
   "dependencies": {
     "deep-copy": "^1.4.2",
     "dtable-sdk": "0.0.134",
-    "dtable-ui-component": "0.1.82beta",
+    "dtable-ui-component": "0.1.83",
     "glamor": "^2.20.40",
     "is-hotkey": "^0.1.4",
     "react": "16.14.0",
