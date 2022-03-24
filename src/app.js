@@ -152,6 +152,50 @@ class App extends React.Component {
       callBack && callBack();
     });
   }
+
+  // move view, update `selectedViewIdx`
+  onMoveView = (targetViewID, targetIndexViewID, relativePosition) => {
+    // the 'names' and setting data structure in this plugin are different from the others.
+    let { views: plugin_settings, currentViewIdx: selectedViewIdx } = this.state;
+    let updatedViews = plugin_settings;
+
+    let viewIDMap = {};
+    updatedViews.forEach((view, index) => {
+      viewIDMap[view._id] = view;
+    });
+    const targetView = viewIDMap[targetViewID];
+    const targetIndexView = viewIDMap[targetIndexViewID];
+    const selectedView = updatedViews[selectedViewIdx];
+
+    const originalIndex = updatedViews.indexOf(targetView);
+    let targetIndex = updatedViews.indexOf(targetIndexView);
+    // `relativePosition`: 'before'|'after'
+    targetIndex += relativePosition == 'before' ? 0 : 1;
+
+    if (originalIndex < targetIndex) {
+      if (targetIndex < updatedViews.length) {
+        updatedViews.splice(targetIndex, 0, targetView);
+      } else {
+        // drag it to the end
+        updatedViews.push(targetView);
+      }
+      updatedViews.splice(originalIndex, 1);
+    } else {
+      updatedViews.splice(originalIndex, 1);
+      updatedViews.splice(targetIndex, 0, targetView);
+    }
+
+    const newSelectedViewIndex = updatedViews.indexOf(selectedView);
+
+    //plugin_settings.views = updatedViews;
+    this.setState({
+      views: plugin_settings,
+      currentViewIdx: newSelectedViewIndex
+    }, () => {
+      //setSelectedViewIds(KEY_SELECTED_VIEW_IDS, newSelectedViewIndex);
+      this.dtable.updatePluginSettings(PLUGIN_NAME, plugin_settings);
+    });
+  }
  
   onSelectView = (viewId) => {
     const { views } = this.state;
@@ -227,6 +271,7 @@ class App extends React.Component {
           views={views}
           currentViewIdx={currentViewIdx}
           onSelectView={this.onSelectView}
+          onMoveView={this.onMoveView}
           addView={this.addView}
           deleteView={this.deleteView}
           updateView={this.updateView}

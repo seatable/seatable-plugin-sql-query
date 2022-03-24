@@ -119,7 +119,7 @@ class Views extends Component {
       <Fragment>
         <div className="sql-query-plugin-views-container">
           <div
-            className="sql-query-plugin-views-content"
+            className="sql-query-plugin-views-content pr-1"
             ref={ref => this.viewsScroll = ref}
             onScroll={this.onViewsScroll}
           >
@@ -135,6 +135,7 @@ class Views extends Component {
                   setViewItem={(view) => this.setViews(viewIdx, view)}
                   deleteView={this.props.deleteView}
                   updateView={this.props.updateView}
+                  onMoveView={this.props.onMoveView}
                 />
               );
             })}
@@ -165,8 +166,9 @@ Views.propTypes = {
   currentViewIdx: PropTypes.number,
   views: PropTypes.array,
   onSelectView: PropTypes.func,
+  onMoveView: PropTypes.func,
   deleteView: PropTypes.func,
-  updateView: PropTypes.func,
+  updateView: PropTypes.func
 };
 
 export default Views;
