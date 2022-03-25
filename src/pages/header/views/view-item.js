@@ -115,53 +115,55 @@ class ViewItem extends Component {
   }
 
   render() {
-    const { view, isSelect } = this.props;
+    const { view, isSelect, canDelete } = this.props;
     const { name } = view;
     const { isOpen, isRenameDialogDisplay, menuPosition, dropRelativePosition } = this.state;
     return (
       <Fragment>
-      <div
-        ref={ref => this.itemRef = ref}
-        draggable="true"
-        onDragStart={this.onDragStart}
-        onDragEnter={this.onDragEnter}
-        onDragOver={this.onDragOver}
-        onDragLeave={this.onDragLeave}
-        onDrop={this.onDrop}
-        className={`
+        <div
+          ref={ref => this.itemRef = ref}
+          draggable="true"
+          onDragStart={this.onDragStart}
+          onDragEnter={this.onDragEnter}
+          onDragOver={this.onDragOver}
+          onDragLeave={this.onDragLeave}
+          onDrop={this.onDrop}
+          className={`
           ${'view-item'}
           ${dropRelativePosition == 'before' ? 'view-item-can-drop-before' : ''}
           ${dropRelativePosition == 'after' ? 'view-item-can-drop-after' : ''}
         `}
-      >
-        <div
-          className={`sql-query-plugin-view ${isSelect ? 'selected' : ''}`}
-          onClick={this.props.onSelectView}
-          ref={ref => this.viewRef = ref}
         >
-          <div className="sql-query-plugin-view-name">{name}</div>
-          {isSelect && (
-            <div className="sql-query-plugin-view-toggle ml-2" onClick={this.toggleDropdown}>
-              <i className="dtable-font dtable-icon-drop-down"></i>
-            </div>
-          )}
-          {isOpen && (
-            <div className="dropdown-menu large show sql-query-view-dropdown-menu" style={menuPosition}>
-              <button className="dropdown-item sql-query-view-dropdown-item" onClick={this.openRenameViewDialog}>
-                <i className="dtable-font dtable-icon-rename sql-query-view-item-icon"></i>
-                <span>{intl.get('Rename_view')}</span>
-              </button>
-              {/* <button className="dropdown-item sql-query-view-dropdown-item" onClick={this.exportView}>
+          <div
+            className={`sql-query-plugin-view ${isSelect ? 'selected' : ''}`}
+            onClick={this.props.onSelectView}
+            ref={ref => this.viewRef = ref}
+          >
+            <div className="sql-query-plugin-view-name">{name}</div>
+            {isSelect && (
+              <div className="sql-query-plugin-view-toggle ml-2" onClick={this.toggleDropdown}>
+                <i className="dtable-font dtable-icon-drop-down"></i>
+              </div>
+            )}
+            {isOpen && (
+              <div className="dropdown-menu large show sql-query-view-dropdown-menu" style={menuPosition}>
+                <button className="dropdown-item sql-query-view-dropdown-item" onClick={this.openRenameViewDialog}>
+                  <i className="dtable-font dtable-icon-rename sql-query-view-item-icon"></i>
+                  <span>{intl.get('Rename_view')}</span>
+                </button>
+                {/* <button className="dropdown-item sql-query-view-dropdown-item" onClick={this.exportView}>
                 <i className="dtable-font dtable-icon-export-to-new-table sql-query-view-item-icon"></i>
                 <span>{intl.get('Export_to_a_new_table')}</span>
               </button> */}
-              <button className="dropdown-item sql-query-view-dropdown-item" onClick={this.deleteView}>
-                <i className="dtable-font dtable-icon-delete sql-query-view-item-icon"></i>
-                <span>{intl.get('Delete_view')}</span>
-              </button>
-            </div>
-          )}
-        </div>
+                {canDelete &&
+                <button className="dropdown-item sql-query-view-dropdown-item" onClick={this.deleteView}>
+                  <i className="dtable-font dtable-icon-delete sql-query-view-item-icon"></i>
+                  <span>{intl.get('Delete_view')}</span>
+                </button>
+                }
+              </div>
+            )}
+          </div>
         </div>
         {isRenameDialogDisplay && (
           <RenameViewDialog
@@ -178,6 +180,7 @@ class ViewItem extends Component {
 ViewItem.propTypes = {
   isSelect: PropTypes.bool,
   view: PropTypes.object,
+  canDelete: PropTypes.bool,
   onSelectView: PropTypes.func,
   setViewItem: PropTypes.func,
   deleteView: PropTypes.func,
