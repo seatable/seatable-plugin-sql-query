@@ -8,8 +8,8 @@ class ViewItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false,
-      isRenameDialogDisplay: false,
+      isDropdownMenuOpen: false,
+      isRenameDialogOpen: false,
       menuPosition: {}
     };
     this.viewRef = null;
@@ -28,12 +28,12 @@ class ViewItem extends Component {
 
   toggleDropdown = () => {
     let menuPosition;
-    if (!this.state.isOpen) {
+    if (!this.state.isDropdownMenuOpen) {
       const { bottom, left } = this.viewRef.getBoundingClientRect();
       menuPosition = { position: 'fixed', top: bottom, left: left };
     }
-    this.setState({ isOpen: !this.state.isOpen, menuPosition }, () => {
-      if (this.state.isOpen) {
+    this.setState({ isDropdownMenuOpen: !this.state.isDropdownMenuOpen, menuPosition }, () => {
+      if (this.state.isDropdownMenuOpen) {
         document.addEventListener('click', this.closeMenu);
       }
     });
@@ -41,15 +41,15 @@ class ViewItem extends Component {
 
   closeMenu = () => {
     document.removeEventListener('click', this.closeMenu);
-    this.setState({ isOpen: false, menuPosition: {} });
+    this.setState({ isDropdownMenuOpen: false, menuPosition: {} });
   }
 
   openRenameViewDialog = () => {
-    this.setState({ isRenameDialogDisplay: true });
+    this.setState({ isRenameDialogOpen: true });
   }
 
   closeRenameViewDialog = () => {
-    this.setState({ isRenameDialogDisplay: false });
+    this.setState({ isRenameDialogOpen: false });
   }
 
   renameView = (viewName) => {
@@ -117,7 +117,7 @@ class ViewItem extends Component {
   render() {
     const { view, isSelect, canDelete } = this.props;
     const { name } = view;
-    const { isOpen, isRenameDialogDisplay, menuPosition, dropRelativePosition } = this.state;
+    const { isDropdownMenuOpen, isRenameDialogOpen, menuPosition, dropRelativePosition } = this.state;
     return (
       <Fragment>
         <div
@@ -145,16 +145,18 @@ class ViewItem extends Component {
                 <i className="dtable-font dtable-icon-drop-down"></i>
               </div>
             )}
-            {isOpen && (
+            {isDropdownMenuOpen && (
               <div className="dropdown-menu large show sql-query-view-dropdown-menu" style={menuPosition}>
                 <button className="dropdown-item sql-query-view-dropdown-item" onClick={this.openRenameViewDialog}>
                   <i className="dtable-font dtable-icon-rename sql-query-view-item-icon"></i>
                   <span>{intl.get('Rename_view')}</span>
                 </button>
-                {/* <button className="dropdown-item sql-query-view-dropdown-item" onClick={this.exportView}>
-                <i className="dtable-font dtable-icon-export-to-new-table sql-query-view-item-icon"></i>
-                <span>{intl.get('Export_to_a_new_table')}</span>
-              </button> */}
+                {/*
+                <button className="dropdown-item sql-query-view-dropdown-item" onClick={this.exportView}>
+                  <i className="dtable-font dtable-icon-export-to-new-table sql-query-view-item-icon"></i>
+                  <span>{intl.get('Export_to_a_new_table')}</span>
+                </button>
+                */}
                 {canDelete &&
                 <button className="dropdown-item sql-query-view-dropdown-item" onClick={this.deleteView}>
                   <i className="dtable-font dtable-icon-delete sql-query-view-item-icon"></i>
@@ -165,7 +167,7 @@ class ViewItem extends Component {
             )}
           </div>
         </div>
-        {isRenameDialogDisplay && (
+        {isRenameDialogOpen && (
           <RenameViewDialog
             viewName={name}
             onRenameViewConfirm={this.renameView}
