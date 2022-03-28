@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, Alert, Button } from 'reactstrap';
 import intl from 'react-intl-universal';
+import isHotkey from 'is-hotkey';
 
 class NewViewDialog extends React.Component {
 
@@ -11,6 +12,21 @@ class NewViewDialog extends React.Component {
       viewName: '',
       errMessage: '',
     };
+  }
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.onKeyDown);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.onKeyDown);
+  }
+
+  onKeyDown = (event) => {
+    if (isHotkey('enter', event)) {
+      event.preventDefault();
+      this.handleSubmit();
+    }
   }
 
   handleChange = (event) => {
