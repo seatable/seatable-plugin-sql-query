@@ -114,12 +114,13 @@ class Views extends Component {
 
   render() {
     const { currentViewIdx, views } = this.props;
-    const { canScrollPrev, canScrollNext, } = this.state;
+    const { canScrollPrev, canScrollNext } = this.state;
+    const canDelete = views.length > 1;
     return (
       <Fragment>
         <div className="sql-query-plugin-views-container">
           <div
-            className="sql-query-plugin-views-content"
+            className="sql-query-plugin-views-content pr-1"
             ref={ref => this.viewsScroll = ref}
             onScroll={this.onViewsScroll}
           >
@@ -131,10 +132,12 @@ class Views extends Component {
                   key={`sql-query-view-${id}`}
                   isSelect={isSelect}
                   view={view}
+                  canDelete={canDelete}
                   onSelectView={() => this.onSelectView(id, viewIdx)}
                   setViewItem={(view) => this.setViews(viewIdx, view)}
                   deleteView={this.props.deleteView}
                   updateView={this.props.updateView}
+                  onMoveView={this.props.onMoveView}
                 />
               );
             })}
@@ -165,8 +168,9 @@ Views.propTypes = {
   currentViewIdx: PropTypes.number,
   views: PropTypes.array,
   onSelectView: PropTypes.func,
+  onMoveView: PropTypes.func,
   deleteView: PropTypes.func,
-  updateView: PropTypes.func,
+  updateView: PropTypes.func
 };
 
 export default Views;

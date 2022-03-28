@@ -97,6 +97,29 @@
   opacity: .8;
 }
 
+.sql-query-plugin-header .view-item {
+  cursor: grab;
+  position: relative;
+}
+
+.sql-query-plugin-header .view-item-can-drop-before::before,
+.sql-query-plugin-header .view-item-can-drop-after::after {
+  content: '';
+  border: 1px solid #555;
+  border-radius: 1px;
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+}
+
+.sql-query-plugin-header .view-item-can-drop-before::before {
+  left: 0;
+}
+
+.sql-query-plugin-header .view-item-can-drop-after::after {
+  right: -2px;
+}
+
 .sql-query-plugin .sql-query-plugin-header .sql-query-plugin-view {
   flex-shrink: 0;
   height: 100%;
@@ -108,10 +131,6 @@
   cursor: pointer;
   border-top: 2px solid transparent;
   border-bottom: 2px solid transparent;
-}
-
-.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-view:first-child {
-  margin-left: 0px;
 }
 
 .sql-query-plugin .sql-query-plugin-header .sql-query-plugin-view.selected,
