@@ -22,9 +22,7 @@ class Body extends Component {
 
   componentDidMount() {
     const options = this.props.getCurrentHistorySqlOptions();
-    this.setState({ displayHistoryOptions: options }, () => {
-      this.onQuery();
-    });
+    this.setState({ displayHistoryOptions: options });
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -36,8 +34,6 @@ class Body extends Component {
         isOpen: false,
         displayHistoryOptions: this.props.getCurrentHistorySqlOptions(),
         queryStatus: QUERY_STATUS.READY,
-      }, () => {
-        this.onQuery();
       });
     }
   }
