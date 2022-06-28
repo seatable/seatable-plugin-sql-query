@@ -151,6 +151,7 @@ class Body extends Component {
           getViewById={this.props.getViewById}
           getViewRows={this.props.getViewRows}
           getRowsByID={this.props.getRowsByID}
+          getTableFormulaResults={this.props.getTableFormulaResults}
         />
       );
     }
@@ -221,6 +222,7 @@ Body.propTypes = {
   getLinkCellValue: PropTypes.func,
   getRowsByID: PropTypes.func,
   getViewRows: PropTypes.func,
+  getTableFormulaResults: PropTypes.func,
 };
 
 export default Body;

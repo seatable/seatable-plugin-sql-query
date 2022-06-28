@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { CELL_TYPE } from 'dtable-sdk';
 import Formatter from '../../formatter';
 
 import './index.css';
@@ -25,9 +26,13 @@ class RowCard extends PureComponent {
   }
 
   linkRowRecord = () => {
-    const { row, columns } = this.props;
+    const { row, columns, formulaRows } = this.props;
     return columns.map((column, index) => {
-      const { key, width } = column;
+      const { key, width, type } = column;
+      let cellValue = row[key];
+      if (type === CELL_TYPE.LINK|| type === CELL_TYPE.FORMULA || type === CELL_TYPE.LINK_FORMULA ) {
+        cellValue = formulaRows[row._id][key];
+      }
       return (
         <div
           key={`row-card-cell-value-${key}-${index}`}
@@ -36,7 +41,7 @@ class RowCard extends PureComponent {
         >
           <Formatter
             isRowExpand={false}
-            cellValue={row[key]}
+            cellValue={cellValue}
             column={column}
             row={row}
             getOptionColors={this.props.getOptionColors}
@@ -115,9 +120,10 @@ class RowCard extends PureComponent {
 RowCard.propTypes = {
   isHighlightRow: PropTypes.bool,
   isShowRemoveCardItemBtn: PropTypes.bool,
-  row: PropTypes.object,
   rowIdx: PropTypes.number,
+  row: PropTypes.object,
   nameColumn: PropTypes.object,
+  formulaRows: PropTypes.object,
   columns: PropTypes.array,
   collaborators: PropTypes.array,
   onSelectRow: PropTypes.func,

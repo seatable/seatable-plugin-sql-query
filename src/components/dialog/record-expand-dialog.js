@@ -68,6 +68,7 @@ class RecordExpandDialog extends Component {
                     getViewRows={this.props.getViewRows}
                     getRowsByID={this.props.getRowsByID}
                     collaborators={collaborators}
+                    getTableFormulaResults={this.props.getTableFormulaResults}
                   />
                 }
                 {type !== CELL_TYPE.LINK &&
@@ -110,6 +111,7 @@ RecordExpandDialog.propTypes = {
   getLinkCellValue: PropTypes.func,
   getRowsByID: PropTypes.func,
   getViewRows: PropTypes.func,
+  getTableFormulaResults: PropTypes.func,
 };
 
 export default RecordExpandDialog;

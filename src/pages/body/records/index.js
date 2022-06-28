@@ -121,7 +121,7 @@ class RecordList extends Component {
     const displayRecords = records.slice(0, displayRecordsCount);
     const totalWidth = this.displayColumns.reduce((cur, nextItem) => { return (cur + nextItem.width); }, 0);
     const collaborators = window.app.state.collaborators;
-
+    
     return (
       <Fragment>
         <div className="sql-query-result success">
@@ -174,6 +174,7 @@ class RecordList extends Component {
             getViewById={this.props.getViewById}
             getViewRows={this.props.getViewRows}
             getRowsByID={this.props.getRowsByID}
+            getTableFormulaResults={this.props.getTableFormulaResults}
           />
         }
       </Fragment>
@@ -196,6 +197,7 @@ RecordList.propTypes = {
   getLinkCellValue: PropTypes.func,
   getRowsByID: PropTypes.func,
   getViewRows: PropTypes.func,
+  getTableFormulaResults: PropTypes.func,
 };
 
 export default RecordList;

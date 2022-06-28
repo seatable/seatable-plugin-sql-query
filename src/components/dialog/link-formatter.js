@@ -83,11 +83,12 @@ class LinkFormatter extends Component {
   }
 
   initLinkedRecords = () => {
-    const { linkID, tableID, otherTableID } = this;
+    const { linkID, tableID, otherTableID, linkedTable } = this;
     const { record  } = this.props;
     const value = this.props.getLinkCellValue(linkID, tableID, otherTableID, record._id);
     const rocords = this.props.getRowsByID(this.linkedTableID, value);
-    this.setState({rocords, isLoading: false});
+    const formulaRows = this.props.getTableFormulaResults(linkedTable, rocords);
+    this.setState({rocords, isLoading: false, formulaRows});
   }
 
   getDisplayColumns = (nameColumn = { key: '0000' }) => {
@@ -133,6 +134,7 @@ class LinkFormatter extends Component {
               columns={columns}
               removeCardItem={this.removeLink}
               collaborators={this.props.collaborators}
+              formulaRows={this.state.formulaRows}
             />
           );
         })}
@@ -173,6 +175,7 @@ LinkFormatter.propTypes = {
   getViewById: PropTypes.func,
   getLinkCellValue: PropTypes.func,
   getRowsByID: PropTypes.func,
+  getTableFormulaResults: PropTypes.func,
 };
 
 export default LinkFormatter;
