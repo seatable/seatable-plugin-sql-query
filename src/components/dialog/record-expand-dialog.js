@@ -97,6 +97,7 @@ RecordExpandDialog.propTypes = {
   record: PropTypes.object.isRequired,
   columns: PropTypes.array.isRequired,
   collaborators: PropTypes.array.isRequired,
+  currentTable: PropTypes.object,
   closeRecordExpandDialog: PropTypes.func.isRequired,
   getUserCommonInfo: PropTypes.func.isRequired,
   getOptionColors: PropTypes.func.isRequired,
@@ -108,6 +109,7 @@ RecordExpandDialog.propTypes = {
   getViewById: PropTypes.func,
   getLinkCellValue: PropTypes.func,
   getRowsByID: PropTypes.func,
+  getViewRows: PropTypes.func,
 };
 
 export default RecordExpandDialog;

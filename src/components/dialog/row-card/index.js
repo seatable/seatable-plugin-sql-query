@@ -119,6 +119,7 @@ RowCard.propTypes = {
   rowIdx: PropTypes.number,
   nameColumn: PropTypes.object,
   columns: PropTypes.array,
+  collaborators: PropTypes.array,
   onSelectRow: PropTypes.func,
   removeCardItem: PropTypes.func,
   onRef: PropTypes.func,

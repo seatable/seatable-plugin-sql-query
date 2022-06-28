@@ -184,6 +184,7 @@ class RecordList extends Component {
 RecordList.propTypes = {
   records: PropTypes.array,
   columns: PropTypes.array,
+  currentTable: PropTypes.object,
   getOptionColors: PropTypes.func,
   getUserCommonInfo: PropTypes.func,
   getTables: PropTypes.func,
@@ -194,6 +195,7 @@ RecordList.propTypes = {
   getViewById: PropTypes.func,
   getLinkCellValue: PropTypes.func,
   getRowsByID: PropTypes.func,
+  getViewRows: PropTypes.func,
 };
 
 export default RecordList;

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Loading } from 'dtable-ui-component';
 import { CELL_TYPE } from 'dtable-sdk';
 import { getTableHiddenColumnKeys } from '../../utils/common-utils';
-import { LINK_UNSHOW_COLUMN_TYPE, LEFT_NAV, ROW_DETAIL_PADDING, ROW_DETAIL_MARGIN, EDITOR_PADDING } from '../../constants';
+import { LINK_UNSHOW_COLUMN_TYPE } from '../../constants';
 import { getColumnWidth } from '../../utils/utils';
 import RowCard from './row-card';
 
@@ -75,7 +75,7 @@ class LinkFormatter extends Component {
             type: array_type || CELL_TYPE.TEXT,
             data: array_data || null
           };
-          return { ...column, width: getColumnWidth(column), data: { ...data, display_column } }
+          return { ...column, width: getColumnWidth(column), data: { ...data, display_column } };
         }
         return { ...column, width: getColumnWidth(column) };
       });
@@ -86,14 +86,14 @@ class LinkFormatter extends Component {
     const { linkID, tableID, otherTableID } = this;
     const { record  } = this.props;
     const value = this.props.getLinkCellValue(linkID, tableID, otherTableID, record._id);
-    const rocords = this.props.getRowsByID(this.linkedTableID, value)
+    const rocords = this.props.getRowsByID(this.linkedTableID, value);
     this.setState({rocords, isLoading: false});
   }
 
   getDisplayColumns = (nameColumn = { key: '0000' }) => {
-    const innerWidth = window.innerWidth;
-    const leftBar = 0;
-    let remainWidth = (innerWidth - LEFT_NAV - leftBar - ROW_DETAIL_PADDING - ROW_DETAIL_MARGIN - 2) * 0.8333 - EDITOR_PADDING;
+    // const innerWidth = window.innerWidth;
+    // const leftBar = 0;
+    // let remainWidth = (innerWidth - LEFT_NAV - leftBar - ROW_DETAIL_PADDING - ROW_DETAIL_MARGIN - 2) * 0.8333 - EDITOR_PADDING;
     let displayColumns = [];
     this.linkedTableColumns.forEach(column => {
       if (column.key !== nameColumn.key) {
@@ -163,9 +163,11 @@ class LinkFormatter extends Component {
 }
 
 LinkFormatter.propTypes = {
+  record: PropTypes.object,
   pageId: PropTypes.string.isRequired,
   value: PropTypes.array,
   tables: PropTypes.array.isRequired,
+  collaborators: PropTypes.array,
   expandedTable: PropTypes.object.isRequired,
   expandedRow: PropTypes.object.isRequired,
   column: PropTypes.object,

@@ -204,6 +204,7 @@ class Body extends Component {
 
 Body.propTypes = {
   currentView: PropTypes.object,
+  currentTable: PropTypes.object,
   sqlQuery: PropTypes.func,
   getOptionColors: PropTypes.func,
   getUserCommonInfo: PropTypes.func,
@@ -219,6 +220,7 @@ Body.propTypes = {
   getViewById: PropTypes.func,
   getLinkCellValue: PropTypes.func,
   getRowsByID: PropTypes.func,
+  getViewRows: PropTypes.func,
 };
 
 export default Body;

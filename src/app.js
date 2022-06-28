@@ -171,7 +171,7 @@ class App extends React.Component {
     const originalIndex = updatedViews.indexOf(targetView);
     let targetIndex = updatedViews.indexOf(targetIndexView);
     // `relativePosition`: 'before'|'after'
-    targetIndex += relativePosition == 'before' ? 0 : 1;
+    targetIndex += relativePosition === 'before' ? 0 : 1;
 
     if (originalIndex < targetIndex) {
       if (targetIndex < updatedViews.length) {
@@ -215,7 +215,7 @@ class App extends React.Component {
   }
 
   getLinkCellValue = (link_id, table_id, other_table_id, rowId) => {
-    return this.dtable.getLinkCellValue(link_id, table_id, other_table_id, rowId)
+    return this.dtable.getLinkCellValue(link_id, table_id, other_table_id, rowId);
   }
 
   getRowsByID = (tableId, rowIds) => {
@@ -248,7 +248,7 @@ class App extends React.Component {
   sqlQuery = (sql) => {
     const { isDevelopment } = this.props;
     const dtableAPI = isDevelopment ? this.dtable.dtableStore.dtableAPI : window.app.dtableStore.dtableAPI;
-    this.getTableName(sql)
+    this.getTableName(sql);
     return dtableAPI.sqlQuery(sql);
   }
 
@@ -262,8 +262,8 @@ class App extends React.Component {
     if (!tableName) return;
     this.setState({tableName}, () => {
       const currentTable = this.dtable.getTableByName(tableName);
-      this.setState({currentTable})
-    })
+      this.setState({currentTable});
+    });
   }
 
   getTables = () => {
@@ -279,7 +279,7 @@ class App extends React.Component {
   }
 
   getTableById = (tableId) => {
-    return this.dtable.getTableById(tableId)
+    return this.dtable.getTableById(tableId);
   }
 
   getViewById = (table, view_id) => {
