@@ -164,12 +164,8 @@ class LinkFormatter extends Component {
 
 LinkFormatter.propTypes = {
   record: PropTypes.object,
-  pageId: PropTypes.string.isRequired,
   value: PropTypes.array,
-  tables: PropTypes.array.isRequired,
   collaborators: PropTypes.array,
-  expandedTable: PropTypes.object.isRequired,
-  expandedRow: PropTypes.object.isRequired,
   column: PropTypes.object,
   getLinkTableID: PropTypes.func,
   getLinkedTableID: PropTypes.func,
