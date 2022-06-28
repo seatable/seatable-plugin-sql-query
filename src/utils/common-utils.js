@@ -1,4 +1,4 @@
-import { CELL_TYPE } from 'dtable-sdk';
+import { CELL_TYPE, getViewById } from 'dtable-sdk';
 import getPreviewContent from 'dtable-ui-component/lib/SimpleLongTextFormatter/normalize-long-text-value';
 import { NOT_SUPPORT_COLUMN_TYPES, NOT_DISPLAY_COLUMN_KEYS } from '../constants';
 
@@ -191,4 +191,34 @@ export const removeClassName = (originClassName, targetClassName) => {
   if (targetClassNameIndex < 0) return originClassName;
   originClassNames.splice(targetClassNameIndex, 1);
   return originClassNames.join(' ');
+};
+
+export const getTableHiddenColumnKeys = (table, viewId) => {
+  if (!table) return [];
+  const { views } = table;
+  if (viewId) {
+    const view = getViewById(views, viewId);
+    if (view) {
+      const { hidden_columns = [] } = view;
+      if (!Array.isArray(hidden_columns)) return [];
+
+      // avoid modifying referenced raw data
+      return [ ...hidden_columns ];
+    }
+    // view is not exist
+  }
+
+  // take the union of all view hidden columns in the current table
+  const isAllViewHasHiddenColumns = views.every(view => {
+    return view.hidden_columns && Array.isArray(view.hidden_columns) && view.hidden_columns.length > 0;
+  });
+  if (!isAllViewHasHiddenColumns) return [];
+  
+  let hiddenColumnKeys = [];
+  const { hidden_columns } = views[0];
+  hidden_columns.forEach(key => {
+    const isExist = views.every(view => view.hidden_columns.includes(key));
+    if (isExist) hiddenColumnKeys.push(key);
+  });
+  return hiddenColumnKeys;
 };

@@ -70,3 +70,39 @@ export const COLUMNS_ICONS = {
 export const DEFAULT_SETTINGS = [
   new View({ _id: '0000' }),
 ];
+
+
+export const SEQUENCE_COLUMN_WIDTH = 80;
+
+export const FIRST_COLUMN_SHADOW = '2px 0 5px -2px hsla(0,0%,53.3%,.3)';
+
+export const TABLE_SUPPORT_EDIT_TYPE_MAP = {
+  [CELL_TYPE.TEXT]: true,
+  [CELL_TYPE.DATE]: true,
+  [CELL_TYPE.NUMBER]: true,
+  [CELL_TYPE.SINGLE_SELECT]: true,
+  [CELL_TYPE.MULTIPLE_SELECT]: true,
+  [CELL_TYPE.COLLABORATOR]: true,
+  [CELL_TYPE.LONG_TEXT]: true,
+  [CELL_TYPE.IMAGE]: true,
+  [CELL_TYPE.FILE]: true,
+  [CELL_TYPE.GEOLOCATION]: true,
+  [CELL_TYPE.CHECKBOX]: true,
+  [CELL_TYPE.EMAIL]: true,
+  [CELL_TYPE.URL]: true,
+  [CELL_TYPE.DURATION]: true,
+  [CELL_TYPE.RATE]: true,
+  [CELL_TYPE.LINK]: true,
+};
+
+export const CANVAS_RIGHT_INTERVAL = 240;
+
+export const LINK_UNSHOW_COLUMN_TYPE = [
+  CELL_TYPE.BUTTON
+];
+
+export const LEFT_NAV = 280;
+export const ROW_DETAIL_PADDING = 40 * 2;
+export const ROW_DETAIL_MARGIN = 20 * 2;
+export const EDITOR_PADDING = 1.5 * 16; // 1.5: 0.75 * 2
+

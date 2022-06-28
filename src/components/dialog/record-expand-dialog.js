@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { CELL_TYPE } from 'dtable-sdk';
 import { Modal, ModalHeader, ModalBody, Label } from 'reactstrap';
 import intl from 'react-intl-universal';
 import Formatter from '../formatter';
 import { FILE_COLUMN_TYPES } from '../../constants/download-file';
+import LinkFormatter from './link-formatter';
 
 import '../../assets/css/record-expand-dialog.css';
 
@@ -30,7 +32,6 @@ class RecordExpandDialog extends Component {
 
   render() {
     const { record, columns, collaborators,  } = this.props;
-
     return (
       <Modal
         isOpen={true}
@@ -54,18 +55,35 @@ class RecordExpandDialog extends Component {
                 <div className="d-flex justify-content-between">
                   <Label>{name}</Label>
                 </div>
-                <Formatter
-                  isSample={false}
-                  column={column}
-                  cellValue={value}
-                  collaborators={collaborators}
-                  empty={{
-                    component: <div className="sql-query-record-expand-empty"></div>
-                  }}
-                  getUserCommonInfo={this.props.getUserCommonInfo}
-                  getOptionColors={this.props.getOptionColors}
-                  getCellValueDisplayString={this.props.getCellValueDisplayString}
-                />
+                {type === CELL_TYPE.LINK &&
+                  <LinkFormatter 
+                    column={column}
+                    record={record}
+                    getLinkCellValue={this.props.getLinkCellValue}
+                    currentTable={this.props.currentTable}
+                    getLinkTableID={this.props.getLinkTableID}
+                    getLinkedTableID={this.props.getLinkedTableID}
+                    getTableById={this.props.getTableById}
+                    getViewById={this.props.getViewById}
+                    getViewRows={this.props.getViewRows}
+                    getRowsByID={this.props.getRowsByID}
+                    collaborators={collaborators}
+                  />
+                }
+                {type !== CELL_TYPE.LINK &&
+                  <Formatter
+                    isSample={false}
+                    column={column}
+                    cellValue={value}
+                    collaborators={collaborators}
+                    empty={{
+                      component: <div className="sql-query-record-expand-empty"></div>
+                    }}
+                    getUserCommonInfo={this.props.getUserCommonInfo}
+                    getOptionColors={this.props.getOptionColors}
+                    getCellValueDisplayString={this.props.getCellValueDisplayString}
+                  />
+                }
               </div>
             );
           })}
@@ -84,6 +102,12 @@ RecordExpandDialog.propTypes = {
   getOptionColors: PropTypes.func.isRequired,
   openEnlargeFormatter: PropTypes.func,
   getCellValueDisplayString: PropTypes.func,
+  getLinkTableID: PropTypes.func,
+  getLinkedTableID: PropTypes.func,
+  getTableById: PropTypes.func,
+  getViewById: PropTypes.func,
+  getLinkCellValue: PropTypes.func,
+  getRowsByID: PropTypes.func,
 };
 
 export default RecordExpandDialog;

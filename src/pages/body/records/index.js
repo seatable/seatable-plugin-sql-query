@@ -166,6 +166,14 @@ class RecordList extends Component {
             getUserCommonInfo={this.props.getUserCommonInfo}
             openEnlargeFormatter={this.openEnlargeFormatter}
             getCellValueDisplayString={this.props.getCellValueDisplayString}
+            getLinkCellValue={this.props.getLinkCellValue}
+            currentTable={this.props.currentTable}
+            getLinkTableID={this.props.getLinkTableID}
+            getLinkedTableID={this.props.getLinkedTableID}
+            getTableById={this.props.getTableById}
+            getViewById={this.props.getViewById}
+            getViewRows={this.props.getViewRows}
+            getRowsByID={this.props.getRowsByID}
           />
         }
       </Fragment>
@@ -180,6 +188,12 @@ RecordList.propTypes = {
   getUserCommonInfo: PropTypes.func,
   getTables: PropTypes.func,
   getCellValueDisplayString: PropTypes.func,
+  getLinkTableID: PropTypes.func,
+  getLinkedTableID: PropTypes.func,
+  getTableById: PropTypes.func,
+  getViewById: PropTypes.func,
+  getLinkCellValue: PropTypes.func,
+  getRowsByID: PropTypes.func,
 };
 
 export default RecordList;

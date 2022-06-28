@@ -143,6 +143,14 @@ class Body extends Component {
           getUserCommonInfo={this.props.getUserCommonInfo}
           getTables={this.props.getTables}
           getCellValueDisplayString={this.props.getCellValueDisplayString}
+          getLinkCellValue={this.props.getLinkCellValue}
+          currentTable={this.props.currentTable}
+          getLinkTableID={this.props.getLinkTableID}
+          getLinkedTableID={this.props.getLinkedTableID}
+          getTableById={this.props.getTableById}
+          getViewById={this.props.getViewById}
+          getViewRows={this.props.getViewRows}
+          getRowsByID={this.props.getRowsByID}
         />
       );
     }
@@ -204,7 +212,13 @@ Body.propTypes = {
   updateView: PropTypes.func,
   getTables: PropTypes.func,
   getCellValueDisplayString: PropTypes.func,
-  export: PropTypes.func,
+  export: PropTypes.func, 
+  getLinkTableID: PropTypes.func,
+  getLinkedTableID: PropTypes.func,
+  getTableById: PropTypes.func,
+  getViewById: PropTypes.func,
+  getLinkCellValue: PropTypes.func,
+  getRowsByID: PropTypes.func,
 };
 
 export default Body;

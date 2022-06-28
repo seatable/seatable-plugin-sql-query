@@ -22,6 +22,7 @@ class App extends React.Component {
       showDialog: props.showDialog || false,
       currentViewIdx: 0,
       views: [],
+      currentTable: {}
     };
     this.dtable = new DTable();
     this.sqlOptionsLocalStorage = null;
@@ -213,6 +214,14 @@ class App extends React.Component {
     this.dtable.updatePluginSettings(PLUGIN_NAME, pluginSettings);
   }
 
+  getLinkCellValue = (link_id, table_id, other_table_id, rowId) => {
+    return this.dtable.getLinkCellValue(link_id, table_id, other_table_id, rowId)
+  }
+
+  getRowsByID = (tableId, rowIds) => {
+    return this.dtable.getRowsByID(tableId, rowIds);
+  }
+
   getCurrentHistorySqlOptions = () => {
     if (!this.sqlOptionsLocalStorage) return [];
     return this.sqlOptionsLocalStorage.getCurrentHistorySqlOptions();
@@ -239,11 +248,46 @@ class App extends React.Component {
   sqlQuery = (sql) => {
     const { isDevelopment } = this.props;
     const dtableAPI = isDevelopment ? this.dtable.dtableStore.dtableAPI : window.app.dtableStore.dtableAPI;
+    this.getTableName(sql)
     return dtableAPI.sqlQuery(sql);
+  }
+
+  getTableName = (sql) => {
+    const sqlArr = sql.split(' ');
+    const sqlFromIndex = sqlArr.findIndex(i => i === 'from');
+    if (sqlFromIndex === -1) return;
+    const tableNameIndex = sqlFromIndex + 1;
+    if (tableNameIndex > sqlArr.length) return;
+    const tableName = sqlArr[tableNameIndex];
+    if (!tableName) return;
+    this.setState({tableName}, () => {
+      const currentTable = this.dtable.getTableByName(tableName);
+      this.setState({currentTable})
+    })
   }
 
   getTables = () => {
     return this.dtable.getTables();
+  }
+
+  getLinkTableID = (currentTableId, table_id, other_table_id) => {
+    return this.dtable.getLinkTableID(currentTableId, table_id, other_table_id);
+  }
+
+  getLinkedTableID = (currentTableId, table_id, other_table_id) => {
+    return this.dtable.getLinkedTableID(currentTableId, table_id, other_table_id);
+  }
+
+  getTableById = (tableId) => {
+    return this.dtable.getTableById(tableId)
+  }
+
+  getViewById = (table, view_id) => {
+    return this.dtable.getViewById(table, view_id);
+  }
+
+  getViewRows = (view, table) => {
+    return this.dtable.getViewRows(view, table);
   }
 
   getPluginMarginTop = () => {
@@ -289,6 +333,14 @@ class App extends React.Component {
           updateView={this.updateView}
           getCellValueDisplayString={this.getCellValueDisplayString}
           export={this.export}
+          getLinkCellValue={this.getLinkCellValue}
+          currentTable={this.state.currentTable}
+          getLinkTableID={this.getLinkTableID}
+          getLinkedTableID={this.getLinkedTableID}
+          getTableById={this.getTableById}
+          getViewById={this.getViewById}
+          getViewRows={this.getViewRows}
+          getRowsByID={this.getRowsByID}
         />
       </div>
     );
