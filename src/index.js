@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './app';
 import './setting';
+import App from './app';
 
 class TaskList {
 

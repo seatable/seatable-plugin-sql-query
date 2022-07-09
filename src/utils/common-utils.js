@@ -1,4 +1,4 @@
-import { CELL_TYPE, getViewById } from 'dtable-sdk';
+import { CELL_TYPE } from 'dtable-sdk';
 import getPreviewContent from 'dtable-ui-component/lib/SimpleLongTextFormatter/normalize-long-text-value';
 import { NOT_SUPPORT_COLUMN_TYPES, NOT_DISPLAY_COLUMN_KEYS } from '../constants';
 
@@ -193,11 +193,11 @@ export const removeClassName = (originClassName, targetClassName) => {
   return originClassNames.join(' ');
 };
 
-export const getTableHiddenColumnKeys = (table, viewId) => {
+export const getTableHiddenColumnKeys = (table, viewId, getViewById) => {
   if (!table) return [];
   const { views } = table;
   if (viewId) {
-    const view = getViewById(views, viewId);
+    const view = getViewById(table, viewId);
     if (view) {
       const { hidden_columns = [] } = view;
       if (!Array.isArray(hidden_columns)) return [];

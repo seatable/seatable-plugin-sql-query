@@ -59,16 +59,13 @@ class RecordExpandDialog extends Component {
                   <LinkFormatter 
                     column={column}
                     record={record}
-                    getLinkCellValue={this.props.getLinkCellValue}
                     currentTable={this.props.currentTable}
                     getLinkTableID={this.props.getLinkTableID}
                     getLinkedTableID={this.props.getLinkedTableID}
                     getTableById={this.props.getTableById}
                     getViewById={this.props.getViewById}
                     getViewRows={this.props.getViewRows}
-                    getRowsByID={this.props.getRowsByID}
                     collaborators={collaborators}
-                    getTableFormulaResults={this.props.getTableFormulaResults}
                   />
                 }
                 {type !== CELL_TYPE.LINK &&
@@ -108,10 +105,7 @@ RecordExpandDialog.propTypes = {
   getLinkedTableID: PropTypes.func,
   getTableById: PropTypes.func,
   getViewById: PropTypes.func,
-  getLinkCellValue: PropTypes.func,
-  getRowsByID: PropTypes.func,
   getViewRows: PropTypes.func,
-  getTableFormulaResults: PropTypes.func,
 };
 
 export default RecordExpandDialog;

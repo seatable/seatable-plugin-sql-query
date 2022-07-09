@@ -11,6 +11,7 @@ import SqlOptionsLocalStorage from './api/sql-options-local-storage';
 import { generatorViewId, getDisplayColumns } from './utils/common-utils';
 import { View } from './model';
 import CellValueUtils from './utils/cell-value-utils';
+import pluginContext from './plugin-context.js';
 
 import './assets/css/app.css';
 
@@ -41,7 +42,7 @@ class App extends React.Component {
     const { isDevelopment } = this.props;
     if (isDevelopment) {
       // local develop
-      await this.dtable.init(window.dtablePluginConfig);
+      await this.dtable.init(pluginContext.getConfig());
       await this.dtable.syncWithServer();
       const { dtableUuid } = this.dtable.config;
       this.sqlOptionsLocalStorage = new SqlOptionsLocalStorage(dtableUuid);
@@ -214,14 +215,6 @@ class App extends React.Component {
     this.dtable.updatePluginSettings(PLUGIN_NAME, pluginSettings);
   }
 
-  getLinkCellValue = (link_id, table_id, other_table_id, rowId) => {
-    return this.dtable.getLinkCellValue(link_id, table_id, other_table_id, rowId);
-  }
-
-  getRowsByID = (tableId, rowIds) => {
-    return this.dtable.getRowsByID(tableId, rowIds);
-  }
-
   getCurrentHistorySqlOptions = () => {
     if (!this.sqlOptionsLocalStorage) return [];
     return this.sqlOptionsLocalStorage.getCurrentHistorySqlOptions();
@@ -258,8 +251,11 @@ class App extends React.Component {
     if (sqlFromIndex === -1) return;
     const tableNameIndex = sqlFromIndex + 1;
     if (tableNameIndex > sqlArr.length) return;
-    const tableName = sqlArr[tableNameIndex];
+    let tableName = sqlArr[tableNameIndex];
     if (!tableName) return;
+    if (tableName.indexOf(';') === tableName.length - 1) {
+      tableName.length(0, tableName.length - 2);
+    }
     this.setState({tableName}, () => {
       const currentTable = this.dtable.getTableByName(tableName);
       this.setState({currentTable});
@@ -288,10 +284,6 @@ class App extends React.Component {
 
   getViewRows = (view, table) => {
     return this.dtable.getViewRows(view, table);
-  }
-
-  getTableFormulaResults = (table, rows) => {
-    return this.dtable.getTableFormulaResults(table, rows);
   }
 
   getPluginMarginTop = () => {
@@ -337,15 +329,12 @@ class App extends React.Component {
           updateView={this.updateView}
           getCellValueDisplayString={this.getCellValueDisplayString}
           export={this.export}
-          getLinkCellValue={this.getLinkCellValue}
           currentTable={this.state.currentTable}
           getLinkTableID={this.getLinkTableID}
           getLinkedTableID={this.getLinkedTableID}
           getTableById={this.getTableById}
           getViewById={this.getViewById}
           getViewRows={this.getViewRows}
-          getRowsByID={this.getRowsByID}
-          getTableFormulaResults={this.getTableFormulaResults}
         />
       </div>
     );
