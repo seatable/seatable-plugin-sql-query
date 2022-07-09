@@ -253,8 +253,9 @@ class App extends React.Component {
     if (tableNameIndex > sqlArr.length) return;
     let tableName = sqlArr[tableNameIndex];
     if (!tableName) return;
-    if (tableName.indexOf(';') === tableName.length - 1) {
-      tableName.length(0, tableName.length - 2);
+    const tableNameLength = tableName.length;
+    if (tableName.indexOf(';') === tableNameLength - 1) {
+      tableName = tableName.slice(0, tableNameLength - 1);
     }
     this.setState({tableName}, () => {
       const currentTable = this.dtable.getTableByName(tableName);
