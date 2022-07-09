@@ -283,10 +283,6 @@ class App extends React.Component {
     return this.dtable.getViewById(table, view_id);
   }
 
-  getViewRows = (view, table) => {
-    return this.dtable.getViewRows(view, table);
-  }
-
   getPluginMarginTop = () => {
     // 48: view toolbar height, 7: plugin wrapper occludes the height of tables bar
     let marginTop = 48 + 7;
@@ -335,7 +331,6 @@ class App extends React.Component {
           getLinkedTableID={this.getLinkedTableID}
           getTableById={this.getTableById}
           getViewById={this.getViewById}
-          getViewRows={this.getViewRows}
         />
       </div>
     );

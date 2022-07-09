@@ -30,7 +30,7 @@ class LinkFormatter extends Component {
       displayValue: props.value || [],
       isLoading: true,
       linkedRecords: [],
-      showLinksLen: 0,
+      showLinksLen: 10,
       filteredRows: [],
     };
   }
@@ -85,15 +85,16 @@ class LinkFormatter extends Component {
 
   initLinkedRecords = () => {
     const { linkedTable } = this;
-    const { record, column, currentTable  } = this.props;
-    const { showLinksLen } = this.state;
+    const { record, column  } = this.props;
     const dtableUuid = pluginContext.getSetting('dtableUuid');
-    const rowId = record._id;
-    dtableDbAPI.listRowLinkedRecords(dtableUuid, currentTable._id, column.key, rowId, showLinksLen).then(res => {
-      const records = res.data[rowId];
-      const rowIds = records.map(item => item.row_id);
-      return dtableDbAPI.listTableRowsByIds(dtableUuid, linkedTable.name, rowIds);
-    }).then(res => {
+    const records = record[column.key] || [];
+    const rowIds = records.map(item => item.row_id);
+    this.listTableRowsByIds(dtableUuid, linkedTable.name, rowIds)
+  }
+
+  listTableRowsByIds = (dtableUuid, tableName, rowIds) => {
+    const { showLinksLen } = this.state;
+    dtableDbAPI.listTableRowsByIds(dtableUuid, tableName, rowIds).then(res => {
       const { metadata: columns, results: rows } = res.data;
       this.linkedTableViewRows = rows;
       const { filteredRows } = this.state;
@@ -105,7 +106,20 @@ class LinkFormatter extends Component {
         isLoading: false, 
         showLinksLen: showLinksLen + DEFAULT_LINKS_NUMBER,
       });
-    });
+    })
+  }
+
+  loadMoreLinedRecords = () => {
+    const { linkedTable } = this;
+    const { showLinksLen } = this.state;
+    const { record, column, currentTable } = this.props;
+    const dtableUuid = pluginContext.getSetting('dtableUuid');
+    const rowId = record._id;
+    dtableDbAPI.listRowLinkedRecords(dtableUuid, currentTable._id, column.key, rowId, showLinksLen).then(res => {
+      const records = res.data[rowId] || [];
+      const rowIds = records.map(item => item.row_id);
+      this.listTableRowsByIds(dtableUuid, linkedTable.name, rowIds)
+    })
   }
 
   getFormulaRowsFormArchivedRows = (columns, rows) => {
@@ -137,7 +151,7 @@ class LinkFormatter extends Component {
   }
 
   onClickEllipsis = () => {
-    this.initLinkedRecords();
+    this.loadMoreLinedRecords();
   }
 
   renderLinkRecords = () => {

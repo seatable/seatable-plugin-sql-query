@@ -148,7 +148,6 @@ class Body extends Component {
           getLinkedTableID={this.props.getLinkedTableID}
           getTableById={this.props.getTableById}
           getViewById={this.props.getViewById}
-          getViewRows={this.props.getViewRows}
         />
       );
     }
@@ -216,7 +215,6 @@ Body.propTypes = {
   getLinkedTableID: PropTypes.func,
   getTableById: PropTypes.func,
   getViewById: PropTypes.func,
-  getViewRows: PropTypes.func,
 };
 
 export default Body;

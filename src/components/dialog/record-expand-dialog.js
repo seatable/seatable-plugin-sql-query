@@ -64,7 +64,6 @@ class RecordExpandDialog extends Component {
                     getLinkedTableID={this.props.getLinkedTableID}
                     getTableById={this.props.getTableById}
                     getViewById={this.props.getViewById}
-                    getViewRows={this.props.getViewRows}
                     collaborators={collaborators}
                   />
                 }
@@ -105,7 +104,6 @@ RecordExpandDialog.propTypes = {
   getLinkedTableID: PropTypes.func,
   getTableById: PropTypes.func,
   getViewById: PropTypes.func,
-  getViewRows: PropTypes.func,
 };
 
 export default RecordExpandDialog;
