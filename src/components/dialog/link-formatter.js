@@ -89,7 +89,7 @@ class LinkFormatter extends Component {
     const dtableUuid = pluginContext.getSetting('dtableUuid');
     const records = record[column.key] || [];
     const rowIds = records.map(item => item.row_id);
-    this.listTableRowsByIds(dtableUuid, linkedTable.name, rowIds)
+    this.listTableRowsByIds(dtableUuid, linkedTable.name, rowIds);
   }
 
   listTableRowsByIds = (dtableUuid, tableName, rowIds) => {
@@ -106,7 +106,7 @@ class LinkFormatter extends Component {
         isLoading: false, 
         showLinksLen: showLinksLen + DEFAULT_LINKS_NUMBER,
       });
-    })
+    });
   }
 
   loadMoreLinedRecords = () => {
@@ -118,8 +118,8 @@ class LinkFormatter extends Component {
     dtableDbAPI.listRowLinkedRecords(dtableUuid, currentTable._id, column.key, rowId, showLinksLen).then(res => {
       const records = res.data[rowId] || [];
       const rowIds = records.map(item => item.row_id);
-      this.listTableRowsByIds(dtableUuid, linkedTable.name, rowIds)
-    })
+      this.listTableRowsByIds(dtableUuid, linkedTable.name, rowIds);
+    });
   }
 
   getFormulaRowsFormArchivedRows = (columns, rows) => {
@@ -178,6 +178,7 @@ class LinkFormatter extends Component {
               removeCardItem={this.removeLink}
               collaborators={this.props.collaborators}
               formulaRows={this.linkedTableFormulaRows}
+              getCellValueDisplayString={this.props.getCellValueDisplayString}
             />
           );
         })}
@@ -217,6 +218,7 @@ LinkFormatter.propTypes = {
   getLinkedTableID: PropTypes.func,
   getTableById: PropTypes.func,
   getViewById: PropTypes.func,
+  getCellValueDisplayString: PropTypes.func,
 };
 
 export default LinkFormatter;

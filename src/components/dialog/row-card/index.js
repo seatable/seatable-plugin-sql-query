@@ -47,6 +47,7 @@ class RowCard extends PureComponent {
             getOptionColors={this.props.getOptionColors}
             isSample={true}
             collaborators={this.props.collaborators}
+            getCellValueDisplayString={this.props.getCellValueDisplayString}
           />
         </div>
       );
@@ -98,6 +99,7 @@ class RowCard extends PureComponent {
                 row={row}
                 getOptionColors={this.props.getOptionColors}
                 collaborators={this.props.collaborators}
+                getCellValueDisplayString={this.props.getCellValueDisplayString}
               />
             </div>
             {isShowRemoveCardItemBtn && (
@@ -132,6 +134,7 @@ RowCard.propTypes = {
   setItemScrollLeft: PropTypes.func,
   closeSelect: PropTypes.func,
   getOptionColors: PropTypes.func,
+  getCellValueDisplayString: PropTypes.func,
 };
 
 export default RowCard;

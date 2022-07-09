@@ -22,7 +22,6 @@ function LinkFormatter(props) {
   const { type: displayColumnType , data: displayColumnData } = displayColumn;
   const cellValue = getFormulaArrayValue(value, !isArrayFormalColumn(displayColumnType));
   if (!Array.isArray(cellValue) || cellValue.length === 0) return props.renderEmptyFormatter();
-  
   switch(displayColumnType) {
     case CELL_TYPE.TEXT:
     case CELL_TYPE.AUTO_NUMBER:

@@ -31,7 +31,7 @@ class RecordExpandDialog extends Component {
   }
 
   render() {
-    const { record, columns, collaborators,  } = this.props;
+    const { record, columns, collaborators } = this.props;
     return (
       <Modal
         isOpen={true}
@@ -65,6 +65,7 @@ class RecordExpandDialog extends Component {
                     getTableById={this.props.getTableById}
                     getViewById={this.props.getViewById}
                     collaborators={collaborators}
+                    getCellValueDisplayString={this.props.getCellValueDisplayString}
                   />
                 }
                 {type !== CELL_TYPE.LINK &&
