@@ -63,9 +63,9 @@ function Record(props) {
               collaborators={collaborators}
               cellValue={value}
               column={column}
+              cellValueUtils={props.cellValueUtils}
               getOptionColors={props.getOptionColors}
               getUserCommonInfo={props.getUserCommonInfo}
-              getCellValueDisplayString={props.getCellValueDisplayString}
             />
           </div>
         );
@@ -79,11 +79,11 @@ Record.propTypes = {
   record: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
   collaborators: PropTypes.array,
+  cellValueUtils: PropTypes.object,
   openEnlargeFormatter: PropTypes.func,
   onOpenRecordExpandDialog: PropTypes.func,
   getUserCommonInfo: PropTypes.func,
   getOptionColors: PropTypes.func,
-  getCellValueDisplayString: PropTypes.func,
 };
 
 export default Record;

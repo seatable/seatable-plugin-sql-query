@@ -76,10 +76,6 @@ class App extends React.Component {
     this.resetData();
   }
 
-  getCellValueDisplayString = (cellValue, column, {tables = [], collaborators = []} = {}) => {
-    return this.cellValueUtils.getCellValueDisplayString(cellValue, column, { tables, collaborators });
-  }
-
   resetData = () => {
     const views = this.getPluginSettings();
     let { currentViewIdx } = this.state;
@@ -124,12 +120,12 @@ class App extends React.Component {
     const { currentViewIdx, views } = this.state;
     const view = views[currentViewIdx];
     const { name } = view;
-    const { success, error_message, results, metadata: columns, isInternalError } = result;
+    const { success, error_message, results, metadata: columns, isInternalError, isActiveQueryId } = result;
     if (success) {
       try {
         const tables = this.dtable.getTables();
         const collaborators = window.app.state.collaborators;
-        const supportColumns = getDisplayColumns(columns);
+        const supportColumns = getDisplayColumns(columns, isActiveQueryId);
         const validResults = this.cellValueUtils.getExportRows(supportColumns, results, { tables, collaborators });
         const validColumns = this.cellValueUtils.getExportColumns(supportColumns);
         await this.dtable.importDataIntoNewTable(name, validColumns, validResults);
@@ -243,20 +239,26 @@ class App extends React.Component {
   }
 
   getTableName = (sql) => {
+    const upperSQL = sql.toUpperCase();
     const sqlArr = sql.split(' ');
-    const sqlFromIndex = sqlArr.findIndex(i => i === 'from');
+    const upperSqlArr = upperSQL.split(' ');
+    const sqlFromIndex = upperSqlArr.findIndex(i => i === 'FROM');
     if (sqlFromIndex === -1) return;
     const tableNameIndex = sqlFromIndex + 1;
     if (tableNameIndex > sqlArr.length) return;
     let tableName = sqlArr[tableNameIndex];
     if (!tableName) return;
-    const tableNameLength = tableName.length;
+    let tableNameLength = tableName.length;
     if (tableName.indexOf(';') === tableNameLength - 1) {
       tableName = tableName.slice(0, tableNameLength - 1);
     }
-    this.setState({tableName}, () => {
+    if (tableName.startsWith('`') && tableName.endsWith('`')) {
+      tableNameLength = tableName.length; 
+      tableName = tableName.slice(1, tableNameLength - 1);
+    }
+    this.setState({ tableName }, () => {
       const currentTable = this.dtable.getTableByName(tableName);
-      this.setState({currentTable});
+      this.setState({ currentTable });
     });
   }
 
@@ -321,7 +323,7 @@ class App extends React.Component {
           getCurrentHistorySqlOptions={this.getCurrentHistorySqlOptions}
           saveHistorySqlOptions={this.saveHistorySqlOptions}
           updateView={this.updateView}
-          getCellValueDisplayString={this.getCellValueDisplayString}
+          cellValueUtils={this.cellValueUtils}
           export={this.export}
           currentTable={this.state.currentTable}
           getLinkTableID={this.getLinkTableID}

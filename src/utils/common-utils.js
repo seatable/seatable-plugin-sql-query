@@ -169,14 +169,15 @@ export const convertValueToDtableLongTextValue = (value) => {
   return '';
 };
 
-export const getDisplayColumns = (columns) => {
+export const getDisplayColumns = (columns, isActiveQueryId) => {
   if (!Array.isArray(columns) || columns.length === 0) return [];
-  return columns.filter(column => {
+  const displayColumns = columns.filter(column => {
     const { type, key } = column;
     if (NOT_SUPPORT_COLUMN_TYPES.includes(type)) return false;
     if (NOT_DISPLAY_COLUMN_KEYS.includes(key)) return false;
     return true;
   });
+  return isActiveQueryId ? displayColumns : displayColumns.filter(column => column.key !== '_id');
 };
 
 export const addClassName = (originClassName, targetClassName) => {

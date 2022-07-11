@@ -11,6 +11,8 @@ const en = {
   "Delete_view": "Delete view",
   "Export_to_a_new_table": "Export to a new table",
   "Name_is_required": "Name is required",
+  "Name_cannot_contain_slash": "Name cannot contain slash",
+  "Name_cannot_contain_backslash": "Name cannot contain backslash",
   "New_view": "New view",
   "Name": "Name",
   "Cancel": "Cancel",
@@ -25,7 +27,8 @@ const en = {
   "The_number_of_columns_in_the_current_table_exceeds_the_limit": "The number of columns in the current table exceeds the limit.",
   "Rows_must_be_array": "Rows must be an array.",
   "All_files": "All files",
-  "Record_details": "Record details"
+  "Record_details": "Record details",
+  "Please_query_first": "Please query first"
 };
 
 export default en;

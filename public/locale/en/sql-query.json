@@ -11,6 +11,8 @@
   "Delete_view": "Delete view",
   "Export_to_a_new_table": "Export to a new table",
   "Name_is_required": "Name is required",
+  "Name_cannot_contain_slash": "Name cannot contain slash",
+  "Name_cannot_contain_backslash": "Name cannot contain backslash",
   "New_view": "New view",
   "Name": "Name",
   "Cancel": "Cancel",

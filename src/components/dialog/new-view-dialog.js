@@ -48,6 +48,14 @@ class NewViewDialog extends React.Component {
       this.setState({ errMessage: 'Name_is_required' });
       return;
     }
+    if (viewName.includes('/')) {
+      this.setState({ errMessage: 'Name_cannot_contain_slash' });
+      return;
+    }
+    if (viewName.includes('\\')) {
+      this.setState({ errMessage: 'Name_cannot_contain_backslash' });
+      return;
+    }
     this.props.onNewViewConfirm(viewName);
     this.props.onNewViewCancel();
   }
