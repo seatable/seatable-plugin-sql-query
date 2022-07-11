@@ -11,6 +11,7 @@ import SqlOptionsLocalStorage from './api/sql-options-local-storage';
 import { generatorViewId, getDisplayColumns } from './utils/common-utils';
 import { View } from './model';
 import CellValueUtils from './utils/cell-value-utils';
+import pluginContext from './plugin-context.js';
 
 import './assets/css/app.css';
 
@@ -22,6 +23,7 @@ class App extends React.Component {
       showDialog: props.showDialog || false,
       currentViewIdx: 0,
       views: [],
+      currentTable: {}
     };
     this.dtable = new DTable();
     this.sqlOptionsLocalStorage = null;
@@ -40,7 +42,7 @@ class App extends React.Component {
     const { isDevelopment } = this.props;
     if (isDevelopment) {
       // local develop
-      await this.dtable.init(window.dtablePluginConfig);
+      await this.dtable.init(pluginContext.getConfig());
       await this.dtable.syncWithServer();
       const { dtableUuid } = this.dtable.config;
       this.sqlOptionsLocalStorage = new SqlOptionsLocalStorage(dtableUuid);
@@ -170,7 +172,7 @@ class App extends React.Component {
     const originalIndex = updatedViews.indexOf(targetView);
     let targetIndex = updatedViews.indexOf(targetIndexView);
     // `relativePosition`: 'before'|'after'
-    targetIndex += relativePosition == 'before' ? 0 : 1;
+    targetIndex += relativePosition === 'before' ? 0 : 1;
 
     if (originalIndex < targetIndex) {
       if (targetIndex < updatedViews.length) {
@@ -239,11 +241,46 @@ class App extends React.Component {
   sqlQuery = (sql) => {
     const { isDevelopment } = this.props;
     const dtableAPI = isDevelopment ? this.dtable.dtableStore.dtableAPI : window.app.dtableStore.dtableAPI;
+    this.getTableName(sql);
     return dtableAPI.sqlQuery(sql);
+  }
+
+  getTableName = (sql) => {
+    const sqlArr = sql.split(' ');
+    const sqlFromIndex = sqlArr.findIndex(i => i === 'from');
+    if (sqlFromIndex === -1) return;
+    const tableNameIndex = sqlFromIndex + 1;
+    if (tableNameIndex > sqlArr.length) return;
+    let tableName = sqlArr[tableNameIndex];
+    if (!tableName) return;
+    const tableNameLength = tableName.length;
+    if (tableName.indexOf(';') === tableNameLength - 1) {
+      tableName = tableName.slice(0, tableNameLength - 1);
+    }
+    this.setState({tableName}, () => {
+      const currentTable = this.dtable.getTableByName(tableName);
+      this.setState({currentTable});
+    });
   }
 
   getTables = () => {
     return this.dtable.getTables();
+  }
+
+  getLinkTableID = (currentTableId, table_id, other_table_id) => {
+    return this.dtable.getLinkTableID(currentTableId, table_id, other_table_id);
+  }
+
+  getLinkedTableID = (currentTableId, table_id, other_table_id) => {
+    return this.dtable.getLinkedTableID(currentTableId, table_id, other_table_id);
+  }
+
+  getTableById = (tableId) => {
+    return this.dtable.getTableById(tableId);
+  }
+
+  getViewById = (table, view_id) => {
+    return this.dtable.getViewById(table, view_id);
   }
 
   getPluginMarginTop = () => {
@@ -289,6 +326,11 @@ class App extends React.Component {
           updateView={this.updateView}
           getCellValueDisplayString={this.getCellValueDisplayString}
           export={this.export}
+          currentTable={this.state.currentTable}
+          getLinkTableID={this.getLinkTableID}
+          getLinkedTableID={this.getLinkedTableID}
+          getTableById={this.getTableById}
+          getViewById={this.getViewById}
         />
       </div>
     );

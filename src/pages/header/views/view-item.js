@@ -108,7 +108,7 @@ class ViewItem extends Component {
 
     const droppedViewID = event.dataTransfer.getData('text/plain');
     const { _id } = this.props.view;
-    if (droppedViewID == _id) {
+    if (droppedViewID === _id) {
       return;
     }
     this.props.onMoveView(droppedViewID, _id, dropRelativePosition);
@@ -130,8 +130,8 @@ class ViewItem extends Component {
           onDrop={this.onDrop}
           className={`
           ${'view-item'}
-          ${dropRelativePosition == 'before' ? 'view-item-can-drop-before' : ''}
-          ${dropRelativePosition == 'after' ? 'view-item-can-drop-after' : ''}
+          ${dropRelativePosition === 'before' ? 'view-item-can-drop-before' : ''}
+          ${dropRelativePosition === 'after' ? 'view-item-can-drop-after' : ''}
         `}
         >
           <div

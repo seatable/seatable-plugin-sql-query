@@ -121,7 +121,7 @@ class RecordList extends Component {
     const displayRecords = records.slice(0, displayRecordsCount);
     const totalWidth = this.displayColumns.reduce((cur, nextItem) => { return (cur + nextItem.width); }, 0);
     const collaborators = window.app.state.collaborators;
-
+    
     return (
       <Fragment>
         <div className="sql-query-result success">
@@ -166,6 +166,11 @@ class RecordList extends Component {
             getUserCommonInfo={this.props.getUserCommonInfo}
             openEnlargeFormatter={this.openEnlargeFormatter}
             getCellValueDisplayString={this.props.getCellValueDisplayString}
+            currentTable={this.props.currentTable}
+            getLinkTableID={this.props.getLinkTableID}
+            getLinkedTableID={this.props.getLinkedTableID}
+            getTableById={this.props.getTableById}
+            getViewById={this.props.getViewById}
           />
         }
       </Fragment>
@@ -176,10 +181,15 @@ class RecordList extends Component {
 RecordList.propTypes = {
   records: PropTypes.array,
   columns: PropTypes.array,
+  currentTable: PropTypes.object,
   getOptionColors: PropTypes.func,
   getUserCommonInfo: PropTypes.func,
   getTables: PropTypes.func,
   getCellValueDisplayString: PropTypes.func,
+  getLinkTableID: PropTypes.func,
+  getLinkedTableID: PropTypes.func,
+  getTableById: PropTypes.func,
+  getViewById: PropTypes.func,
 };
 
 export default RecordList;

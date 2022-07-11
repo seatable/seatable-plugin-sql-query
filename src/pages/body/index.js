@@ -143,6 +143,11 @@ class Body extends Component {
           getUserCommonInfo={this.props.getUserCommonInfo}
           getTables={this.props.getTables}
           getCellValueDisplayString={this.props.getCellValueDisplayString}
+          currentTable={this.props.currentTable}
+          getLinkTableID={this.props.getLinkTableID}
+          getLinkedTableID={this.props.getLinkedTableID}
+          getTableById={this.props.getTableById}
+          getViewById={this.props.getViewById}
         />
       );
     }
@@ -196,6 +201,7 @@ class Body extends Component {
 
 Body.propTypes = {
   currentView: PropTypes.object,
+  currentTable: PropTypes.object,
   sqlQuery: PropTypes.func,
   getOptionColors: PropTypes.func,
   getUserCommonInfo: PropTypes.func,
@@ -204,7 +210,11 @@ Body.propTypes = {
   updateView: PropTypes.func,
   getTables: PropTypes.func,
   getCellValueDisplayString: PropTypes.func,
-  export: PropTypes.func,
+  export: PropTypes.func, 
+  getLinkTableID: PropTypes.func,
+  getLinkedTableID: PropTypes.func,
+  getTableById: PropTypes.func,
+  getViewById: PropTypes.func,
 };
 
 export default Body;

@@ -42,7 +42,7 @@ class CellFormatter extends React.Component {
     let { column, cellValue, collaborators, isSample } = this.props;
     const { type: columnType } = column || {};
     const containerClassName = `sql-query-${columnType}-formatter`;
-    
+
     switch(columnType) {
       case CELL_TYPE.TEXT: {
         if (!cellValue) return this.renderEmptyFormatter();
@@ -66,11 +66,12 @@ class CellFormatter extends React.Component {
           isSupportPreview={true}
           readOnly={true}
           downloadImage={this.downloadImage}
+          isSample={isSample}
         />;
       }
       case CELL_TYPE.FILE: {
         if (!cellValue || (Array.isArray(cellValue) && cellValue.length === 0)) return this.renderEmptyFormatter();
-        return <FileFormatter value={cellValue ? cellValue.filter(item => !!item) : []} containerClassName={containerClassName} />;
+        return <FileFormatter value={cellValue ? cellValue.filter(item => !!item) : []} isSample={isSample} containerClassName={containerClassName} />;
       }
       case CELL_TYPE.GEOLOCATION : {
         if (!cellValue) return this.renderEmptyFormatter();

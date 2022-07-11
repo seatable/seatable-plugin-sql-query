@@ -192,3 +192,33 @@ export const removeClassName = (originClassName, targetClassName) => {
   originClassNames.splice(targetClassNameIndex, 1);
   return originClassNames.join(' ');
 };
+
+export const getTableHiddenColumnKeys = (table, viewId, getViewById) => {
+  if (!table) return [];
+  const { views } = table;
+  if (viewId) {
+    const view = getViewById(table, viewId);
+    if (view) {
+      const { hidden_columns = [] } = view;
+      if (!Array.isArray(hidden_columns)) return [];
+
+      // avoid modifying referenced raw data
+      return [ ...hidden_columns ];
+    }
+    // view is not exist
+  }
+
+  // take the union of all view hidden columns in the current table
+  const isAllViewHasHiddenColumns = views.every(view => {
+    return view.hidden_columns && Array.isArray(view.hidden_columns) && view.hidden_columns.length > 0;
+  });
+  if (!isAllViewHasHiddenColumns) return [];
+  
+  let hiddenColumnKeys = [];
+  const { hidden_columns } = views[0];
+  hidden_columns.forEach(key => {
+    const isExist = views.every(view => view.hidden_columns.includes(key));
+    if (isExist) hiddenColumnKeys.push(key);
+  });
+  return hiddenColumnKeys;
+};

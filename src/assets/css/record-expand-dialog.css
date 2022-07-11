@@ -219,3 +219,38 @@
   width: fit-content;
   margin-left: 0;
 }
+
+.sql-query-link-ellipsis {
+  padding: 2px 6px;
+  cursor: pointer;
+  width: fit-content;
+  border-radius: 3px;
+  margin-top: 4px;
+  line-height: 20px;
+  opacity: .6;
+}
+
+/* row card */
+
+.sql-query-plugin-record-expand-dialog .sql-query-record-expand-item .row-card-item .sql-query-text-formatter,
+.sql-query-plugin-record-expand-dialog .sql-query-record-expand-item .row-card-item .sql-query-url-formatter,
+.sql-query-plugin-record-expand-dialog .sql-query-record-expand-item .row-card-item .sql-query-date-formatter,
+.sql-query-plugin-record-expand-dialog .sql-query-record-expand-item .row-card-item .sql-query-ctime-formatter,
+.sql-query-plugin-record-expand-dialog .sql-query-record-expand-item .row-card-item .sql-query-mtime-formatter,
+.sql-query-plugin-record-expand-dialog .sql-query-record-expand-item .row-card-item .sql-query-number-formatter,
+.sql-query-plugin-record-expand-dialog .sql-query-record-expand-item .row-card-item .sql-query-email-formatter,
+.sql-query-plugin-record-expand-dialog .sql-query-record-expand-item .row-card-item .sql-query-duration-formatter {
+  padding: 0;
+  border: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sql-query-plugin-record-expand-dialog .sql-query-record-expand-item .row-card-item .sql-query-file-formatter .file-item-icon,
+.sql-query-plugin-record-expand-dialog .sql-query-record-expand-item .row-card-item .sql-query-image-formatter .image-item {
+  width: 30px;
+  height: 30px;
+  border: none;
+}
+
