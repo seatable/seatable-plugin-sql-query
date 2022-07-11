@@ -124,7 +124,7 @@ class App extends React.Component {
     const { currentViewIdx, views } = this.state;
     const view = views[currentViewIdx];
     const { name } = view;
-    const { success, error_message, results, error_msg, metadata: columns, isInternalError } = result;
+    const { success, error_message, results, metadata: columns, isInternalError } = result;
     if (success) {
       try {
         const tables = this.dtable.getTables();
@@ -141,11 +141,8 @@ class App extends React.Component {
       }
       return;
     }
-    if (isInternalError) {
-      toaster.danger(intl.get(error_message));
-      return;
-    }
-    toaster.danger(error_message || error_msg);
+    const errorMessage = isInternalError ? intl.get(error_message) : error_message;
+    toaster.danger(errorMessage);
   }
 
   updateViews = (currentViewIdx, views, callBack) => {

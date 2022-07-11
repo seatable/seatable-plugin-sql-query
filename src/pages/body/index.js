@@ -62,6 +62,9 @@ class Body extends Component {
     if (!sql) {
       return { success: false, error_message: 'SQL_is_required', isInternalError: true };
     }
+    if (queryStatus === QUERY_STATUS.READY) {
+      return { success: false, error_message: 'Please_query_first', isInternalError: true };
+    }
     if (queryStatus === QUERY_STATUS.DOING) {
       return { success: false, error_message: 'Querying_try_again_later', isInternalError: true };
     }
@@ -78,7 +81,7 @@ class Body extends Component {
       this.props.sqlQuery(sql).then(res => {
         this.setState({ queryStatus: QUERY_STATUS.DONE, result: res.data, isOpen: false });
       }).catch(e => {
-        this.setState({ queryStatus: QUERY_STATUS.DONE, result: { error_msg: 'DtableDb Server Error.', isOpen: false } });
+        this.setState({ queryStatus: QUERY_STATUS.DONE, result: { error_message: 'DtableDb Server Error.', isOpen: false } });
       });
       const options = this.props.getCurrentHistorySqlOptions();
       const newOptions = options.includes(sql) ? options : [ sql.trim(), ...options ];
@@ -133,7 +136,7 @@ class Body extends Component {
         {intl.get('Querying')}
       </div>
     );
-    const { success, error_message, results, error_msg, metadata: columns } = result;
+    const { success, error_message, results, metadata: columns } = result;
     if (success) {
       return (
         <RecordList
@@ -153,7 +156,7 @@ class Body extends Component {
     }
     return (
       <div className="sql-query-result failed">
-        {error_message || error_msg}
+        {error_message}
       </div>
     );
   }
