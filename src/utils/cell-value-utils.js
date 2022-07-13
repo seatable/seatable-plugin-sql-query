@@ -1,5 +1,6 @@
 import { CELL_TYPE, FORMULA_RESULT_TYPE } from 'dtable-sdk';
 import { getFormulaArrayValue, convertValueToDtableLongTextValue, isArrayFormalColumn } from './common-utils';
+import { UNKNOWN_TYPE } from '../constants';
 
 class CellValueUtils {
 
@@ -86,6 +87,19 @@ class CellValueUtils {
       return cellValue.join(', ');
     }
     return cellValue;
+  }
+
+  getUnknownDisplayString = (cellValue) => {
+    if (Array.isArray(cellValue)) {
+      return cellValue.length > 0 ? cellValue.map(item => item + '').join(', ') : '';
+    }
+    if (Object.prototype.toString.call(cellValue) === '[object Object]') {
+      return '';
+    }
+    if (cellValue || cellValue === 0) {
+      return cellValue + '';
+    }
+    return '';
   }
 
   getCellValueDisplayString = (cellValue, column, {tables = [], collaborators = []} = {}) => {
@@ -246,6 +260,8 @@ class CellValueUtils {
           }
         } else if (type === CELL_TYPE.BUTTON) {
           //
+        } else if (type === UNKNOWN_TYPE) {
+          newRow[name] = this.getUnknownDisplayString(row[key]);
         } else {
           newRow[name] = row[key];
         }
@@ -272,6 +288,9 @@ class CellValueUtils {
           }
           return { ...column, data: { format }, type: CELL_TYPE.DATE };
         }
+        return { ...column, data: null, type: CELL_TYPE.TEXT };
+      }
+      if (type === UNKNOWN_TYPE) {
         return { ...column, data: null, type: CELL_TYPE.TEXT };
       }
       return column;

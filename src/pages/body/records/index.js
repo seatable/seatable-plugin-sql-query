@@ -138,11 +138,11 @@ class RecordList extends Component {
                         record={record}
                         index={index}
                         collaborators={collaborators}
+                        cellValueUtils={this.props.cellValueUtils}
                         onOpenRecordExpandDialog={this.onOpenRecordExpandDialog}
                         openEnlargeFormatter={this.openEnlargeFormatter}
                         getOptionColors={this.props.getOptionColors}
                         getUserCommonInfo={this.props.getUserCommonInfo}
-                        getCellValueDisplayString={this.props.getCellValueDisplayString}
                       />
                     );
                   })}
@@ -161,11 +161,11 @@ class RecordList extends Component {
             record={expandedRecord}
             columns={this.columns}
             collaborators={collaborators}
+            cellValueUtils={this.props.cellValueUtils}
             closeRecordExpandDialog={this.closeRecordExpandDialog}
             getOptionColors={this.props.getOptionColors}
             getUserCommonInfo={this.props.getUserCommonInfo}
             openEnlargeFormatter={this.openEnlargeFormatter}
-            getCellValueDisplayString={this.props.getCellValueDisplayString}
             currentTable={this.props.currentTable}
             getLinkTableID={this.props.getLinkTableID}
             getLinkedTableID={this.props.getLinkedTableID}
@@ -182,10 +182,10 @@ RecordList.propTypes = {
   records: PropTypes.array,
   columns: PropTypes.array,
   currentTable: PropTypes.object,
+  cellValueUtils: PropTypes.object,
   getOptionColors: PropTypes.func,
   getUserCommonInfo: PropTypes.func,
   getTables: PropTypes.func,
-  getCellValueDisplayString: PropTypes.func,
   getLinkTableID: PropTypes.func,
   getLinkedTableID: PropTypes.func,
   getTableById: PropTypes.func,

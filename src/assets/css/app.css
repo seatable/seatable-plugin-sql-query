@@ -35,8 +35,10 @@
   width: 100%;
 }
 
-.sql-query-plugin .sql-query-input-dropdown-item{
+.sql-query-plugin .sql-query-input-dropdown-item {
   padding: 3px 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .sql-query-plugin .sql-query-input-dropdown-item:hover {

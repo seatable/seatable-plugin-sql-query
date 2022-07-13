@@ -41,13 +41,13 @@ class RowCard extends PureComponent {
         >
           <Formatter
             isRowExpand={false}
+            isSample={true}
             cellValue={cellValue}
             column={column}
             row={row}
+            cellValueUtils={this.props.cellValueUtils}
             getOptionColors={this.props.getOptionColors}
-            isSample={true}
             collaborators={this.props.collaborators}
-            getCellValueDisplayString={this.props.getCellValueDisplayString}
           />
         </div>
       );
@@ -97,9 +97,9 @@ class RowCard extends PureComponent {
                 cellValue={row[nameColumn.key]}
                 column={nameColumn}
                 row={row}
-                getOptionColors={this.props.getOptionColors}
                 collaborators={this.props.collaborators}
-                getCellValueDisplayString={this.props.getCellValueDisplayString}
+                cellValueUtils={this.props.cellValueUtils}
+                getOptionColors={this.props.getOptionColors}
               />
             </div>
             {isShowRemoveCardItemBtn && (
@@ -128,13 +128,13 @@ RowCard.propTypes = {
   formulaRows: PropTypes.object,
   columns: PropTypes.array,
   collaborators: PropTypes.array,
+  cellValueUtils: PropTypes.object,
   onSelectRow: PropTypes.func,
   removeCardItem: PropTypes.func,
   onRef: PropTypes.func,
   setItemScrollLeft: PropTypes.func,
   closeSelect: PropTypes.func,
   getOptionColors: PropTypes.func,
-  getCellValueDisplayString: PropTypes.func,
 };
 
 export default RowCard;

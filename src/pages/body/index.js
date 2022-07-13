@@ -18,6 +18,7 @@ class Body extends Component {
       queryStatus: QUERY_STATUS.READY,
       displayHistoryOptions: [],
     };
+    this.isActiveQueryId = true;
   }
 
   componentDidMount() {
@@ -62,23 +63,42 @@ class Body extends Component {
     if (!sql) {
       return { success: false, error_message: 'SQL_is_required', isInternalError: true };
     }
+    if (queryStatus === QUERY_STATUS.READY) {
+      return { success: false, error_message: 'Please_query_first', isInternalError: true };
+    }
     if (queryStatus === QUERY_STATUS.DOING) {
       return { success: false, error_message: 'Querying_try_again_later', isInternalError: true };
     }
-    return result;
+    return { ...result, isActiveQueryId: this.isActiveQueryId };
+  }
+
+  getValidSQL = (sql) => {
+    const upperSQL = sql.toUpperCase();
+    const selectIndex = upperSQL.indexOf('SELECT ');
+    const fromIndex = upperSQL.indexOf(' FROM ');
+    const selectedColumnsString = sql.slice(selectIndex + 7, fromIndex);
+    if (selectedColumnsString.indexOf('*') > -1) {
+      return sql;
+    }
+    if (selectedColumnsString.indexOf('_id') > -1) {
+      return sql;
+    }
+    this.isActiveQueryId = false;
+    return sql.slice(0, selectIndex + 7) + `\`_id\`, ${selectedColumnsString}` + sql.slice(fromIndex, );
   }
 
   onQuery = () => {
     const { sql, queryStatus } = this.state;
     if (!sql) return;
+    const validSQL = this.getValidSQL(sql);
     if (queryStatus === QUERY_STATUS.DOING) return;
     const { currentView } = this.props;
     this.inputRef.blur();
     this.setState({ queryStatus: QUERY_STATUS.DOING }, () => {
-      this.props.sqlQuery(sql).then(res => {
+      this.props.sqlQuery(validSQL).then(res => {
         this.setState({ queryStatus: QUERY_STATUS.DONE, result: res.data, isOpen: false });
       }).catch(e => {
-        this.setState({ queryStatus: QUERY_STATUS.DONE, result: { error_msg: 'DtableDb Server Error.', isOpen: false } });
+        this.setState({ queryStatus: QUERY_STATUS.DONE, result: { error_message: 'DtableDb Server Error.', isOpen: false } });
       });
       const options = this.props.getCurrentHistorySqlOptions();
       const newOptions = options.includes(sql) ? options : [ sql.trim(), ...options ];
@@ -133,16 +153,17 @@ class Body extends Component {
         {intl.get('Querying')}
       </div>
     );
-    const { success, error_message, results, error_msg, metadata: columns } = result;
+    const { success, error_message, results, metadata: columns } = result;
+    const displayColumns = this.isActiveQueryId ? columns : columns.filter(column => column.key !== '_id');
     if (success) {
       return (
         <RecordList
-          columns={columns}
+          columns={displayColumns}
           records={results}
           getOptionColors={this.props.getOptionColors}
           getUserCommonInfo={this.props.getUserCommonInfo}
           getTables={this.props.getTables}
-          getCellValueDisplayString={this.props.getCellValueDisplayString}
+          cellValueUtils={this.props.cellValueUtils}
           currentTable={this.props.currentTable}
           getLinkTableID={this.props.getLinkTableID}
           getLinkedTableID={this.props.getLinkedTableID}
@@ -153,7 +174,7 @@ class Body extends Component {
     }
     return (
       <div className="sql-query-result failed">
-        {error_message || error_msg}
+        {error_message}
       </div>
     );
   }
@@ -202,6 +223,7 @@ class Body extends Component {
 Body.propTypes = {
   currentView: PropTypes.object,
   currentTable: PropTypes.object,
+  cellValueUtils: PropTypes.object,
   sqlQuery: PropTypes.func,
   getOptionColors: PropTypes.func,
   getUserCommonInfo: PropTypes.func,
@@ -209,7 +231,6 @@ Body.propTypes = {
   saveHistorySqlOptions: PropTypes.func,
   updateView: PropTypes.func,
   getTables: PropTypes.func,
-  getCellValueDisplayString: PropTypes.func,
   export: PropTypes.func, 
   getLinkTableID: PropTypes.func,
   getLinkedTableID: PropTypes.func,

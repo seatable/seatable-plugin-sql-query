@@ -105,7 +105,7 @@ function LinkFormatter(props) {
           {cellValue.map((value, index) => {
             if (!value) return null;
             return <div key={`link-${displayColumnType}-${index}`} className="sql-query-link-item">
-              {props.getCellValueDisplayString(value, displayColumn)}
+              {props.cellValueUtils.getCellValueDisplayString(value, displayColumn)}
             </div>;
           })}
         </div>
@@ -140,9 +140,9 @@ function LinkFormatter(props) {
           {cellValue.map((value, index) => {
             if (!value) return null;
             const valueDisplayString = Array.isArray(value) ? 
-              props.getCellValueDisplayString(value, displayColumn)
+              props.cellValueUtils.getCellValueDisplayString(value, displayColumn)
               :
-              props.getCellValueDisplayString([value], displayColumn);
+              props.cellValueUtils.getCellValueDisplayString([value], displayColumn);
             return (
               <div key={`link-${displayColumnType}-${index}`} className="sql-query-link-item">
                 {valueDisplayString}
@@ -159,9 +159,9 @@ function LinkFormatter(props) {
           {cellValue.map((value, index) => {
             if (!value) return null;
             const valueDisplayString = Array.isArray(value) ? 
-              props.getCellValueDisplayString(value, displayColumn, { collaborators })
+              props.cellValueUtils.getCellValueDisplayString(value, displayColumn, { collaborators })
               :
-              props.getCellValueDisplayString([value], displayColumn, { collaborators });
+              props.cellValueUtils.getCellValueDisplayString([value], displayColumn, { collaborators });
             return (
               <div key={`link-${displayColumnType}-${index}`} className="sql-query-link-item">
                 {valueDisplayString}
@@ -191,7 +191,7 @@ function LinkFormatter(props) {
             if (!value) return null;
             return (
               <div key={`link-${displayColumnType}-${index}`} className="sql-query-link-item">
-                {props.getCellValueDisplayString(value, displayColumn)}
+                {props.cellValueUtils.getCellValueDisplayString(value, displayColumn)}
               </div>
             );
           })}
@@ -222,7 +222,7 @@ function LinkFormatter(props) {
             if (!value) return null;
             return (
               <div key={`link-${displayColumnType}-${index}`} className="sql-query-link-item">
-                {props.getCellValueDisplayString(value, displayColumn, { collaborators, tables })}
+                {props.cellValueUtils.getCellValueDisplayString(value, displayColumn, { collaborators, tables })}
               </div>
             );
           })}
@@ -267,10 +267,10 @@ LinkFormatter.propTypes = {
   value: PropTypes.any,
   collaborators: PropTypes.array,
   containerClassName: PropTypes.string,
+  cellValueUtils: PropTypes.object,
   renderEmptyFormatter: PropTypes.func,
   getOptionColors: PropTypes.func,
   getUserCommonInfo: PropTypes.func,
-  getCellValueDisplayString: PropTypes.func,
 };
 
 export default LinkFormatter;

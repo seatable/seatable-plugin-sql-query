@@ -25,6 +25,7 @@ import { CELL_TYPE } from 'dtable-sdk';
 import CreatorFormatter from './creator-formatter';
 import LinkFormatter from './link-formatter';
 import FormulaFormatter from './formula-formatter';
+import { UNKNOWN_TYPE } from '../../constants';
 
 class CellFormatter extends React.Component {
 
@@ -165,12 +166,17 @@ class CellFormatter extends React.Component {
             column={column}
             collaborators={collaborators}
             containerClassName={containerClassName}
+            cellValueUtils={this.props.cellValueUtils}
             renderEmptyFormatter={this.renderEmptyFormatter}
             getOptionColors={this.props.getOptionColors}
             getUserCommonInfo={this.props.getUserCommonInfo}
-            getCellValueDisplayString={this.props.getCellValueDisplayString}
           />
         );
+      }
+      case UNKNOWN_TYPE: {
+        const displayValue = this.props.cellValueUtils.getUnknownDisplayString(cellValue);
+        if (!displayValue) return this.renderEmptyFormatter();
+        return <TextFormatter value={displayValue} containerClassName={`${containerClassName} sql-query-text-formatter`} />;
       }
       default:
         return this.renderEmptyFormatter();
@@ -190,10 +196,10 @@ CellFormatter.propTypes = {
   isSample: PropTypes.bool,
   column: PropTypes.object.isRequired,
   cellValue: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number, PropTypes.string, PropTypes.object, PropTypes.array]),
+  cellValueUtils: PropTypes.object,
   collaborators: PropTypes.array,
   getOptionColors: PropTypes.func,
   getUserCommonInfo: PropTypes.func,
-  getCellValueDisplayString: PropTypes.func,
 };
 
 export default CellFormatter;

@@ -34,6 +34,8 @@ export const PRIVATE_COLUMN_KEY_TYPE_MAP = {
   '_participants': PARTICIPANTS_TYPE, // Currently, the content of the _participants attribute is not returned
 };
 
+export const UNKNOWN_TYPE = 'unknown';
+
 export const FORMULA_COLUMN_TYPES = [
   CELL_TYPE.FORMULA,
   CELL_TYPE.LINK_FORMULA
@@ -71,10 +73,9 @@ export const DEFAULT_SETTINGS = [
   new View({ _id: '0000' }),
 ];
 
-
 export const SEQUENCE_COLUMN_WIDTH = 80;
 
-export const FIRST_COLUMN_SHADOW = '2px 0 5px -2px hsla(0,0%,53.3%,.3)';
+export const FIRST_COLUMN_SHADOW = '2px 0 5px -2px hsla(0, 0%, 53.3%, .3)';
 
 export const TABLE_SUPPORT_EDIT_TYPE_MAP = {
   [CELL_TYPE.TEXT]: true,

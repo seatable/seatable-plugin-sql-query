@@ -175,10 +175,10 @@ class LinkFormatter extends Component {
               rowIdx={rowIdx}
               nameColumn={this.nameColumn}
               columns={columns}
+              cellValueUtils={this.props.cellValueUtils}
               removeCardItem={this.removeLink}
               collaborators={this.props.collaborators}
               formulaRows={this.linkedTableFormulaRows}
-              getCellValueDisplayString={this.props.getCellValueDisplayString}
             />
           );
         })}
@@ -214,11 +214,11 @@ LinkFormatter.propTypes = {
   value: PropTypes.array,
   collaborators: PropTypes.array,
   column: PropTypes.object,
+  cellValueUtils: PropTypes.object,
   getLinkTableID: PropTypes.func,
   getLinkedTableID: PropTypes.func,
   getTableById: PropTypes.func,
   getViewById: PropTypes.func,
-  getCellValueDisplayString: PropTypes.func,
 };
 
 export default LinkFormatter;

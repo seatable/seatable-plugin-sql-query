@@ -11,6 +11,8 @@
   "Delete_view": "Ansicht löschen",
   "Export_to_a_new_table": "In neue Tabelle exportieren",
   "Name_is_required": "Der Name ist eine Pflichtangabe.",
+  "Name_cannot_contain_slash": "Name cannot contain slash",
+  "Name_cannot_contain_backslash": "Name cannot contain backslash",
   "New_view": "Neue Ansicht",
   "Name": "Name",
   "Cancel": "Abbrechen",
@@ -25,5 +27,6 @@
   "The_number_of_columns_in_the_current_table_exceeds_the_limit": "Die Anzahl der Spalten in der aktuellen Tabelle überschreitet das Limit.",
   "Rows_must_be_array": "Zeilen müssen ein Array sein.",
   "All_files": "Alle Dateien",
-  "Record_details": "Details des Eintrags"
+  "Record_details": "Details des Eintrags",
+  "Please_query_first": "Please query first"
 }

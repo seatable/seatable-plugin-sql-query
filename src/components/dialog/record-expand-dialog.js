@@ -59,13 +59,13 @@ class RecordExpandDialog extends Component {
                   <LinkFormatter 
                     column={column}
                     record={record}
+                    collaborators={collaborators}
+                    cellValueUtils={this.props.cellValueUtils}
                     currentTable={this.props.currentTable}
                     getLinkTableID={this.props.getLinkTableID}
                     getLinkedTableID={this.props.getLinkedTableID}
                     getTableById={this.props.getTableById}
                     getViewById={this.props.getViewById}
-                    collaborators={collaborators}
-                    getCellValueDisplayString={this.props.getCellValueDisplayString}
                   />
                 }
                 {type !== CELL_TYPE.LINK &&
@@ -74,12 +74,12 @@ class RecordExpandDialog extends Component {
                     column={column}
                     cellValue={value}
                     collaborators={collaborators}
+                    cellValueUtils={this.props.cellValueUtils}
                     empty={{
                       component: <div className="sql-query-record-expand-empty"></div>
                     }}
                     getUserCommonInfo={this.props.getUserCommonInfo}
                     getOptionColors={this.props.getOptionColors}
-                    getCellValueDisplayString={this.props.getCellValueDisplayString}
                   />
                 }
               </div>
@@ -96,11 +96,11 @@ RecordExpandDialog.propTypes = {
   columns: PropTypes.array.isRequired,
   collaborators: PropTypes.array.isRequired,
   currentTable: PropTypes.object,
+  cellValueUtils: PropTypes.object,
   closeRecordExpandDialog: PropTypes.func.isRequired,
   getUserCommonInfo: PropTypes.func.isRequired,
   getOptionColors: PropTypes.func.isRequired,
   openEnlargeFormatter: PropTypes.func,
-  getCellValueDisplayString: PropTypes.func,
   getLinkTableID: PropTypes.func,
   getLinkedTableID: PropTypes.func,
   getTableById: PropTypes.func,
