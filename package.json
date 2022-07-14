@@ -1,6 +1,6 @@
 {
   "name": "sql-query",
-  "version": "0.0.43",
+  "version": "0.0.44",
   "private": true,
   "dependencies": {
     "deep-copy": "^1.4.2",

@@ -74,6 +74,8 @@ class Body extends Component {
 
   getValidSQL = (sql) => {
     const upperSQL = sql.toUpperCase();
+    const trimUpperSQL = upperSQL.trim();
+    if (!trimUpperSQL.startsWith('SELECT ')) return sql;
     const selectIndex = upperSQL.indexOf('SELECT ');
     const fromIndex = upperSQL.indexOf(' FROM ');
     const selectedColumnsString = sql.slice(selectIndex + 7, fromIndex);
