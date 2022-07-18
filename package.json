@@ -1,10 +1,10 @@
 {
   "name": "sql-query",
-  "version": "0.0.44",
+  "version": "0.0.45",
   "private": true,
   "dependencies": {
     "deep-copy": "^1.4.2",
-    "dtable-sdk": "0.0.152",
+    "dtable-sdk": "0.0.154",
     "dtable-ui-component": "0.1.83",
     "glamor": "^2.20.40",
     "is-hotkey": "^0.1.4",
@@ -101,8 +101,8 @@
     "babel-preset-react-app": "^9.1.1",
     "camelcase": "^5.3.1",
     "case-sensitive-paths-webpack-plugin": "2.3.0",
-    "dayjs": "1.10.7",
     "css-loader": "3.4.2",
+    "dayjs": "1.10.7",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
     "eslint": "^6.6.0",
