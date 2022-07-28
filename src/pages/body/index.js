@@ -75,6 +75,7 @@ class Body extends Component {
   getValidSQL = (sql) => {
     const upperSQL = sql.toUpperCase();
     if (!upperSQL.trim().startsWith('SELECT ')) return sql;
+    if (upperSQL.indexOf('GROUP BY') > -1) return sql;
     const selectIndex = upperSQL.indexOf('SELECT ');
     const fromIndex = upperSQL.indexOf(' FROM ');
     const selectedColumnsString = sql.slice(selectIndex + 7, fromIndex);
@@ -91,8 +92,9 @@ class Body extends Component {
   onQuery = () => {
     const { sql, queryStatus } = this.state;
     if (!sql) return;
-    const validSQL = this.getValidSQL(sql);
     if (queryStatus === QUERY_STATUS.DOING) return;
+    this.isActiveQueryId = true;
+    const validSQL = this.getValidSQL(sql);
     const { currentView } = this.props;
     this.inputRef.blur();
     this.setState({ queryStatus: QUERY_STATUS.DOING }, () => {

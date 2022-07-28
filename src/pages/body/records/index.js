@@ -17,7 +17,7 @@ class RecordList extends Component {
   constructor(props) {
     super(props);
     const frozenColumnsCount = 1;
-    const displayColumns = getDisplayColumns(props.columns);
+    const displayColumns = getDisplayColumns(props.columns, true);
     this.state = {
       isLoading: false,
       displayRecordsCount: PER_DISPLAY_COUNT,
