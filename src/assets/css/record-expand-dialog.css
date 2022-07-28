@@ -92,12 +92,10 @@
 
 .sql-query-plugin-record-expand-dialog .sql-query-record-expand-item .sql-query-link-formatter {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   overflow: hidden;
   width: 100%;
   height: auto;
-  margin-top: -2px;
 }
 
 .sql-query-plugin-record-expand-dialog .sql-query-record-expand-item .sql-query-link-formatter .sql-query-link-item {

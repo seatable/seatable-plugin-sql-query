@@ -25,6 +25,7 @@ class LinkFormatter extends Component {
     this.linkedTableColumns = [];
     this.initLinkConfig(props);
     this.state = {
+      isHasMore: true,
       isShowEditor: false,
       isShowNewLinkedRecordDialog: false,
       displayValue: props.value || [],
@@ -93,14 +94,22 @@ class LinkFormatter extends Component {
   }
 
   listTableRowsByIds = (dtableUuid, tableName, rowIds) => {
+    if (!Array.isArray(rowIds) || rowIds.length === 0) {
+      this.setState({ 
+        isHasMore: false,
+        isLoading: false,
+      });
+      return;
+    }
     const { showLinksLen } = this.state;
+    const { record } = this.props;
     dtableDbAPI.listTableRowsByIds(dtableUuid, tableName, rowIds).then(res => {
       const { metadata: columns, results: rows } = res.data;
       this.linkedTableViewRows = rows;
       const { filteredRows } = this.state;
       const newRows = filteredRows.concat(rows);
       this.linkedTableFormulaRows = this.getFormulaRowsFormArchivedRows(columns, newRows);
-      const isHasMore = rows.length === DEFAULT_LINKS_NUMBER;
+      const isHasMore = record._id && rows.length === DEFAULT_LINKS_NUMBER;
       this.setState({ filteredRows: newRows, 
         isHasMore,
         isLoading: false, 
