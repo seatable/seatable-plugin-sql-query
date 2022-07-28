@@ -31,7 +31,7 @@ class LinkFormatter extends Component {
       displayValue: props.value || [],
       isLoading: true,
       linkedRecords: [],
-      showLinksLen: 10,
+      showLinksLen: 0,
       filteredRows: [],
     };
   }
