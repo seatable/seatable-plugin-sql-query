@@ -6,7 +6,7 @@ import { getTableHiddenColumnKeys } from '../../utils/common-utils';
 import { LINK_UNSHOW_COLUMN_TYPE } from '../../constants';
 import { getColumnWidth } from '../../utils/utils';
 import RowCard from './row-card';
-import dtableDbAPI from '../../api/dtable-da-api';
+import dtableDbAPI from '../../api/dtable-db-api';
 import pluginContext from '../../plugin-context';
 
 const DEFAULT_LINKS_NUMBER = 10;
