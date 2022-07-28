@@ -6,7 +6,7 @@ import { getTableHiddenColumnKeys } from '../../utils/common-utils';
 import { LINK_UNSHOW_COLUMN_TYPE } from '../../constants';
 import { getColumnWidth } from '../../utils/utils';
 import RowCard from './row-card';
-import dtableDbAPI from '../../api/dtable-da-api';
+import dtableDbAPI from '../../api/dtable-db-api';
 import pluginContext from '../../plugin-context';
 
 const DEFAULT_LINKS_NUMBER = 10;
@@ -30,7 +30,7 @@ class LinkFormatter extends Component {
       displayValue: props.value || [],
       isLoading: true,
       linkedRecords: [],
-      showLinksLen: 10,
+      showLinksLen: 0,
       filteredRows: [],
     };
   }
@@ -93,14 +93,22 @@ class LinkFormatter extends Component {
   }
 
   listTableRowsByIds = (dtableUuid, tableName, rowIds) => {
+    if (!Array.isArray(rowIds) || rowIds.length === 0) {
+      this.setState({ 
+        isHasMore: false,
+        isLoading: false,
+      });
+      return;
+    }
     const { showLinksLen } = this.state;
     dtableDbAPI.listTableRowsByIds(dtableUuid, tableName, rowIds).then(res => {
-      const { metadata: columns, results: rows } = res.data;
-      this.linkedTableViewRows = rows;
+      const { metadata: columns, results: rows, success } = res.data;
+      if (!success) return;
       const { filteredRows } = this.state;
+      const { record } = this.props;
       const newRows = filteredRows.concat(rows);
       this.linkedTableFormulaRows = this.getFormulaRowsFormArchivedRows(columns, newRows);
-      const isHasMore = rows.length === DEFAULT_LINKS_NUMBER;
+      const isHasMore = record._id && rows.length === DEFAULT_LINKS_NUMBER;
       this.setState({ filteredRows: newRows, 
         isHasMore,
         isLoading: false, 
