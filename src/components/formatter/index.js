@@ -30,7 +30,9 @@ import { UNKNOWN_TYPE } from '../../constants';
 class CellFormatter extends React.Component {
 
   renderEmptyFormatter = () => {
-    return null;
+    const { component } = this.props;
+    const { emptyComponent } = component || {};
+    return emptyComponent || null;
   }
 
   downloadImage = (url) => {
@@ -101,6 +103,7 @@ class CellFormatter extends React.Component {
         return <SingleSelectFormatter value={cellValue} options={options || []} containerClassName={containerClassName} />;
       }
       case CELL_TYPE.CHECKBOX: {
+        if (!cellValue) return this.renderEmptyFormatter();
         return <CheckboxFormatter value={cellValue} containerClassName={containerClassName} />;
       }
       case CELL_TYPE.CTIME: {
@@ -198,6 +201,7 @@ CellFormatter.propTypes = {
   cellValue: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number, PropTypes.string, PropTypes.object, PropTypes.array]),
   cellValueUtils: PropTypes.object,
   collaborators: PropTypes.array,
+  component: PropTypes.object,
   getOptionColors: PropTypes.func,
   getUserCommonInfo: PropTypes.func,
 };

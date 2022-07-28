@@ -11,8 +11,8 @@ const de = {
   "Delete_view": "Ansicht löschen",
   "Export_to_a_new_table": "In neue Tabelle exportieren",
   "Name_is_required": "Der Name ist eine Pflichtangabe.",
-  "Name_cannot_contain_slash": "Name cannot contain slash",
-  "Name_cannot_contain_backslash": "Name cannot contain backslash",
+  "Name_cannot_contain_slash": "Der Name darf keinen Schrägstrich ( / ) enthalten.",
+  "Name_cannot_contain_backslash": "Der Name darf keinen Backslash ( \\ ) enthalten.",
   "New_view": "Neue Ansicht",
   "Name": "Name",
   "Cancel": "Abbrechen",
@@ -28,7 +28,7 @@ const de = {
   "Rows_must_be_array": "Zeilen müssen ein Array sein.",
   "All_files": "Alle Dateien",
   "Record_details": "Details des Eintrags",
-  "Please_query_first": "Please query first"
+  "Please_query_first": "Zunächst Abfrage ausführen"
 };
 
 export default de;
