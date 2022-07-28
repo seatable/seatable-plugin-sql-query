@@ -104,8 +104,8 @@ class LinkFormatter extends Component {
     const { showLinksLen } = this.state;
     const { record } = this.props;
     dtableDbAPI.listTableRowsByIds(dtableUuid, tableName, rowIds).then(res => {
-      const { metadata: columns, results: rows } = res.data;
-      this.linkedTableViewRows = rows;
+      const { metadata: columns, results: rows, success } = res.data;
+      if (!success) return;
       const { filteredRows } = this.state;
       const newRows = filteredRows.concat(rows);
       this.linkedTableFormulaRows = this.getFormulaRowsFormArchivedRows(columns, newRows);

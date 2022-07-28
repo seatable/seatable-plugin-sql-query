@@ -98,6 +98,12 @@
   height: auto;
 }
 
+.sql-query-plugin-record-expand-dialog .sql-query-record-expand-item .sql-query-checkbox-formatter {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #e0e0e0;
+}
+
 .sql-query-plugin-record-expand-dialog .sql-query-record-expand-item .sql-query-link-formatter .sql-query-link-item {
   flex-shrink: 0;
   height: 20px;

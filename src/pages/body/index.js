@@ -92,8 +92,9 @@ class Body extends Component {
   onQuery = () => {
     const { sql, queryStatus } = this.state;
     if (!sql) return;
-    const validSQL = this.getValidSQL(sql);
     if (queryStatus === QUERY_STATUS.DOING) return;
+    this.isActiveQueryId = true;
+    const validSQL = this.getValidSQL(sql);
     const { currentView } = this.props;
     this.inputRef.blur();
     this.setState({ queryStatus: QUERY_STATUS.DOING }, () => {

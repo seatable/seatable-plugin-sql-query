@@ -48,6 +48,7 @@ class RowCard extends PureComponent {
             cellValueUtils={this.props.cellValueUtils}
             getOptionColors={this.props.getOptionColors}
             collaborators={this.props.collaborators}
+            component={{ emptyComponent: <div className="row-card-cell-value-empty"></div> }}
           />
         </div>
       );
