@@ -11,8 +11,8 @@ const fr = {
   "Delete_view": "Supprimer la vue",
   "Export_to_a_new_table": "Exporter dans un nouveau tableau",
   "Name_is_required": "Le nom est nécessaire.",
-  "Name_cannot_contain_slash": "Name cannot contain slash",
-  "Name_cannot_contain_backslash": "Name cannot contain backslash",
+  "Name_cannot_contain_slash": "Le nom ne doit pas contenir de barre oblique ( / ).",
+  "Name_cannot_contain_backslash": "Le nom ne doit pas contenir de barre oblique inverse ( \\ ).",
   "New_view": "Nouvelle vue",
   "Name": "Nom",
   "Cancel": "Annuler",
@@ -28,7 +28,7 @@ const fr = {
   "Rows_must_be_array": "Les lignes doivent être un array.",
   "All_files": "Tous les fichiers",
   "Record_details": "Détails de l'enregistrement",
-  "Please_query_first": "Please query first"
+  "Please_query_first": "Veuillez d'abord faire votre requête"
 };
 
 export default fr;
