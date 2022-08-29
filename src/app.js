@@ -12,6 +12,7 @@ import { generatorViewId, getDisplayColumns } from './utils/common-utils';
 import { View } from './model';
 import CellValueUtils from './utils/cell-value-utils';
 import pluginContext from './plugin-context.js';
+import { initScrollBar } from './utils/utils';
 
 import './assets/css/app.css';
 
@@ -19,6 +20,7 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
+    initScrollBar();
     this.state = {
       showDialog: props.showDialog || false,
       currentViewIdx: 0,

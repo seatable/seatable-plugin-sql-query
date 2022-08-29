@@ -33,3 +33,27 @@ export const getColumnWidth = (column) => {
     }
   }
 };
+
+export const debounce = (fn, wait = 100) => {
+  let timer = null;
+  return (...args) => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(() => {
+      fn.apply(this, args);
+    }, wait);
+  };
+};
+
+export const initScrollBar = () => {
+  const isWin = (navigator.platform === 'Win32') || (navigator.platform === 'Windows');
+  if (isWin) {
+    const style = document.createElement('style');
+    document.head.appendChild(style);
+    const sheet = style.sheet;
+    sheet.addRule('div::-webkit-scrollbar','width: 8px;height: 8px;');
+    sheet.addRule('div::-webkit-scrollbar-button','display: none;');
+    sheet.addRule('div::-webkit-scrollbar-thumb','background-color: rgb(206, 206, 212);border-radius: 10px;');
+  }
+};
