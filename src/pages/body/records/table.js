@@ -17,11 +17,11 @@ class Table extends Component {
     this.state = {
       isLoading: props.isLoading,
       displayRecordsCount: PER_DISPLAY_COUNT,
-
+      sqlQueryResultContentRef: null,
     };
   }
 
-  getMoreResults = (e) => {
+  getMoreResults = () => {
     const originClassName = this.sqlQueryResultContainerRef.className;
     let newClassName;
     const { scrollLeft, scrollTop } = this.sqlQueryResultContainerRef;
@@ -76,24 +76,20 @@ class Table extends Component {
 
   setScrollLeft = (scrollLeft) => {
     this.sqlQueryResultContainerRef.scrollLeft = scrollLeft;
-    this.setState({ sqlQueryResultContainerRef: this.sqlQueryResultContainerRef });
   }
 
   setScrollTop = (scrollTop) => {
     this.sqlQueryResultContainerRef.scrollTop = scrollTop;
-    this.setState({ sqlQueryResultContainerRef: this.sqlQueryResultContainerRef });
   }
 
   setContainerRef = (ref) => {
     this.sqlQueryResultContainerRef = ref;
-    this.setState({ sqlQueryResultContainerRef: ref });
   }
 
   setContentRef = (ref) => {
     this.sqlQueryResultContentRef = ref;
     this.setState({ sqlQueryResultContentRef: ref });
   }
-
 
   render() {
     const { records, columns, collaborators } = this.props;

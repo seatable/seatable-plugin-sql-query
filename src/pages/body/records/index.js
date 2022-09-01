@@ -97,7 +97,7 @@ class RecordList extends Component {
     return (
       <Fragment>
         <div className="sql-query-result success">
-          <div className="sql-query-result-container">
+          <div className="sql-query-result-container position-relative">
             <div className="sql-query-result-content">
               <Table
                 isLoading={isLoading}
