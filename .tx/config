@@ -1,8 +1,9 @@
 [main]
 host = https://www.transifex.com
 
-[seatable_plugins.sql-query]
-file_filter = public/locale/<lang>/sql-query.json
-source_file = public/locale/en/sql-query.json
-source_lang = en_US
-type = KEYVALUEJSON
+[o:seafile-ltd:p:seatable_plugins:r:sql-query]
+file_filter   = public/locale/<lang>/sql-query.json
+source_file   = public/locale/en/sql-query.json
+type          = KEYVALUEJSON
+minimum_perc  = 0
+resource_name = sql-query

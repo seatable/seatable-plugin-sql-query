@@ -3,7 +3,7 @@ import intl from 'react-intl-universal';
 import PropTypes from 'prop-types';
 import { Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import isHotkey from 'is-hotkey';
-import { QUERY_STATUS } from '../../constants';
+import { QUERY_STATUS, SQL_STATISTIC_KEY_WORDS } from '../../constants';
 import RecordList from './records';
 import ExportButton from './widgets/export-button';
 
@@ -83,6 +83,9 @@ class Body extends Component {
       return sql;
     }
     if (selectedColumnsString.indexOf('_id') > -1) {
+      return sql;
+    }
+    if (SQL_STATISTIC_KEY_WORDS.filter(item => selectedColumnsString.indexOf(item) > -1).length > 0) {
       return sql;
     }
     this.isActiveQueryId = false;
