@@ -102,6 +102,14 @@ export const LINK_UNSHOW_COLUMN_TYPE = [
   CELL_TYPE.BUTTON
 ];
 
+export const SQL_STATISTIC_KEY_WORDS = [
+  'SUM',
+  'COUNT',
+  'MAX',
+  'MIN',
+  'AVG',
+];
+
 export const LEFT_NAV = 280;
 export const ROW_DETAIL_PADDING = 40 * 2;
 export const ROW_DETAIL_MARGIN = 20 * 2;
