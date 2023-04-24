@@ -47,7 +47,7 @@ class Header extends Component {
             </div>
           </div>
           <div className="sql-query-plugin-header-right" onClick={this.props.onCloseToggle}>
-            <i title={intl.get('Close')} className="dtable-font dtable-icon-fork-number"></i>
+            <i title={intl.get('Close')} className="dtable-font dtable-icon-x"></i>
           </div>
         </div>
         {isNewViewDialogDisplay && (
