@@ -195,9 +195,11 @@
   text-align: center;
   line-height: 24px;
   opacity: .5;
+  color: #000;
+  font-weight: 700;
 }
 
 .sql-query-plugin .sql-query-plugin-header .sql-query-plugin-header-right:hover {
   cursor: pointer;
-  opacity: .8;
+  opacity: .75;
 }
