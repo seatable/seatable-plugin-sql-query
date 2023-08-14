@@ -88,7 +88,7 @@ class CellFormatter extends React.Component {
         if (!cellValue || typeof cellValue !== 'string') return this.renderEmptyFormatter();
         const { data } = column;
         const { format } = data || {};
-        return <DateFormatter value={cellValue.replace('T', ' ').replace('Z', '')} format={format} containerClassName={containerClassName} />;
+        return <DateFormatter value={cellValue} format={format} containerClassName={containerClassName} />;
       }
       case CELL_TYPE.MULTIPLE_SELECT: {
         if (!cellValue || cellValue.length === 0) return this.renderEmptyFormatter();

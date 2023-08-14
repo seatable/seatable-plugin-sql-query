@@ -63,7 +63,7 @@ function LinkFormatter(props) {
             const { format } = displayColumnData || {};
             return <DateFormatter
               key={`link-${displayColumnType}-${index}`}
-              value={value.replace('T', ' ').replace('Z', '')}
+              value={value}
               format={format}
               containerClassName="sql-query-link-item"
             />;

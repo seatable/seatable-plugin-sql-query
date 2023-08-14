@@ -44,10 +44,10 @@ class CellValueUtils {
     if (Array.isArray(cellValue)) {
       if (cellValue.length === 0) return '';
       const validCellValue = cellValue.filter(item => item && typeof item === 'string');
-      return validCellValue.map(item => this.dtable.getDateDisplayString(item.replace('T', ' ').replace('Z', ''), columnData));
+      return validCellValue.map(item => this.dtable.getDateDisplayString(item, columnData));
     }
     if (!cellValue || typeof cellValue !== 'string') return '';
-    return this.dtable.getDateDisplayString(cellValue.replace('T', ' ').replace('Z', ''), columnData);
+    return this.dtable.getDateDisplayString(cellValue, columnData);
   }
 
   getMultipleOptionName = (options, cellVal) => {
@@ -253,7 +253,7 @@ class CellValueUtils {
                 format = data.format ;
               }
               format = format.indexOf('HH:mm') > -1 ? 'YYYY-MM-DD HH:mm' : 'YYYY-MM-DD';
-              newRow[name] = cellValue && typeof cellValue === 'string' ? this.dtable.getDateDisplayString(cellValue.replace('T', ' ').replace('Z', ''), { format }) : '';
+              newRow[name] = cellValue && typeof cellValue === 'string' ? this.dtable.getDateDisplayString(cellValue, { format }) : '';
             } else {
               newRow[name] = this.getCellValueDisplayString(validCellValue, column, { tables, collaborators });
             }
