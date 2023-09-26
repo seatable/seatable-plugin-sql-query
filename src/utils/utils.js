@@ -47,7 +47,9 @@ export const debounce = (fn, wait = 100) => {
 };
 
 export const initScrollBar = () => {
-  const isWin = (navigator.platform === 'Win32') || (navigator.platform === 'Windows');
+  const userAgentData = navigator.userAgentData;
+  const { platform } = userAgentData;
+  const isWin = (platform === 'Win32') || (platform === 'Windows');
   if (isWin) {
     const style = document.createElement('style');
     document.head.appendChild(style);

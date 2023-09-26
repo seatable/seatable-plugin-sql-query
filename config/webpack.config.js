@@ -12,9 +12,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const safePostCssParser = require('postcss-safe-parser');
-// const ManifestPlugin = require('webpack-manifest-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
-// const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
@@ -582,48 +580,6 @@ module.exports = function(webpackEnv) {
           filename: 'static/css/[name].css',
           chunkFilename: 'static/css/[name].chunk.css',
         }),
-      // Generate an asset manifest file with the following content:
-      // - "files" key: Mapping of all asset filenames to their corresponding
-      //   output file so that tools can pick it up without having to parse
-      //   `index.html`
-      // - "entrypoints" key: Array of files which are included in `index.html`,
-      //   can be used to reconstruct the HTML if necessary
-      // new ManifestPlugin({
-      //   fileName: 'asset-manifest.json',
-      //   publicPath: publicPath,
-      //   generate: (seed, files, entrypoints) => {
-      //     const manifestFiles = files.reduce((manifest, file) => {
-      //       manifest[file.name] = file.path;
-      //       return manifest;
-      //     }, seed);
-      //     const entrypointFiles = entrypoints.main.filter(
-      //       fileName => !fileName.endsWith('.map')
-      //     );
-
-      //     return {
-      //       files: manifestFiles,
-      //       entrypoints: entrypointFiles,
-      //     };
-      //   },
-      // }),
-      // Generate a service worker script that will precache, and keep up to date,
-      // the HTML & assets that are part of the Webpack build.
-      // isEnvProduction &&
-      //   new WorkboxWebpackPlugin.GenerateSW({
-      //     clientsClaim: true,
-      //     exclude: [/\.map$/, /asset-manifest\.json$/],
-      //     importWorkboxFrom: 'cdn',
-      //     navigateFallback: publicUrl + '/index.html',
-      //     navigateFallbackBlacklist: [
-      //       // Exclude URLs starting with /_, as they're likely an API call
-      //       new RegExp('^/_'),
-      //       // Exclude any URLs whose last part seems to be a file extension
-      //       // as they're likely a resource and not a SPA route.
-      //       // URLs containing a "?" character won't be blacklisted as they're likely
-      //       // a route with query params (e.g. auth callbacks).
-      //       new RegExp('/[^/?]+\\.[^/]+$'),
-      //     ],
-      //   }),
       // TypeScript type checking
       useTypeScript &&
         new ForkTsCheckerWebpackPlugin({
