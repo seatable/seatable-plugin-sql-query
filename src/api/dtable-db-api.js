@@ -38,6 +38,16 @@ class DTableDbAPI {
     return this.req.post(url, data);
   }
 
+  sqlQuery(dtableUuid, sql, parameters, convert_keys = false) {
+    this.init();
+    const url = 'api/v1/query/'+ dtableUuid;
+    let data = { sql: sql, convert_keys };
+    if (parameters) {
+      data['parameters'] = parameters;
+    }
+    return this.req.post(url, data);
+  }
+
 }
 
 const dtableDbAPI = new DTableDbAPI();

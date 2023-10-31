@@ -13,6 +13,7 @@ import { View } from './model';
 import CellValueUtils from './utils/cell-value-utils';
 import pluginContext from './plugin-context.js';
 import { initScrollBar } from './utils/utils';
+import dtableDbAPI from './api/dtable-db-api.js';
 
 import './assets/css/app.css';
 
@@ -234,10 +235,9 @@ class App extends React.Component {
   }
 
   sqlQuery = (sql) => {
-    const { isDevelopment } = this.props;
-    const dtableAPI = isDevelopment ? this.dtable.dtableStore.dtableAPI : window.app.dtableStore.dtableAPI;
     this.getTableName(sql);
-    return dtableAPI.sqlQuery(sql);
+    const dtableUuid = pluginContext.getSetting('dtableUuid');
+    return dtableDbAPI.sqlQuery(dtableUuid, sql);
   }
 
   getTableName = (sql) => {
