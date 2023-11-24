@@ -26,7 +26,8 @@ class ViewItem extends Component {
     }
   }
 
-  toggleDropdown = () => {
+  toggleDropdown = (event) => {
+    event.stopPropagation && event.stopPropagation();
     let menuPosition;
     if (!this.state.isDropdownMenuOpen) {
       const { bottom, left } = this.viewRef.getBoundingClientRect();
