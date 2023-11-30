@@ -182,11 +182,9 @@ class Table extends Component {
           columns={displayColumns}
           record={record}
           index={recordIndex}
-          collaborators={this.props.collaborators}
           cellValueUtils={this.props.cellValueUtils}
           openEnlargeFormatter={this.props.openEnlargeFormatter}
           getUserCommonInfo={this.props.getUserCommonInfo}
-          getOptionColors={this.props.getOptionColors}
           onOpenRecordExpandDialog={this.props.onOpenRecordExpandDialog}
         />
       );
@@ -249,12 +247,10 @@ Table.propTypes = {
   isLoading: PropTypes.bool,
   records: PropTypes.array,
   columns: PropTypes.array,
-  collaborators: PropTypes.array,
   columnsMetrics: PropTypes.object,
   cellValueUtils: PropTypes.object,
   onOpenRecordExpandDialog: PropTypes.func,
   openEnlargeFormatter: PropTypes.func,
-  getOptionColors: PropTypes.func,
   getUserCommonInfo: PropTypes.func,
 };
 

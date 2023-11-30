@@ -178,13 +178,10 @@ class Body extends Component {
           records={results}
           gridWidth={gridWidth}
           gridHeight={gridHeight}
-          getOptionColors={this.props.getOptionColors}
           getUserCommonInfo={this.props.getUserCommonInfo}
           getTables={this.props.getTables}
           cellValueUtils={this.props.cellValueUtils}
           currentTable={this.props.currentTable}
-          getLinkTableID={this.props.getLinkTableID}
-          getLinkedTableID={this.props.getLinkedTableID}
           getTableById={this.props.getTableById}
           getViewById={this.props.getViewById}
         />
@@ -245,15 +242,12 @@ Body.propTypes = {
   currentTable: PropTypes.object,
   cellValueUtils: PropTypes.object,
   sqlQuery: PropTypes.func,
-  getOptionColors: PropTypes.func,
   getUserCommonInfo: PropTypes.func,
   getCurrentHistorySqlOptions: PropTypes.func,
   saveHistorySqlOptions: PropTypes.func,
   updateView: PropTypes.func,
   getTables: PropTypes.func,
-  export: PropTypes.func, 
-  getLinkTableID: PropTypes.func,
-  getLinkedTableID: PropTypes.func,
+  export: PropTypes.func,
   getTableById: PropTypes.func,
   getViewById: PropTypes.func,
 };

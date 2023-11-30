@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import DTable from 'dtable-sdk';
 import deepCopy from 'deep-copy';
 import intl from 'react-intl-universal';
 import { toaster } from 'dtable-ui-component';
-import './locale/index.js';
+import { getTableByName, getTableById, getViewById } from 'dtable-utils';
 import { PLUGIN_NAME, DEFAULT_SETTINGS } from './constants';
 import { Header, Body } from './pages';
 import SqlOptionsLocalStorage from './api/sql-options-local-storage';
 import { generatorViewId, getDisplayColumns } from './utils/common-utils';
 import { View } from './model';
 import CellValueUtils from './utils/cell-value-utils';
-import pluginContext from './plugin-context.js';
 import { initScrollBar } from './utils/utils';
-import dtableDbAPI from './api/dtable-db-api.js';
+import dtableDbAPI from './api/dtable-db-api';
+
+import './locale';
 
 import './assets/css/app.css';
 
@@ -28,9 +28,8 @@ class App extends React.Component {
       views: [],
       currentTable: {}
     };
-    this.dtable = new DTable();
     this.sqlOptionsLocalStorage = null;
-    this.cellValueUtils = new CellValueUtils({ dtable: this.dtable });
+    this.cellValueUtils = new CellValueUtils();
   }
 
   componentDidMount() {
@@ -39,33 +38,18 @@ class App extends React.Component {
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({ showDialog: nextProps.showDialog });
-  } 
+  }
 
   async initPluginDTableData() {
     const { isDevelopment } = this.props;
     if (isDevelopment) {
       // local develop
-      await this.dtable.init(pluginContext.getConfig());
-      await this.dtable.syncWithServer();
-      const { dtableUuid } = this.dtable.config;
-      this.sqlOptionsLocalStorage = new SqlOptionsLocalStorage(dtableUuid);
-      let relatedUsersRes = await this.dtable.dtableStore.dtableAPI.getTableRelatedUsers();
-      window.app = {
-        state: {
-          collaborators: relatedUsersRes.data.user_list,
-        },
-        collaboratorsCache: []
-      };
-      this.dtable.subscribe('dtable-connect', () => { this.onDTableConnect(); });
-    } else { 
-      // integrated to dtable app
-      this.dtable.initInBrowser(window.app.dtableStore);
-      const { dtableUuid } = window.app.dtableStore.dtableSettings;
-      this.sqlOptionsLocalStorage = new SqlOptionsLocalStorage(dtableUuid);
+      window.dtableSDK.subscribe('dtable-connect', () => { this.onDTableConnect(); });
     }
+    this.sqlOptionsLocalStorage = new SqlOptionsLocalStorage(window.dtable.dtableUuid);
 
-    this.dtable.subscribe('local-dtable-changed', () => { this.onDTableChanged(); });
-    this.dtable.subscribe('remote-dtable-changed', () => { this.onDTableChanged(); });
+    window.dtableSDK.subscribe('local-dtable-changed', () => { this.onDTableChanged(); });
+    window.dtableSDK.subscribe('remote-dtable-changed', () => { this.onDTableChanged(); });
 
     const views = this.getPluginSettings();
     this.setState({ currentViewIdx: 0, views });
@@ -126,12 +110,12 @@ class App extends React.Component {
     const { success, error_message, results, metadata: columns, isInternalError, isActiveQueryId } = result;
     if (success) {
       try {
-        const tables = this.dtable.getTables();
+        const tables = window.dtableSDK.getTables();
         const collaborators = window.app.state.collaborators;
         const supportColumns = getDisplayColumns(columns, isActiveQueryId);
         const validResults = this.cellValueUtils.getExportRows(supportColumns, results, { tables, collaborators });
         const validColumns = this.cellValueUtils.getExportColumns(supportColumns);
-        await this.dtable.importDataIntoNewTable(name, validColumns, validResults);
+        await window.dtableSDK.importDataIntoNewTable(name, validColumns, validResults);
         this.onCloseToggle();
         window.app.onSelectTable && window.app.onSelectTable(tables.length - 1);
       } catch (error) {
@@ -191,10 +175,10 @@ class App extends React.Component {
       currentViewIdx: newSelectedViewIndex
     }, () => {
       //setSelectedViewIds(KEY_SELECTED_VIEW_IDS, newSelectedViewIndex);
-      this.dtable.updatePluginSettings(PLUGIN_NAME, plugin_settings);
+      window.dtableSDK.updatePluginSettings(PLUGIN_NAME, plugin_settings);
     });
   }
- 
+
   onSelectView = (viewId) => {
     const { views } = this.state;
     let viewIdx = views.findIndex(view => view._id === viewId);
@@ -204,11 +188,11 @@ class App extends React.Component {
   }
 
   getPluginSettings = () => {
-    return this.dtable.getPluginSettings(PLUGIN_NAME) || DEFAULT_SETTINGS;
+    return window.dtableSDK.getPluginSettings(PLUGIN_NAME) || DEFAULT_SETTINGS;
   }
 
   updatePluginSettings = (pluginSettings) => {
-    this.dtable.updatePluginSettings(PLUGIN_NAME, pluginSettings);
+    window.dtableSDK.updatePluginSettings(PLUGIN_NAME, pluginSettings);
   }
 
   getCurrentHistorySqlOptions = () => {
@@ -225,18 +209,13 @@ class App extends React.Component {
     window.app.onClosePlugin && window.app.onClosePlugin();
   }
 
-  getOptionColors = () => {
-    return this.dtable.getOptionColors();
-  }
-
   getUserCommonInfo = (email, avatar_size) => {
-    const dtableWebAPI = window.dtableWebAPI || this.dtable.dtableWebAPI;
-    return dtableWebAPI.getUserCommonInfo(email, avatar_size);
+    return window.dtableWebAPI.getUserCommonInfo(email, avatar_size);
   }
 
   sqlQuery = (sql) => {
     this.getTableName(sql);
-    const dtableUuid = pluginContext.getSetting('dtableUuid');
+    const dtableUuid = window.dtable.dtableUuid;
     return dtableDbAPI.sqlQuery(dtableUuid, sql);
   }
 
@@ -255,39 +234,33 @@ class App extends React.Component {
       tableName = tableName.slice(0, tableNameLength - 1);
     }
     if (tableName.startsWith('`') && tableName.endsWith('`')) {
-      tableNameLength = tableName.length; 
+      tableNameLength = tableName.length;
       tableName = tableName.slice(1, tableNameLength - 1);
     }
     this.setState({ tableName }, () => {
-      const currentTable = this.dtable.getTableByName(tableName);
+      const tables = this.getTables();
+      const currentTable = getTableByName(tables, tableName);
       this.setState({ currentTable });
     });
   }
 
   getTables = () => {
-    return this.dtable.getTables();
-  }
-
-  getLinkTableID = (currentTableId, table_id, other_table_id) => {
-    return this.dtable.getLinkTableID(currentTableId, table_id, other_table_id);
-  }
-
-  getLinkedTableID = (currentTableId, table_id, other_table_id) => {
-    return this.dtable.getLinkedTableID(currentTableId, table_id, other_table_id);
+    return window.dtableSDK.getTables();
   }
 
   getTableById = (tableId) => {
-    return this.dtable.getTableById(tableId);
+    const tables = this.getTables();
+    return getTableById(tables, tableId);
   }
 
   getViewById = (table, view_id) => {
-    return this.dtable.getViewById(table, view_id);
+    return getViewById(table.views, view_id);
   }
 
   getPluginMarginTop = () => {
     // 48: view toolbar height, 7: plugin wrapper occludes the height of tables bar
     let marginTop = 48 + 7;
-    let currentTable = this.dtable.dtableStore.currentTable;
+    let currentTable = window.dtableSDK.getActiveTable();
     if (!currentTable) {
       const tables = this.getTables();
       currentTable = tables[0];
@@ -320,7 +293,6 @@ class App extends React.Component {
           currentView={views[currentViewIdx]}
           getTables={this.getTables}
           sqlQuery={this.sqlQuery}
-          getOptionColors={this.getOptionColors}
           getUserCommonInfo={this.getUserCommonInfo}
           getCurrentHistorySqlOptions={this.getCurrentHistorySqlOptions}
           saveHistorySqlOptions={this.saveHistorySqlOptions}
@@ -328,8 +300,6 @@ class App extends React.Component {
           cellValueUtils={this.cellValueUtils}
           export={this.export}
           currentTable={this.state.currentTable}
-          getLinkTableID={this.getLinkTableID}
-          getLinkedTableID={this.getLinkedTableID}
           getTableById={this.getTableById}
           getViewById={this.getViewById}
         />

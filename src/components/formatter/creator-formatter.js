@@ -28,7 +28,7 @@ class DtableCreatorFormatter extends Component {
       return;
     }
     this.setState({ isDataLoaded: false, collaborator: null });
-    const { collaborators } = this.props;
+    const { collaborators } = window.app.state;
     let collaborator = collaborators && collaborators.find(c => c.email === cellValue);
     if (collaborator) {
       this.setState({ isDataLoaded: true, collaborator });
@@ -62,7 +62,7 @@ class DtableCreatorFormatter extends Component {
       this.setState({ isDataLoaded: true, collaborator });
       return;
     }
-    
+
     this.props.getUserCommonInfo(cellValue).then(res => {
       collaborator = res.data;
       collaboratorsCache[cellValue] = collaborator;
@@ -96,7 +96,6 @@ class DtableCreatorFormatter extends Component {
 DtableCreatorFormatter.propTypes = {
   cellValue: PropTypes.string,
   containerClassName: PropTypes.string,
-  collaborators: PropTypes.array,
   getUserCommonInfo: PropTypes.func,
   renderEmptyFormatter: PropTypes.func,
 };

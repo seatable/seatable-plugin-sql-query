@@ -1,29 +1,29 @@
-import { CELL_TYPE } from 'dtable-sdk';
+import { CellType } from 'dtable-utils';
 
 export const getColumnWidth = (column) => {
   let { type, data } = column;
   switch (type) {
-    case CELL_TYPE.DATE: {
+    case CellType.DATE: {
       let isShowHourAndMinute = data && data.format && data.format.indexOf('HH:mm') > -1;
       return isShowHourAndMinute ? 160 : 100;
     }
-    case CELL_TYPE.CTIME:
-    case CELL_TYPE.MTIME:
-    case CELL_TYPE.LINK:
-    case CELL_TYPE.GEOLOCATION: {
+    case CellType.CTIME:
+    case CellType.MTIME:
+    case CellType.LINK:
+    case CellType.GEOLOCATION: {
       return 160;
     }
-    case CELL_TYPE.COLLABORATOR: {
+    case CellType.COLLABORATOR: {
       return 100;
     }
-    case CELL_TYPE.CHECKBOX: {
+    case CellType.CHECKBOX: {
       return 40;
     }
-    case CELL_TYPE.NUMBER:
-    case CELL_TYPE.AUTO_NUMBER: {
+    case CellType.NUMBER:
+    case CellType.AUTO_NUMBER: {
       return 120;
     }
-    case CELL_TYPE.RATE: {
+    case CellType.RATE: {
       const { rate_max_number } = data || {};
       const rateMaxNumber = rate_max_number || 5;
       return 16 * rateMaxNumber + 20;
