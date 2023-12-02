@@ -40,14 +40,14 @@
 }
 
 /* record header --- columns */
-.sql-query-plugin .sql-query-result.success .sql-query-result-table-row.sql-query-result-table-header-row {
-  height: 33px;
-  background-color: #F9F9F9;
-  width: fit-content;
+.sql-query-plugin .sql-query-result.success .sql-query-result-table-header-row {
   position: sticky;
+  width: fit-content;
+  height: 33px;
   left: 0;
   top: 0;
   z-index: 2;
+  background-color: #F9F9F9;
 }
 
 .sql-query-plugin .sql-query-result.success .sql-query-result-table-fix-left-cell {
@@ -76,12 +76,13 @@
 }
 
 .sql-query-plugin .sql-query-result.success .sql-query-result-table-row {
-  height: 33px;
-  width: fit-content;
-  border-bottom: 1px solid #ccc;
+  position: relative;
   display: inline-flex;
   margin-top: 0;
   margin-bottom: 0;
+  width: 100%;
+  height: 33px;
+  border-bottom: 1px solid #ccc;
   background-color: #FFF;
 }
 
@@ -95,8 +96,10 @@
 }
 
 .sql-query-plugin .sql-query-result.success .sql-query-result-table-cell {
-  height: 100%;
   overflow: hidden;
+  position: absolute;
+  padding: 6px 8px;
+  height: 100%;
   text-overflow: ellipsis;
   white-space: nowrap;
   border-right: 1px solid #ccc;

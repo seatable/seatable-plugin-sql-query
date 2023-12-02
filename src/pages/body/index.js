@@ -128,6 +128,14 @@ class Body extends Component {
     });
   }
 
+  getGridWidth = () => {
+    return this.sqlQueryRefRef ? this.sqlQueryRefRef.offsetWidth - 32 : 0;
+  }
+
+  getGridHeight = () => {
+    return this.sqlQueryRefRef ? this.sqlQueryRefRef.offsetHeight -32 : 0;
+  }
+
   renderHistorySqlOptions = () => {
     if (!this.props) return '';
     const { displayHistoryOptions } = this.state;
@@ -161,11 +169,15 @@ class Body extends Component {
     );
     const { success, error_message, results, metadata: columns } = result;
     const displayColumns = this.isActiveQueryId ? columns : columns.filter(column => column.key !== '_id');
+    const gridWidth = this.getGridWidth();
+    const gridHeight = this.getGridHeight();
     if (success) {
       return (
         <RecordList
           columns={displayColumns}
           records={results}
+          gridWidth={gridWidth}
+          gridHeight={gridHeight}
           getOptionColors={this.props.getOptionColors}
           getUserCommonInfo={this.props.getUserCommonInfo}
           getTables={this.props.getTables}
@@ -220,7 +232,9 @@ class Body extends Component {
             export={this.props.export}
           />
         </div>
-        {this.renderResult()}
+        <div className="search-result-wrapper" ref={ref => this.sqlQueryRefRef = ref}>
+          {this.renderResult()}
+        </div>
       </div>
     );
   }

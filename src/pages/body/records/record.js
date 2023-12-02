@@ -6,18 +6,17 @@ import { INDEX_COLUMN_TYPE, FILE_COLUMN_TYPES } from '../../../constants';
 
 function Record(props) {
   const { columns, record, index, collaborators } = props;
-  let totalWidth = 0;
 
   return (
     <div className="sql-query-result-table-row record-height-default">
       {columns.map((column) => {
-        const { key, name, width, type, data, isFrozen, isLastFrozen } = column;
+        const { key, name, width, type, data, isFrozen, isLastFrozen, left } = column;
         let style = {};
         let className = 'sql-query-result-table-cell ';
         if (isFrozen) {
-          style['position'] = 'sticky';
-          style['left'] = totalWidth;
-          totalWidth += width;
+          style.position = 'sticky';
+          style.zIndex = 1;
+          style.left = left;
           className = className + 'sql-query-result-table-fix-left-cell ';
         }
         if (isFrozen && isLastFrozen) {
@@ -56,7 +55,7 @@ function Record(props) {
           <div
             key={`${key}-${{index}}`}
             className={className}
-            style={{ ...style, width, maxWidth: width, minWidth: width }}
+            style={{ ...style, width, maxWidth: width, minWidth: width, left }}
             onDoubleClick={FILE_COLUMN_TYPES.includes(type) ? () => props.openEnlargeFormatter(column, value) : () => {}}
           >
             <CellFormatter
