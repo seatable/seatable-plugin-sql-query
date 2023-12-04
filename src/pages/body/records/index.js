@@ -82,8 +82,6 @@ class RecordList extends Component {
     this.setState({ isShowRecordExpandDialog: false, expandedRecord: {} });
   }
 
-
-
   render() {
     const { records } = this.props;
     if (!Array.isArray(records) || records.length === 0) {

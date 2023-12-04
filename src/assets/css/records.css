@@ -80,9 +80,9 @@
   display: inline-flex;
   margin-top: 0;
   margin-bottom: 0;
+  border-bottom: 1px solid #ccc;
   width: 100%;
   height: 33px;
-  border-bottom: 1px solid #ccc;
   background-color: #FFF;
 }
 
@@ -96,14 +96,13 @@
 }
 
 .sql-query-plugin .sql-query-result.success .sql-query-result-table-cell {
-  overflow: hidden;
   position: absolute;
-  padding: 6px 8px;
-  height: 100%;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   border-right: 1px solid #ccc;
   padding: 0 8px;
+  height: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .sql-query-plugin .sql-query-result.success .sql-query-result-table-cell.index {

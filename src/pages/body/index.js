@@ -133,7 +133,7 @@ class Body extends Component {
   }
 
   getGridHeight = () => {
-    return this.sqlQueryRefRef ? this.sqlQueryRefRef.offsetHeight -32 : 0;
+    return this.sqlQueryRefRef ? this.sqlQueryRefRef.offsetHeight - 32 : 0;
   }
 
   renderHistorySqlOptions = () => {

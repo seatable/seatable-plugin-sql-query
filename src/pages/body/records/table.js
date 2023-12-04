@@ -150,7 +150,12 @@ class Table extends Component {
   }
 
   setScrollLeft = (scrollLeft) => {
-    this.sqlQueryResultContainerRef.scrollLeft = scrollLeft;
+    const containerWidth = this.sqlQueryResultContainerRef.offsetWidth;
+    const { columnsMetrics } = this.props;
+    const { totalColumnsWidth } = columnsMetrics;
+    // Calculate how many times magnified
+    const magnification = totalColumnsWidth / (totalColumnsWidth - containerWidth);
+    this.sqlQueryResultContainerRef.scrollLeft = scrollLeft * magnification;
   }
 
   setScrollTop = (scrollTop) => {
@@ -206,7 +211,6 @@ class Table extends Component {
     }
     return recordsDOMS;
   }
-
 
   render() {
     const { records, columns, columnsMetrics } = this.props;
