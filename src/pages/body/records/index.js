@@ -7,6 +7,7 @@ import { INDEX_COLUMN, PRIVATE_COLUMN_KEY_TYPE_MAP } from '../../../constants';
 import { getCellRecordWidth, getDisplayColumns } from '../../../utils/common-utils';
 import EnlargeFormatter from '../../../components/formatter/enlarge-formatter';
 import Table from './table';
+import { calculateColumnsMetrics } from '../../../utils/column-metrics';
 
 import '../../../assets/css/records.css';
 
@@ -54,6 +55,7 @@ class RecordList extends Component {
         isLastFrozen: columnIndex === frozenColumnsCount - 1,
       };
     });
+    this.columnsMetrics = calculateColumnsMetrics(this.displayColumns);
     this.sqlQueryResultRef = null;
     this.sqlQueryResultContentRef = null;
   }
@@ -93,17 +95,19 @@ class RecordList extends Component {
     }
     const { isLoading, isShowEnlargeFormatter, enlargeFormatterProps, isShowRecordExpandDialog, expandedRecord } = this.state;
     const collaborators = window.app.state.collaborators;
-    
     return (
       <Fragment>
         <div className="sql-query-result success">
-          <div className="sql-query-result-container position-relative">
+          <div className="sql-query-result-container position-relative" ref={ref => this.searchQueryResRef = ref}>
             <div className="sql-query-result-content">
               <Table
                 isLoading={isLoading}
                 records={records}
                 columns={this.displayColumns}
                 collaborators={collaborators}
+                gridWidth={this.props.gridWidth}
+                gridHeight={this.props.gridHeight}
+                columnsMetrics={this.columnsMetrics}
                 cellValueUtils={this.props.cellValueUtils}
                 onOpenRecordExpandDialog={this.onOpenRecordExpandDialog}
                 openEnlargeFormatter={this.openEnlargeFormatter}
@@ -139,6 +143,8 @@ class RecordList extends Component {
 }
 
 RecordList.propTypes = {
+  gridWidth: PropTypes.number,
+  gridHeight: PropTypes.number,
   records: PropTypes.array,
   columns: PropTypes.array,
   currentTable: PropTypes.object,

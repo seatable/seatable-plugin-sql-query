@@ -4,16 +4,17 @@ import Field from './column';
 
 function HeaderRecord(props) {
   const { columns } = props;
-  let totalWidth = 0;
+
   return (
     <div className="sql-query-result-table-row sql-query-result-table-header-row">
       {columns.map(column => {
+        const { left } = column;
         let style = {};
         let className = '';
         if (column.isFrozen) {
-          style['position'] = 'sticky';
-          style['left'] = totalWidth;
-          totalWidth += column.width;
+          style.position = 'sticky';
+          style.zIndex = 1;
+          style.left = left;
           className = 'sql-query-result-table-fix-left-cell ';
         }
         if (column.isFrozen && column.isLastFrozen) {

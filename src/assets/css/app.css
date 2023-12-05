@@ -75,7 +75,12 @@
 .sql-query-plugin .sql-query-result {
   height: calc(100% - 56px);
   width: 100%;
+}
+
+.sql-query-plugin .search-result-wrapper {
   padding: 16px 16px;
+  height: 100%;
+  width: 100%;
 }
 
 .sql-query-plugin .sql-query-result.doing {

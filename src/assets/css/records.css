@@ -40,14 +40,17 @@
 }
 
 /* record header --- columns */
-.sql-query-plugin .sql-query-result.success .sql-query-result-table-row.sql-query-result-table-header-row {
-  height: 33px;
-  background-color: #F9F9F9;
+.sql-query-plugin .sql-query-result.success .sql-query-result-table-header-row {
   width: fit-content;
-  position: sticky;
+  height: 33px;
   left: 0;
   top: 0;
   z-index: 2;
+}
+
+.sql-query-plugin .sql-query-result.success .sql-query-result-table-row.sql-query-result-table-header-row {
+  position: sticky;
+  background-color: #F9F9F9;
 }
 
 .sql-query-plugin .sql-query-result.success .sql-query-result-table-fix-left-cell {
@@ -76,12 +79,13 @@
 }
 
 .sql-query-plugin .sql-query-result.success .sql-query-result-table-row {
-  height: 33px;
-  width: fit-content;
-  border-bottom: 1px solid #ccc;
+  position: relative;
   display: inline-flex;
   margin-top: 0;
   margin-bottom: 0;
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+  height: 33px;
   background-color: #FFF;
 }
 
@@ -95,12 +99,13 @@
 }
 
 .sql-query-plugin .sql-query-result.success .sql-query-result-table-cell {
+  position: absolute;
+  border-right: 1px solid #ccc;
+  padding: 0 8px;
   height: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  border-right: 1px solid #ccc;
-  padding: 0 8px;
 }
 
 .sql-query-plugin .sql-query-result.success .sql-query-result-table-cell.index {
