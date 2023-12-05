@@ -150,12 +150,7 @@ class Table extends Component {
   }
 
   setScrollLeft = (scrollLeft) => {
-    const containerWidth = this.sqlQueryResultContainerRef.offsetWidth;
-    const { columnsMetrics } = this.props;
-    const { totalColumnsWidth } = columnsMetrics;
-    // Calculate how many times magnified
-    const magnification = totalColumnsWidth / (totalColumnsWidth - containerWidth);
-    this.sqlQueryResultContainerRef.scrollLeft = scrollLeft * magnification;
+    this.sqlQueryResultContainerRef.scrollLeft = scrollLeft;
   }
 
   setScrollTop = (scrollTop) => {
@@ -215,8 +210,7 @@ class Table extends Component {
   render() {
     const { records, columns, columnsMetrics } = this.props;
     const recordsCount = records.length;
-    const { displayRecordsCount, isLoading, sqlQueryResultContentRef } = this.state;
-    const displayRecords = records.slice(0, displayRecordsCount);
+    const { isLoading, sqlQueryResultContentRef } = this.state;
     const totalWidth = columns.reduce((cur, nextItem) => { return (cur + nextItem.width); }, 0);
     const { totalColumnsWidth } = columnsMetrics;
     const displayColumns = this.getDisplayColumns();
@@ -231,7 +225,7 @@ class Table extends Component {
         {sqlQueryResultContentRef && (
           <VerticalScrollbar
             containerHeight={this.sqlQueryResultContainerRef.offsetHeight}
-            contentHeight={33 * displayRecords.length}
+            contentHeight={33 * records.length}
             ref={ref => this.verticalScrollbar = ref}
             onScrollbarScroll={this.onVerticalScrollbarScroll}
           />

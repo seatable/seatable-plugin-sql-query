@@ -41,12 +41,15 @@
 
 /* record header --- columns */
 .sql-query-plugin .sql-query-result.success .sql-query-result-table-header-row {
-  position: sticky;
   width: fit-content;
   height: 33px;
   left: 0;
   top: 0;
   z-index: 2;
+}
+
+.sql-query-plugin .sql-query-result.success .sql-query-result-table-row.sql-query-result-table-header-row {
+  position: sticky;
   background-color: #F9F9F9;
 }
 
