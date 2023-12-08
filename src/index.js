@@ -19,7 +19,9 @@ class TaskList {
     await dtableSDK.init(window.dtablePluginConfig);
     await dtableSDK.syncWithServer();
 
+    window.app.departments = dtableSDK.dtableStore.departments;
     window.app.collaborators = dtableSDK.dtableStore.collaborators;
+    window.app.state.departments = dtableSDK.dtableStore.departments;
     window.app.state.collaborators = dtableSDK.dtableStore.collaborators;
     window.app.collaboratorsCache = {};
     window.dtableWebAPI = dtableSDK.dtableWebAPI;

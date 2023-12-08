@@ -20,7 +20,8 @@ import {
   EmailFormatter,
   DurationFormatter,
   RateFormatter,
-  ButtonFormatter
+  ButtonFormatter,
+  DepartmentSingleSelectFormatter,
 } from 'dtable-ui-component';
 import { CellType } from 'dtable-utils';
 import CreatorFormatter from './creator-formatter';
@@ -44,7 +45,7 @@ class CellFormatter extends React.Component {
 
   renderFormatter = () => {
     let { column, cellValue, isSample } = this.props;
-    const { collaborators } = window.app.state;
+    const { collaborators, departments } = window.app.state;
     const { type: columnType } = column || {};
     const containerClassName = `sql-query-${columnType}-formatter`;
 
@@ -103,6 +104,10 @@ class CellFormatter extends React.Component {
         const { data } = column;
         const { options } = data || {};
         return <SingleSelectFormatter value={cellValue} options={options || []} containerClassName={containerClassName} />;
+      }
+      case CellType.DEPARTMENT_SINGLE_SELECT: {
+        if (!cellValue) return this.renderEmptyFormatter();
+        return <DepartmentSingleSelectFormatter value={cellValue} departments={departments} containerClassName={containerClassName} />;
       }
       case CellType.CHECKBOX: {
         if (!cellValue) return this.renderEmptyFormatter();

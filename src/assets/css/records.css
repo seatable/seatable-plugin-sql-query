@@ -149,6 +149,11 @@
   display: none;
 }
 
+.sql-query-plugin .sql-query-result-table-cell.sql-query-result-table-department-single-select-cell {
+  display: flex;
+  align-items: center;
+}
+
 .sql-query-plugin .sql-query-result-table-row:hover .sql-query-row-expand i {
   display: inline;
   font-size: 12px;
@@ -209,6 +214,10 @@
 .sql-query-plugin .sql-query-result-table-cell .sql-query-number-formatter,
 .sql-query-plugin .sql-query-result-table-cell .sql-query-duration-formatter {
   text-align: right;
+}
+
+.sql-query-plugin .sql-query-result-table-cell .sql-query-department-single-select-formatter {
+  height: 20px !important;
 }
 
 .sql-query-plugin .sql-query-result-table-cell .sql-query-text-formatter,
