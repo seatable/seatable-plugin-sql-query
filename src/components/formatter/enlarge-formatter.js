@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { CellType } from 'dtable-utils';
 import FileEnlargeFormatter from './enlarge-formatter-widgets/file-enlarge-formatter';
-import { CELL_TYPE } from 'dtable-sdk';
 
 const enlargeFormatterMap = {
-  [CELL_TYPE.FILE]: FileEnlargeFormatter,
+  [CellType.FILE]: FileEnlargeFormatter,
 };
 
 function EnlargeFormatter(props) {

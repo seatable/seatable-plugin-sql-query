@@ -1,12 +1,11 @@
-import { CELL_TYPE, FORMULA_RESULT_TYPE } from 'dtable-sdk';
+import {
+  CellType, FORMULA_RESULT_TYPE, FORMULA_COLUMN_TYPES_MAP,
+  getNumberDisplayString, getDateDisplayString, getGeolocationDisplayString, getDurationDisplayString,
+} from 'dtable-utils';
 import { getFormulaArrayValue, convertValueToDtableLongTextValue, isArrayFormalColumn } from './common-utils';
 import { UNKNOWN_TYPE } from '../constants';
 
 class CellValueUtils {
-
-  constructor({ dtable }) {
-    this.dtable = dtable;
-  }
 
   getCollaboratorsName = (collaborators, cellVal) => {
     if (cellVal) {
@@ -35,19 +34,20 @@ class CellValueUtils {
   getNumberDisplayString = (cellValue, columnData) => {
     if (Array.isArray(cellValue)) {
       if (cellValue.length === 0) return '';
-      return cellValue.map(item => this.dtable.getNumberDisplayString(item, columnData)).join(', ');
+      return cellValue.map(item => getNumberDisplayString(item, columnData)).join(', ');
     }
-    return this.dtable.getNumberDisplayString(cellValue, columnData);
+    return getNumberDisplayString(cellValue, columnData);
   }
 
   getDateDisplayString = (cellValue, columnData) => {
+    const format = columnData && columnData.format;
     if (Array.isArray(cellValue)) {
       if (cellValue.length === 0) return '';
       const validCellValue = cellValue.filter(item => item && typeof item === 'string');
-      return validCellValue.map(item => this.dtable.getDateDisplayString(item, columnData));
+      return validCellValue.map(item => getDateDisplayString(item, format));
     }
     if (!cellValue || typeof cellValue !== 'string') return '';
-    return this.dtable.getDateDisplayString(cellValue, columnData);
+    return getDateDisplayString(cellValue, format);
   }
 
   getMultipleOptionName = (options, cellVal) => {
@@ -106,14 +106,14 @@ class CellValueUtils {
     const { type, data } = column;
     const newData = data || {};
     switch (type) {
-      case CELL_TYPE.GEOLOCATION: {
+      case CellType.GEOLOCATION: {
         if (Array.isArray(cellValue)) {
           if (cellValue.length === 0) return '';
-          return cellValue.map(item => this.dtable.getGeolocationDisplayString(item, data)).join(', ');
+          return cellValue.map(item => getGeolocationDisplayString(item, data)).join(', ');
         }
-        return this.dtable.getGeolocationDisplayString(cellValue, data);
+        return getGeolocationDisplayString(cellValue, data);
       }
-      case CELL_TYPE.SINGLE_SELECT: {
+      case CellType.SINGLE_SELECT: {
         if (!newData) return '';
         const { options } = newData;
         if (!cellValue || !options || !Array.isArray(options)) return '';
@@ -126,7 +126,7 @@ class CellValueUtils {
         const option = options.find(option => option.id === cellValue);
         return option ? option.name : '';
       }
-      case CELL_TYPE.MULTIPLE_SELECT: {
+      case CellType.MULTIPLE_SELECT: {
         if (!newData) return '';
         let { options } = newData;
         if (!cellValue || !options || !Array.isArray(options)) return '';
@@ -134,39 +134,39 @@ class CellValueUtils {
         if (selectedOptions.length === 0) return '';
         return selectedOptions.map((option) => option.name).join(', ');
       }
-      case CELL_TYPE.FORMULA:
-      case CELL_TYPE.LINK_FORMULA: {
+      case CellType.FORMULA:
+      case CellType.LINK_FORMULA: {
         return this.getFormulaDisplayString(cellValue, column, { tables, collaborators });
       }
-      case CELL_TYPE.LONG_TEXT: {
+      case CellType.LONG_TEXT: {
         if (Array.isArray(cellValue)) {
           if (cellValue.length === 0) return '';
           return cellValue.map(item => this.getLongTextDisplayString(item)).join(', ');
         }
         return this.getLongTextDisplayString(cellValue);
       }
-      case CELL_TYPE.NUMBER: {
+      case CellType.NUMBER: {
         if (Array.isArray(cellValue)) {
           return cellValue.map(item => this.getNumberDisplayString(item, newData)).join(', ');
         }
         return this.getNumberDisplayString(cellValue, newData);
       }
-      case CELL_TYPE.DATE: {
+      case CellType.DATE: {
         if (Array.isArray(cellValue)) {
           return cellValue.map(item => this.getDateDisplayString(item, newData)).join(', ');
         }
         return this.getDateDisplayString(cellValue, newData);
       }
-      case CELL_TYPE.CTIME:
-      case CELL_TYPE.MTIME: {
+      case CellType.CTIME:
+      case CellType.MTIME: {
         const formatObject = { format: 'YYYY-MM-DD HH:mm' };
         if (Array.isArray(cellValue)) {
           return cellValue.map(item => this.getDateDisplayString(item, formatObject)).join(', ');
         }
         return this.getDateDisplayString(cellValue, formatObject);
       }
-      case CELL_TYPE.CREATOR:
-      case CELL_TYPE.LAST_MODIFIER: {
+      case CellType.CREATOR:
+      case CellType.LAST_MODIFIER: {
         if (!cellValue) return '';
         if (Array.isArray(cellValue)) {
           if (cellValue.length === 0) return '';
@@ -174,37 +174,37 @@ class CellValueUtils {
         }
         return cellValue === 'anonymous' ? cellValue : this.getCollaboratorsName(collaborators, [cellValue]);
       }
-      case CELL_TYPE.COLLABORATOR: {
+      case CellType.COLLABORATOR: {
         return this.getCollaboratorsName(collaborators, cellValue);
       }
-      case CELL_TYPE.DURATION: {
+      case CellType.DURATION: {
         if (!cellValue && cellValue !== 0) return '';
         if (Array.isArray(cellValue)) {
           if (cellValue.length === 0) return '';
-          return cellValue.map(item => this.dtable.getDurationDisplayString(item, newData)).join(', ');
+          return cellValue.map(item => getDurationDisplayString(item, newData)).join(', ');
         }
-        return this.dtable.getDurationDisplayString(cellValue, newData);
+        return getDurationDisplayString(cellValue, newData);
       }
-      case CELL_TYPE.LINK: {
+      case CellType.LINK: {
         if (!Array.isArray(cellValue) || cellValue.length === 0) return '';
         const { data } = column;
         const { display_column_key, array_type, array_data } = data;
         const display_column = {
           key: display_column_key || '0000',
-          type: array_type || CELL_TYPE.TEXT,
+          type: array_type || CellType.TEXT,
           data: array_data || null
         };
         return this.getCellValueDisplayString(cellValue, display_column, { tables, collaborators });
       }
-      case CELL_TYPE.RATE: {
+      case CellType.RATE: {
         if (Array.isArray(cellValue)) {
           if (cellValue.length === 0) return '';
           return cellValue.map(item => item || item === 0).join(', ');
         }
         return cellValue;
       }
-      case CELL_TYPE.IMAGE:
-      case CELL_TYPE.FILE: {
+      case CellType.IMAGE:
+      case CellType.FILE: {
         return '';
       }
       case FORMULA_RESULT_TYPE.BOOL: {
@@ -233,12 +233,12 @@ class CellValueUtils {
         const column = columnsKeyNameMap[key];
         const { name, type } = column;
         const cellValue = row[key];
-        if (type === CELL_TYPE.LONG_TEXT) {
+        if (type === CellType.LONG_TEXT) {
           newRow[name] = convertValueToDtableLongTextValue(cellValue);
-        } else if (type === CELL_TYPE.LINK) {
+        } else if (type === CellType.LINK) {
           const validCellValue = getFormulaArrayValue(cellValue);
           newRow[name] = this.getCellValueDisplayString(validCellValue, column, { tables, collaborators });
-        } else if (type === CELL_TYPE.FORMULA || type === CELL_TYPE.LINK_FORMULA) {
+        } else if (type === CellType.FORMULA || type === CellType.LINK_FORMULA) {
           const validCellValue = Array.isArray(cellValue) ? getFormulaArrayValue(cellValue) : cellValue;
           const { data } = column;
           const { result_type } = data || {};
@@ -253,12 +253,12 @@ class CellValueUtils {
                 format = data.format ;
               }
               format = format.indexOf('HH:mm') > -1 ? 'YYYY-MM-DD HH:mm' : 'YYYY-MM-DD';
-              newRow[name] = cellValue && typeof cellValue === 'string' ? this.dtable.getDateDisplayString(cellValue, { format }) : '';
+              newRow[name] = cellValue && typeof cellValue === 'string' ? getDateDisplayString(cellValue, format) : '';
             } else {
               newRow[name] = this.getCellValueDisplayString(validCellValue, column, { tables, collaborators });
             }
           }
-        } else if (type === CELL_TYPE.BUTTON) {
+        } else if (type === CellType.BUTTON) {
           //
         } else if (type === UNKNOWN_TYPE) {
           newRow[name] = this.getUnknownDisplayString(row[key]);
@@ -274,24 +274,24 @@ class CellValueUtils {
     if (!Array.isArray(columns)) return [];
     return columns.map(column => {
       const { type } = column;
-      if (type === CELL_TYPE.LINK) return { ...column, data: null, type: CELL_TYPE.TEXT };
-      if (column.type === CELL_TYPE.LINK_FORMULA || column.type === CELL_TYPE.FORMULA) {
+      if (type === CellType.LINK) return { ...column, data: null, type: CellType.TEXT };
+      if (FORMULA_COLUMN_TYPES_MAP[column.type]) {
         const { data } = column;
         const { result_type } = data || {};
         if (result_type === FORMULA_RESULT_TYPE.NUMBER) {
-          return { ...column, data: { format: data.format, decimal: data.decimal, thousands: data.thousands, precision: data.precision, enable_precision: data.enable_precision } , type: CELL_TYPE.NUMBER };
+          return { ...column, data: { format: data.format, decimal: data.decimal, thousands: data.thousands, precision: data.precision, enable_precision: data.enable_precision } , type: CellType.NUMBER };
         }
         if (result_type === FORMULA_RESULT_TYPE.DATE) {
           let format = 'YYYY-MM-DD';
           if (data && data.format ) {
             format = data.format ;
           }
-          return { ...column, data: { format }, type: CELL_TYPE.DATE };
+          return { ...column, data: { format }, type: CellType.DATE };
         }
-        return { ...column, data: null, type: CELL_TYPE.TEXT };
+        return { ...column, data: null, type: CellType.TEXT };
       }
       if (type === UNKNOWN_TYPE) {
-        return { ...column, data: null, type: CELL_TYPE.TEXT };
+        return { ...column, data: null, type: CellType.TEXT };
       }
       return column;
     });

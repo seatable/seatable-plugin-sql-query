@@ -1,5 +1,4 @@
 import axios from 'axios';
-import pluginContext from '../plugin-context';
 
 class DTableDbAPI {
 
@@ -9,8 +8,7 @@ class DTableDbAPI {
 
   init() {
     if (this.req) return;
-    const accessToken = pluginContext.getSetting('accessToken');
-    const dtableDb = pluginContext.getSetting('dtableDb');
+    const { accessToken, dtableDb } = window.dtable;
     this.req = axios.create({
       baseURL: dtableDb,
       headers: { 'Authorization': 'Token ' + accessToken }

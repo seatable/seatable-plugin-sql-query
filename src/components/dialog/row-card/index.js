@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { CELL_TYPE } from 'dtable-sdk';
 import Formatter from '../../formatter';
+import { COMPUTED_COLUMN_TYPES } from '../../../constants/column';
 
 import './index.css';
 
@@ -30,7 +30,7 @@ class RowCard extends PureComponent {
     return columns.map((column, index) => {
       const { key, width, type } = column;
       let cellValue = row[key];
-      if (type === CELL_TYPE.LINK|| type === CELL_TYPE.FORMULA || type === CELL_TYPE.LINK_FORMULA ) {
+      if (COMPUTED_COLUMN_TYPES.includes(type)) {
         cellValue = formulaRows[row._id][key];
       }
       return (
@@ -47,8 +47,6 @@ class RowCard extends PureComponent {
             row={row}
             component={{ emptyComponent: <div className="row-card-cell-value-empty"></div> }}
             cellValueUtils={this.props.cellValueUtils}
-            getOptionColors={this.props.getOptionColors}
-            collaborators={this.props.collaborators}
           />
         </div>
       );
@@ -98,9 +96,7 @@ class RowCard extends PureComponent {
                 cellValue={row[nameColumn.key]}
                 column={nameColumn}
                 row={row}
-                collaborators={this.props.collaborators}
                 cellValueUtils={this.props.cellValueUtils}
-                getOptionColors={this.props.getOptionColors}
               />
             </div>
             {isShowRemoveCardItemBtn && (
@@ -128,14 +124,12 @@ RowCard.propTypes = {
   nameColumn: PropTypes.object,
   formulaRows: PropTypes.object,
   columns: PropTypes.array,
-  collaborators: PropTypes.array,
   cellValueUtils: PropTypes.object,
   onSelectRow: PropTypes.func,
   removeCardItem: PropTypes.func,
   onRef: PropTypes.func,
   setItemScrollLeft: PropTypes.func,
   closeSelect: PropTypes.func,
-  getOptionColors: PropTypes.func,
 };
 
 export default RowCard;

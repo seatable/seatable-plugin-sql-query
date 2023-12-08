@@ -1,4 +1,4 @@
-import { CELL_TYPE } from 'dtable-sdk';
+import { CellType } from 'dtable-utils';
 import getPreviewContent from 'dtable-ui-component/lib/SimpleLongTextFormatter/normalize-long-text-value';
 import { NOT_SUPPORT_COLUMN_TYPES, NOT_DISPLAY_COLUMN_KEYS } from '../constants';
 
@@ -9,10 +9,7 @@ export const isValidEmail = (email) => {
 };
 
 export const getValueFromPluginConfig = (attribute) => {
-  if (window.dtable) {
-    return window.dtable[attribute];
-  }
-  return window.dtablePluginConfig[attribute];
+  return window.dtable[attribute];
 };
 
 export const getValueFromPluginAppConfig = (attribute) => {
@@ -25,32 +22,32 @@ export const getValueFromPluginAppConfig = (attribute) => {
 export const getCellRecordWidth = (column) => {
   let { type, data } = column;
   switch (type) {
-    case CELL_TYPE.DATE: {
+    case CellType.DATE: {
       let isShowHourAndMinute = data && data.format && data.format.indexOf('HH:mm') > -1;
       return isShowHourAndMinute ? 160 : 100;
     }
-    case CELL_TYPE.LONG_TEXT:
-    case CELL_TYPE.AUTO_NUMBER:
-    case CELL_TYPE.URL:
-    case CELL_TYPE.EMAIL: {
+    case CellType.LONG_TEXT:
+    case CellType.AUTO_NUMBER:
+    case CellType.URL:
+    case CellType.EMAIL: {
       return 200;
     }
-    case CELL_TYPE.CHECKBOX: {
+    case CellType.CHECKBOX: {
       return 80;
     }
-    case CELL_TYPE.NUMBER: {
+    case CellType.NUMBER: {
       return 120;
     }
-    case CELL_TYPE.CTIME:
-    case CELL_TYPE.MTIME: {
+    case CellType.CTIME:
+    case CellType.MTIME: {
       return 170;
     }
-    case CELL_TYPE.RATE: {
+    case CellType.RATE: {
       const { rate_max_number } = data || {};
       const rateMaxNumber = rate_max_number || 5;
       return 16 * rateMaxNumber + 20;
     }
-    case CELL_TYPE.LINK: {
+    case CellType.LINK: {
       return 200;
     }
     default: {
@@ -97,10 +94,10 @@ export const bytesToSize = bytes => {
 
 export const isArrayFormalColumn = (columnType) => {
   return [
-    CELL_TYPE.IMAGE,
-    CELL_TYPE.FILE,
-    CELL_TYPE.MULTIPLE_SELECT,
-    CELL_TYPE.COLLABORATOR
+    CellType.IMAGE,
+    CellType.FILE,
+    CellType.MULTIPLE_SELECT,
+    CellType.COLLABORATOR
   ].includes(columnType);
 };
 
@@ -214,7 +211,7 @@ export const getTableHiddenColumnKeys = (table, viewId, getViewById) => {
     return view.hidden_columns && Array.isArray(view.hidden_columns) && view.hidden_columns.length > 0;
   });
   if (!isAllViewHasHiddenColumns) return [];
-  
+
   let hiddenColumnKeys = [];
   const { hidden_columns } = views[0];
   hidden_columns.forEach(key => {

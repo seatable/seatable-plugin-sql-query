@@ -1,14 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './setting';
+import DTable from 'dtable-sdk';
 import App from './app';
+
+import './setting';
 
 class TaskList {
 
-  static execute() {
+  static async init() {
+    const dtableSDK = new DTable();
+
+    // local develop
+    window.app = {};
+    window.app.state = {};
+    window.dtable = {
+      ...window.dtablePluginConfig,
+    };
+    await dtableSDK.init(window.dtablePluginConfig);
+    await dtableSDK.syncWithServer();
+
+    window.app.collaborators = dtableSDK.dtableStore.collaborators;
+    window.app.state.collaborators = dtableSDK.dtableStore.collaborators;
+    window.app.collaboratorsCache = {};
+    window.dtableWebAPI = dtableSDK.dtableWebAPI;
+    window.dtableSDK = dtableSDK;
+  }
+
+  static async execute() {
+    await this.init();
     ReactDOM.render(
-      <App showDialog={true} isDevelopment={true}/>,
-      document.getElementById('root')
+      <App showDialog isDevelopment />, document.getElementById('root')
     );
   }
 

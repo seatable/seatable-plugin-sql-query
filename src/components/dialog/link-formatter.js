@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Loading } from 'dtable-ui-component';
-import { CELL_TYPE } from 'dtable-sdk';
+import { CellType, getLinkTableID, getLinkedTableID } from 'dtable-utils';
 import { getTableHiddenColumnKeys } from '../../utils/common-utils';
 import { LINK_UNSHOW_COLUMN_TYPE } from '../../constants';
 import { getColumnWidth } from '../../utils/utils';
 import RowCard from './row-card';
 import dtableDbAPI from '../../api/dtable-db-api';
-import pluginContext from '../../plugin-context';
+import { COMPUTED_COLUMN_TYPES } from '../../constants/column';
 
 const DEFAULT_LINKS_NUMBER = 10;
 
@@ -47,8 +47,8 @@ class LinkFormatter extends Component {
     const linkedViewID = is_row_from_view ? other_view_id : '';
     this.linkID = link_id;
     this.isMultiple = is_multiple;
-    this.currentTableID = this.props.getLinkTableID(currentTableId, table_id, other_table_id);
-    this.linkedTableID = this.props.getLinkedTableID(currentTableId, table_id, other_table_id);
+    this.currentTableID = getLinkTableID(currentTableId, table_id, other_table_id);
+    this.linkedTableID = getLinkedTableID(currentTableId, table_id, other_table_id);
     this.linkedTable = this.props.getTableById(this.linkedTableID);
     this.linkedViewID = linkedViewID;
 
@@ -68,12 +68,12 @@ class LinkFormatter extends Component {
         return true;
       })
       .map(column => {
-        if (column.type === CELL_TYPE.LINK) {
+        if (column.type === CellType.LINK) {
           const { data } = column;
           const { display_column_key, array_type, array_data } = data;
           const display_column = {
             key: display_column_key || '0000',
-            type: array_type || CELL_TYPE.TEXT,
+            type: array_type || CellType.TEXT,
             data: array_data || null
           };
           return { ...column, width: getColumnWidth(column), data: { ...data, display_column } };
@@ -86,7 +86,7 @@ class LinkFormatter extends Component {
   initLinkedRecords = () => {
     const { linkedTable } = this;
     const { record, column  } = this.props;
-    const dtableUuid = pluginContext.getSetting('dtableUuid');
+    const dtableUuid = window.dtable.dtableUuid;
     const records = record[column.key] || [];
     const rowIds = records.map(item => item.row_id);
     this.listTableRowsByIds(dtableUuid, linkedTable.name, rowIds);
@@ -94,7 +94,7 @@ class LinkFormatter extends Component {
 
   listTableRowsByIds = (dtableUuid, tableName, rowIds) => {
     if (!Array.isArray(rowIds) || rowIds.length === 0) {
-      this.setState({ 
+      this.setState({
         isHasMore: false,
         isLoading: false,
       });
@@ -109,9 +109,9 @@ class LinkFormatter extends Component {
       const newRows = filteredRows.concat(rows);
       this.linkedTableFormulaRows = this.getFormulaRowsFormArchivedRows(columns, newRows);
       const isHasMore = record._id && rows.length === DEFAULT_LINKS_NUMBER;
-      this.setState({ filteredRows: newRows, 
+      this.setState({ filteredRows: newRows,
         isHasMore,
-        isLoading: false, 
+        isLoading: false,
         showLinksLen: showLinksLen + DEFAULT_LINKS_NUMBER,
       });
     });
@@ -121,7 +121,7 @@ class LinkFormatter extends Component {
     const { linkedTable } = this;
     const { showLinksLen } = this.state;
     const { record, column, currentTable } = this.props;
-    const dtableUuid = pluginContext.getSetting('dtableUuid');
+    const dtableUuid = window.dtable.dtableUuid;
     const rowId = record._id;
     dtableDbAPI.listRowLinkedRecords(dtableUuid, currentTable._id, column.key, rowId, showLinksLen).then(res => {
       const records = res.data[rowId] || [];
@@ -131,15 +131,14 @@ class LinkFormatter extends Component {
   }
 
   getFormulaRowsFormArchivedRows = (columns, rows) => {
+    const formulaColumns = columns.filter(column => COMPUTED_COLUMN_TYPES.includes(column.type));
     let formulaRows = {};
-    const computedColumnTypes = [CELL_TYPE.LINK, CELL_TYPE.LINK_FORMULA, CELL_TYPE.FORMULA];
-    const formulaColumns = columns.filter(column => computedColumnTypes.includes(column.type));
     if (formulaColumns.length > 0) {
       rows.forEach(row => {
         const rowId = row._id;
         formulaRows[row._id] = {};
         formulaColumns.forEach(column => formulaRows[rowId][column.key] = row[column.key]);
-      }); 
+      });
     }
     return formulaRows;
   }
@@ -185,7 +184,6 @@ class LinkFormatter extends Component {
               columns={columns}
               cellValueUtils={this.props.cellValueUtils}
               removeCardItem={this.removeLink}
-              collaborators={this.props.collaborators}
               formulaRows={this.linkedTableFormulaRows}
             />
           );
@@ -220,11 +218,8 @@ LinkFormatter.propTypes = {
   currentTable: PropTypes.object,
   record: PropTypes.object,
   value: PropTypes.array,
-  collaborators: PropTypes.array,
   column: PropTypes.object,
   cellValueUtils: PropTypes.object,
-  getLinkTableID: PropTypes.func,
-  getLinkedTableID: PropTypes.func,
   getTableById: PropTypes.func,
   getViewById: PropTypes.func,
 };

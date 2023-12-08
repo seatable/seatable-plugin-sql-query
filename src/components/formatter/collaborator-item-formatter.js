@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { isValidEmail, getValueFromPluginConfig } from '../../utils/common-utils';
 
 class CollaboratorItemFormatter extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -27,7 +28,7 @@ class CollaboratorItemFormatter extends Component {
       return;
     }
     this.setState({ isDataLoaded: false, collaborator: null });
-    const { collaborators } = this.props;
+    const { collaborators } = window.app.state;
     let collaborator = collaborators && collaborators.find(c => c.email === cellValue);
     if (collaborator) {
       this.setState({ isDataLoaded: true, collaborator });
@@ -61,7 +62,7 @@ class CollaboratorItemFormatter extends Component {
       this.setState({ isDataLoaded: true, collaborator });
       return;
     }
-    
+
     this.props.getUserCommonInfo(cellValue).then(res => {
       collaborator = res.data;
       collaboratorsCache[cellValue] = collaborator;
@@ -90,7 +91,6 @@ class CollaboratorItemFormatter extends Component {
 
 CollaboratorItemFormatter.propTypes = {
   cellValue: PropTypes.string,
-  collaborators: PropTypes.array,
   getUserCommonInfo: PropTypes.func,
   renderEmptyFormatter: PropTypes.func,
 };

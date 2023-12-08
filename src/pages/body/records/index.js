@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import intl from 'react-intl-universal';
-import { CELL_TYPE } from 'dtable-sdk';
+import { CellType } from 'dtable-utils';
 import { RecordExpandDialog } from '../../../components';
 import { INDEX_COLUMN, PRIVATE_COLUMN_KEY_TYPE_MAP } from '../../../constants';
 import { getCellRecordWidth, getDisplayColumns } from '../../../utils/common-utils';
@@ -29,12 +29,12 @@ class RecordList extends Component {
       return column;
     }).map(column => {
       const { type } = column;
-      if (type === CELL_TYPE.LINK) {
+      if (type === CellType.LINK) {
         const { data } = column;
         const { display_column_key, array_type, array_data } = data;
         const display_column = {
           key: display_column_key || '0000',
-          type: array_type || CELL_TYPE.TEXT,
+          type: array_type || CellType.TEXT,
           data: array_data || null
         };
         return {
@@ -94,7 +94,7 @@ class RecordList extends Component {
       );
     }
     const { isLoading, isShowEnlargeFormatter, enlargeFormatterProps, isShowRecordExpandDialog, expandedRecord } = this.state;
-    const collaborators = window.app.state.collaborators;
+
     return (
       <Fragment>
         <div className="sql-query-result success">
@@ -104,14 +104,12 @@ class RecordList extends Component {
                 isLoading={isLoading}
                 records={records}
                 columns={this.displayColumns}
-                collaborators={collaborators}
                 gridWidth={this.props.gridWidth}
                 gridHeight={this.props.gridHeight}
                 columnsMetrics={this.columnsMetrics}
                 cellValueUtils={this.props.cellValueUtils}
                 onOpenRecordExpandDialog={this.onOpenRecordExpandDialog}
                 openEnlargeFormatter={this.openEnlargeFormatter}
-                getOptionColors={this.props.getOptionColors}
                 getUserCommonInfo={this.props.getUserCommonInfo}
               />
             </div>
@@ -124,15 +122,11 @@ class RecordList extends Component {
           <RecordExpandDialog
             record={expandedRecord}
             columns={this.columns}
-            collaborators={collaborators}
             cellValueUtils={this.props.cellValueUtils}
             closeRecordExpandDialog={this.closeRecordExpandDialog}
-            getOptionColors={this.props.getOptionColors}
             getUserCommonInfo={this.props.getUserCommonInfo}
             openEnlargeFormatter={this.openEnlargeFormatter}
             currentTable={this.props.currentTable}
-            getLinkTableID={this.props.getLinkTableID}
-            getLinkedTableID={this.props.getLinkedTableID}
             getTableById={this.props.getTableById}
             getViewById={this.props.getViewById}
           />
@@ -149,11 +143,8 @@ RecordList.propTypes = {
   columns: PropTypes.array,
   currentTable: PropTypes.object,
   cellValueUtils: PropTypes.object,
-  getOptionColors: PropTypes.func,
   getUserCommonInfo: PropTypes.func,
   getTables: PropTypes.func,
-  getLinkTableID: PropTypes.func,
-  getLinkedTableID: PropTypes.func,
   getTableById: PropTypes.func,
   getViewById: PropTypes.func,
 };

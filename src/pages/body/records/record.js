@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { CellType, FORMULA_COLUMN_TYPES_MAP } from 'dtable-utils';
 import { CellFormatter } from '../../../components';
-import { CELL_TYPE } from 'dtable-sdk';
 import { INDEX_COLUMN_TYPE, FILE_COLUMN_TYPES } from '../../../constants';
 
 function Record(props) {
-  const { columns, record, index, collaborators } = props;
+  const { columns, record, index } = props;
 
   return (
     <div className="sql-query-result-table-row record-height-default">
@@ -42,10 +42,10 @@ function Record(props) {
           );
         }
         const value = record[name] || record[key];
-        if (type === CELL_TYPE.FORMULA || type === CELL_TYPE.LINK_FORMULA) {
+        if (FORMULA_COLUMN_TYPES_MAP[type]) {
           className += 'sql-query-result-table-formula-cell ';
           const { array_type } = data || {};
-          if (array_type === CELL_TYPE.IMAGE || array_type === CELL_TYPE.FILE) {
+          if (array_type === CellType.IMAGE || array_type === CellType.FILE) {
             className += 'sql-query-result-table-formula-image-cell';
           }
         } else {
@@ -59,11 +59,9 @@ function Record(props) {
             onDoubleClick={FILE_COLUMN_TYPES.includes(type) ? () => props.openEnlargeFormatter(column, value) : () => {}}
           >
             <CellFormatter
-              collaborators={collaborators}
               cellValue={value}
               column={column}
               cellValueUtils={props.cellValueUtils}
-              getOptionColors={props.getOptionColors}
               getUserCommonInfo={props.getUserCommonInfo}
             />
           </div>
@@ -77,12 +75,10 @@ Record.propTypes = {
   columns: PropTypes.array.isRequired,
   record: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
-  collaborators: PropTypes.array,
   cellValueUtils: PropTypes.object,
   openEnlargeFormatter: PropTypes.func,
   onOpenRecordExpandDialog: PropTypes.func,
   getUserCommonInfo: PropTypes.func,
-  getOptionColors: PropTypes.func,
 };
 
 export default Record;
