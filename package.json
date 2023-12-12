@@ -54,7 +54,7 @@
     "dayjs": "1.10.7",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
-    "dtable-sdk": "4.3.2",
+    "dtable-sdk": "4.3.3",
     "eslint": "^6.6.0",
     "eslint-config-react-app": "^5.2.0",
     "eslint-loader": "3.0.3",
