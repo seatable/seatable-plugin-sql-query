@@ -38,28 +38,28 @@ class ViewItem extends Component {
         document.addEventListener('click', this.closeMenu);
       }
     });
-  }
+  };
 
   closeMenu = () => {
     document.removeEventListener('click', this.closeMenu);
     this.setState({ isDropdownMenuOpen: false, menuPosition: {} });
-  }
+  };
 
   openRenameViewDialog = () => {
     this.setState({ isRenameDialogOpen: true });
-  }
+  };
 
   closeRenameViewDialog = () => {
     this.setState({ isRenameDialogOpen: false });
-  }
+  };
 
   renameView = (viewName) => {
     this.props.updateView({ name: viewName });
-  }
+  };
 
   deleteView = () => {
     this.props.deleteView();
-  }
+  };
 
   onDragStart = (event) => {
     event.stopPropagation();
@@ -67,12 +67,12 @@ class ViewItem extends Component {
     event.dataTransfer.setDragImage(ref, 10, 10);
     event.dataTransfer.effectAllowed = 'move';
     event.dataTransfer.setData('text/plain', this.props.view._id);
-  }
+  };
 
   onDragEnter = (event) => {
     event.stopPropagation();
     this.enteredCounter++;
-  }
+  };
 
   onDragOver = (event) => {
     if (event.dataTransfer.dropEffect === 'copy') {
@@ -85,7 +85,7 @@ class ViewItem extends Component {
       dropRelativePosition: event.nativeEvent.offsetX <= event.target.clientWidth / 2 ?
         'before' : 'after'
     });
-  }
+  };
 
   onDragLeave = (event) => {
     event.stopPropagation();
@@ -95,7 +95,7 @@ class ViewItem extends Component {
         dropRelativePosition: ''
       });
     }
-  }
+  };
 
   onDrop = (event) => {
     event.stopPropagation();
@@ -113,7 +113,7 @@ class ViewItem extends Component {
       return;
     }
     this.props.onMoveView(droppedViewID, _id, dropRelativePosition);
-  }
+  };
 
   render() {
     const { view, isSelect, canDelete } = this.props;

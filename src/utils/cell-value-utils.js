@@ -22,14 +22,14 @@ class CellValueUtils {
       return collaboratorsName.join(', ');
     }
     return '';
-  }
+  };
 
   getLongTextDisplayString = (cellValue) => {
     const value = convertValueToDtableLongTextValue(cellValue);
     let { text } = value || {};
     if (!text) return '';
     return text;
-  }
+  };
 
   getNumberDisplayString = (cellValue, columnData) => {
     if (Array.isArray(cellValue)) {
@@ -37,7 +37,7 @@ class CellValueUtils {
       return cellValue.map(item => getNumberDisplayString(item, columnData)).join(', ');
     }
     return getNumberDisplayString(cellValue, columnData);
-  }
+  };
 
   getDateDisplayString = (cellValue, columnData) => {
     const format = columnData && columnData.format;
@@ -48,14 +48,14 @@ class CellValueUtils {
     }
     if (!cellValue || typeof cellValue !== 'string') return '';
     return getDateDisplayString(cellValue, format);
-  }
+  };
 
   getMultipleOptionName = (options, cellVal) => {
     if (!cellVal || !options || !Array.isArray(options)) return null;
     let selectedOptions = options.filter((option) => cellVal.includes(option.id));
     if (selectedOptions.length === 0) return null;
     return selectedOptions.map((option) => option.name).join(', ');
-  }
+  };
 
   getFormulaDisplayString = (cellValue, column, { tables = [], collaborators = [] } = {}) => {
     if (!column) return '';
@@ -87,7 +87,7 @@ class CellValueUtils {
       return cellValue.join(', ');
     }
     return cellValue;
-  }
+  };
 
   getUnknownDisplayString = (cellValue) => {
     if (Array.isArray(cellValue)) {
@@ -100,7 +100,7 @@ class CellValueUtils {
       return cellValue + '';
     }
     return '';
-  }
+  };
 
   getCellValueDisplayString = (cellValue, column, {tables = [], collaborators = []} = {}) => {
     const { type, data } = column;
@@ -217,7 +217,7 @@ class CellValueUtils {
         return Array.isArray(cellValue) ? cellValue.map(item => item + '').filter(item => item).join(', ') : cellValue + '';
       }
     }
-  }
+  };
 
   getExportRows = (columns, rows, { tables = [], collaborators = [] } = {}) => {
     let columnsKeyNameMap = {};
@@ -268,7 +268,7 @@ class CellValueUtils {
       });
       return newRow;
     }) : [];
-  }
+  };
 
   getExportColumns = (columns) => {
     if (!Array.isArray(columns)) return [];
@@ -295,7 +295,7 @@ class CellValueUtils {
       }
       return column;
     });
-  }
+  };
 
 }
 

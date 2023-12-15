@@ -23,7 +23,7 @@ class RowCard extends PureComponent {
     e.nativeEvent.stopImmediatePropagation();
     e.stopPropagation();
     this.props.onSelectRow && this.props.onSelectRow(row);
-  }
+  };
 
   linkRowRecord = () => {
     const { row, columns, formulaRows } = this.props;
@@ -51,14 +51,14 @@ class RowCard extends PureComponent {
         </div>
       );
     });
-  }
+  };
 
   removeCardItem = (e) => {
     e.stopPropagation();
     const { row } = this.props;
     this.props.closeSelect && this.props.closeSelect();
     this.props.removeCardItem && this.props.removeCardItem(row._id);
-  }
+  };
 
   onScroll = (event) => {
     event.stopPropagation();
@@ -68,20 +68,20 @@ class RowCard extends PureComponent {
       return;
     }
     if (setItemScrollLeft) setItemScrollLeft(this.cardRecordsItemRef.scrollLeft, rowIdx);
-  }
+  };
 
   setScrollLeft = (scrollLeft) => {
     this.scrollActive = true;
     this.cardRecordsItemRef.scrollLeft = scrollLeft;
-  }
+  };
 
   getScrollLeft = () => {
     return this.cardRecordsItemRef.scrollLeft;
-  }
+  };
 
   setCardRecordsItemRef = (ref) => {
     this.cardRecordsItemRef = ref;
-  }
+  };
 
   render() {
     const { row, nameColumn, isShowRemoveCardItemBtn } = this.props;

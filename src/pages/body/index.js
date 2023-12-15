@@ -45,18 +45,18 @@ class Body extends Component {
         this.onSqlChange(this.state.sql);
       }
     });
-  }
+  };
 
   onChange = (event) => {
     const value = event.target.value;
     this.onSqlChange(value);
-  }
+  };
 
   onKeyDown = (event) => {
     if (isHotkey('enter', event)) {
       this.onQuery();
     }
-  }
+  };
 
   getResult = () => {
     const { sql, queryStatus, result } = this.state;
@@ -70,7 +70,7 @@ class Body extends Component {
       return { success: false, error_message: 'Querying_try_again_later', isInternalError: true };
     }
     return { ...result, isActiveQueryId: this.isActiveQueryId };
-  }
+  };
 
   getValidSQL = (sql) => {
     const upperSQL = sql.toUpperCase();
@@ -90,7 +90,7 @@ class Body extends Component {
     }
     this.isActiveQueryId = false;
     return sql.slice(0, selectIndex + 7) + `\`_id\`, ${selectedColumnsString}` + sql.slice(fromIndex, );
-  }
+  };
 
   onQuery = () => {
     const { sql, queryStatus } = this.state;
@@ -114,7 +114,7 @@ class Body extends Component {
         this.props.updateView({ sql: sql });
       }
     });
-  }
+  };
 
   onSqlChange = (sql) => {
     const validSql = sql.trim();
@@ -126,15 +126,15 @@ class Body extends Component {
     this.setState({ sql, displayHistoryOptions }, () => {
       this.inputRef.focus();
     });
-  }
+  };
 
   getGridWidth = () => {
     return this.sqlQueryRefRef ? this.sqlQueryRefRef.offsetWidth - 32 : 0;
-  }
+  };
 
   getGridHeight = () => {
     return this.sqlQueryRefRef ? this.sqlQueryRefRef.offsetHeight - 32 : 0;
-  }
+  };
 
   renderHistorySqlOptions = () => {
     if (!this.props) return '';
@@ -155,7 +155,7 @@ class Body extends Component {
         })}
       </DropdownMenu>
     );
-  }
+  };
 
   renderResult = () => {
     const { result, queryStatus } = this.state;
@@ -168,10 +168,10 @@ class Body extends Component {
       </div>
     );
     const { success, error_message, results, metadata: columns } = result;
-    const displayColumns = this.isActiveQueryId ? columns : columns.filter(column => column.key !== '_id');
-    const gridWidth = this.getGridWidth();
-    const gridHeight = this.getGridHeight();
     if (success) {
+      const displayColumns = this.isActiveQueryId ? columns : columns.filter(column => column.key !== '_id');
+      const gridWidth = this.getGridWidth();
+      const gridHeight = this.getGridHeight();
       return (
         <RecordList
           columns={displayColumns}
@@ -192,12 +192,10 @@ class Body extends Component {
         {error_message}
       </div>
     );
-  }
+  };
 
   render() {
-
     const { isOpen, sql, queryStatus } = this.state;
-
     return (
       <div className="sql-query-plugin-body">
         <div className="sql-input-container">

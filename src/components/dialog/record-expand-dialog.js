@@ -20,15 +20,15 @@ class RecordExpandDialog extends Component {
       marginLeft: (innerWidth - 720) / 2,
       height: innerHeight - 56,
     };
-  }
+  };
 
   toggle = () => {
     this.props.closeRecordExpandDialog();
-  }
+  };
 
   openEnlargeFormatter = (column, value) => {
     this.props.openEnlargeFormatter && this.props.openEnlargeFormatter(column, value);
-  }
+  };
 
   render() {
     const { record, columns } = this.props;

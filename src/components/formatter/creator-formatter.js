@@ -75,7 +75,7 @@ class DtableCreatorFormatter extends Component {
       collaboratorsCache[cellValue] = collaborator;
       this.setState({ isDataLoaded: true, collaborator });
     });
-  }
+  };
 
   render() {
     const { cellValue, containerClassName } = this.props;

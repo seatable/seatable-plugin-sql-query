@@ -149,7 +149,7 @@
 
 .sql-query-plugin .sql-query-plugin-header .sql-query-plugin-view.selected .sql-query-plugin-view-name,
 .sql-query-plugin .sql-query-plugin-header .sql-query-plugin-view:hover .sql-query-plugin-view-name {
-  color: #444;
+  color: #212529;
 }
 
 /* dropdown */
@@ -170,7 +170,6 @@
   padding: 3px 12px;
   line-height: 1.5;
   font-size: 14px;
-  color: #202428;
   cursor: pointer;
 }
 

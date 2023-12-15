@@ -27,12 +27,12 @@ class VerticalScrollbar extends React.Component {
       return;
     }
     this.setScrollTop(scrollTop);
-  }
+  };
 
   setScrollTop = (scrollTop) => {
     this.isSelfScroll = false;
     this.container.scrollTop = scrollTop;
-  }
+  };
 
   onScroll = (event) => {
     // only update scrollTop via scroll by itself.
@@ -43,7 +43,7 @@ class VerticalScrollbar extends React.Component {
       return;
     }
     this.isSelfScroll = true;
-  }
+  };
 
   render() {
     const { containerHeight, contentHeight } = this.props;
