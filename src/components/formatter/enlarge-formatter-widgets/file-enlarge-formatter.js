@@ -11,14 +11,14 @@ class FileEnlargeFormatter extends Component {
 
   toggle = () => {
     this.props.closeEnlargeFormatter();
-  }
+  };
 
   downloadFile = (event, url) => {
     event.stopPropagation();
     let seafileFileIndex = url.indexOf('seafile-connector');
     if (seafileFileIndex > -1) return;
     window.location.href = url + '?dl=1';
-  }
+  };
 
   render() {
     const { value } = this.props;

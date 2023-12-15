@@ -55,7 +55,7 @@ class LinkFormatter extends Component {
     if (!this.linkedTable) return;
     this.linkedTableColumns = this.getLinkedTableColumns();
     this.nameColumn = this.linkedTableColumns.find(column => column.key === '0000');
-  }
+  };
 
   getLinkedTableColumns = () => {
     const { linkedTable, linkedViewID } = this;
@@ -81,7 +81,7 @@ class LinkFormatter extends Component {
         return { ...column, width: getColumnWidth(column) };
       });
     return linkedTableColumns;
-  }
+  };
 
   initLinkedRecords = () => {
     const { linkedTable } = this;
@@ -90,7 +90,7 @@ class LinkFormatter extends Component {
     const records = record[column.key] || [];
     const rowIds = records.map(item => item.row_id);
     this.listTableRowsByIds(dtableUuid, linkedTable.name, rowIds);
-  }
+  };
 
   listTableRowsByIds = (dtableUuid, tableName, rowIds) => {
     if (!Array.isArray(rowIds) || rowIds.length === 0) {
@@ -115,7 +115,7 @@ class LinkFormatter extends Component {
         showLinksLen: showLinksLen + DEFAULT_LINKS_NUMBER,
       });
     });
-  }
+  };
 
   loadMoreLinedRecords = () => {
     const { linkedTable } = this;
@@ -128,7 +128,7 @@ class LinkFormatter extends Component {
       const rowIds = records.map(item => item.row_id);
       this.listTableRowsByIds(dtableUuid, linkedTable.name, rowIds);
     });
-  }
+  };
 
   getFormulaRowsFormArchivedRows = (columns, rows) => {
     const formulaColumns = columns.filter(column => COMPUTED_COLUMN_TYPES.includes(column.type));
@@ -141,7 +141,7 @@ class LinkFormatter extends Component {
       });
     }
     return formulaRows;
-  }
+  };
 
   getDisplayColumns = (nameColumn = { key: '0000' }) => {
     // const innerWidth = window.innerWidth;
@@ -155,11 +155,11 @@ class LinkFormatter extends Component {
       }
     });
     return displayColumns;
-  }
+  };
 
   onClickEllipsis = () => {
     this.loadMoreLinedRecords();
-  }
+  };
 
   renderLinkRecords = () => {
     const { isLoading, isHasMore } = this.state;
@@ -195,7 +195,7 @@ class LinkFormatter extends Component {
         )}
       </>
     );
-  }
+  };
 
   render() {
     if (!this.linkedTable) {

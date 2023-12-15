@@ -45,24 +45,24 @@ class Table extends Component {
     const colOverScanStartIdx = getColOverScanStartIdx(colVisibleStartIdx, lastFrozenColumnIndex);
     const colOverScanEndIdx = getColOverScanEndIdx(colVisibleEndIdx, columnsLength);
     return { colOverScanStartIdx, colOverScanEndIdx };
-  }
+  };
 
   getRowOverScanEndIndex = ({ records }) => {
     const { gridHeight } = this.props;
     const recordHeight = RECORD_DEFAULT_HEIGHT;
     const recordsCount = records.length;
     return Math.min(Math.ceil(gridHeight / recordHeight) + RENDER_MORE_NUMBER, recordsCount);
-  }
+  };
 
   updateHorizontalScrollState = ({ columnsMetrics, gridWidth, scrollLeft }) => {
     const scrollState = this.getHorizontalScrollState({ columnsMetrics, gridWidth, scrollLeft });
     this.setState(scrollState);
-  }
+  };
 
   handleScrollLeft = (scrollLeft) => {
     this.currScrollLeft = scrollLeft;
     this.updateHorizontalScrollState({ ...this.props, scrollLeft });
-  }
+  };
 
   handleScrollTop = (scrollTop) => {
     this.currScrollTop = scrollTop;
@@ -78,7 +78,7 @@ class Table extends Component {
     if (Math.abs(nextRowOverScanEndIdx - this.state.rowOverScanEndIdx) > 5 || nextRowOverScanEndIdx > recordsCount - 5) {
       this.setState({ rowOverScanEndIdx: nextRowOverScanEndIdx });
     }
-  }
+  };
 
   getDisplayColumns = () => {
     const { columns } = this.props.columnsMetrics;
@@ -86,7 +86,7 @@ class Table extends Component {
     const frozenColumns = columns.filter((column) => isFrozenColumn(column));
     const nonFrozenColumn = columns.slice(colOverScanStartIdx, colOverScanEndIdx + 1).filter((column) => !isFrozenColumn(column));
     return frozenColumns.concat(nonFrozenColumn);
-  }
+  };
 
   getMoreResults = (e) => {
     const scrollLeft = e.target.scrollLeft;
@@ -119,7 +119,7 @@ class Table extends Component {
         this.setState({ isLoading: false, displayRecordsCount: displayRecordsCount + PER_DISPLAY_COUNT });
       });
     }
-  }
+  };
 
   dispatchHorizontalScrollbarScroll = (scrollLeft) => {
     if (!this.horizontalScrollbar) return;
@@ -128,7 +128,7 @@ class Table extends Component {
       return;
     }
     this.isHorizontalScrollByScrollbar = false;
-  }
+  };
 
   dispatchVerticalScrollbarScroll = (scrollTop) => {
     if (!this.verticalScrollbar) return;
@@ -137,34 +137,34 @@ class Table extends Component {
       return;
     }
     this.isVerticalScrollByScrollbar = false;
-  }
+  };
 
   onHorizontalScrollbarScroll = (scrollLeft) => {
     this.isHorizontalScrollByScrollbar = true;
     this.setScrollLeft(scrollLeft);
-  }
+  };
 
   onVerticalScrollbarScroll = (scrollTop) => {
     this.isVerticalScrollByScrollbar = true;
     this.setScrollTop(scrollTop);
-  }
+  };
 
   setScrollLeft = (scrollLeft) => {
     this.sqlQueryResultContainerRef.scrollLeft = scrollLeft;
-  }
+  };
 
   setScrollTop = (scrollTop) => {
     this.sqlQueryResultContainerRef.scrollTop = scrollTop;
-  }
+  };
 
   setContainerRef = (ref) => {
     this.sqlQueryResultContainerRef = ref;
-  }
+  };
 
   setContentRef = (ref) => {
     this.sqlQueryResultContentRef = ref;
     this.setState({ sqlQueryResultContentRef: ref });
-  }
+  };
 
   renderRecords = ({ displayColumns }) => {
     const { records } = this.props;
@@ -203,7 +203,7 @@ class Table extends Component {
       recordsDOMS.push(belowRow);
     }
     return recordsDOMS;
-  }
+  };
 
   render() {
     const { records, columns, columnsMetrics } = this.props;

@@ -65,22 +65,22 @@ class RecordList extends Component {
       isShowEnlargeFormatter: true,
       enlargeFormatterProps: { column, value }
     });
-  }
+  };
 
   closeEnlargeFormatter = () => {
     this.setState({
       isShowEnlargeFormatter: false,
       enlargeFormatterProps: { }
     });
-  }
+  };
 
   onOpenRecordExpandDialog = (record) => {
     this.setState({ isShowRecordExpandDialog: true, expandedRecord: record });
-  }
+  };
 
   closeRecordExpandDialog = () => {
     this.setState({ isShowRecordExpandDialog: false, expandedRecord: {} });
-  }
+  };
 
   render() {
     const { records } = this.props;

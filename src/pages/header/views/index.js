@@ -44,7 +44,7 @@ class Views extends Component {
         canScrollNext: _canScrollNext,
       });
     }
-  }
+  };
 
   onScrollWithControl = (type) => {
     const { offsetWidth, scrollWidth, scrollLeft } = this.viewsScroll;
@@ -78,11 +78,11 @@ class Views extends Component {
         }
       }, 15);
     }
-  }
+  };
 
   onViewsScroll = () => {
     this.checkAvailableScrollType();
-  }
+  };
 
   setViewsScrollLeft = () => {
     if (!this.viewsScroll) return;
@@ -90,16 +90,16 @@ class Views extends Component {
     if (scrollWidth > offsetWidth) {
       this.viewsScroll.scrollLeft = scrollWidth - offsetWidth;
     }
-  }
+  };
 
   onSelectView = (id, viewIdx) => {
     if (viewIdx === this.props.currentViewIdx) return;
     this.props.onSelectView(id);
-  }
+  };
 
   setViews = (idx, viewItem) => {
     this.views[idx] = viewItem;
-  }
+  };
 
   selectView = (currentViewIdx) => {
     // get current view's distance with container's left
@@ -110,7 +110,7 @@ class Views extends Component {
     if (left > offsetWidth) {
       this.viewsScroll.scrollLeft = left - offsetWidth;
     }
-  }
+  };
 
   render() {
     const { currentViewIdx, views } = this.props;

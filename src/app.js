@@ -57,11 +57,11 @@ class App extends React.Component {
 
   onDTableConnect = () => {
     this.resetData();
-  }
+  };
 
   onDTableChanged = () => {
     this.resetData();
-  }
+  };
 
   resetData = () => {
     const views = this.getPluginSettings();
@@ -70,7 +70,7 @@ class App extends React.Component {
       currentViewIdx = views.length - 1;
     }
     this.setState({ currentViewIdx, views });
-  }
+  };
 
   // callBack: scroll to new view
   addView = (viewName, callBack) => {
@@ -81,7 +81,7 @@ class App extends React.Component {
     let newViews = deepCopy(views);
     newViews.push(newView);
     this.updateViews(currentViewIdx, newViews, callBack);
-  }
+  };
 
   deleteView = () => {
     let { currentViewIdx } = this.state;
@@ -92,7 +92,7 @@ class App extends React.Component {
       currentViewIdx = newViews.length - 1;
     }
     this.updateViews(currentViewIdx, newViews);
-  }
+  };
 
   updateView = (update = {}) => {
     const { views, currentViewIdx } = this.state;
@@ -100,7 +100,7 @@ class App extends React.Component {
     let newViews = deepCopy(views);
     newViews.splice(currentViewIdx, 1, { ...changeView, ...update });
     this.updateViews(currentViewIdx, newViews);
-  }
+  };
 
   export = async () => {
     const result = this.bodyRef.getResult();
@@ -126,14 +126,14 @@ class App extends React.Component {
     }
     const errorMessage = isInternalError ? intl.get(error_message) : error_message;
     toaster.danger(errorMessage);
-  }
+  };
 
   updateViews = (currentViewIdx, views, callBack) => {
     this.setState({ currentViewIdx, views }, () => {
       this.updatePluginSettings(views);
       callBack && callBack();
     });
-  }
+  };
 
   // move view, update `selectedViewIdx`
   onMoveView = (targetViewID, targetIndexViewID, relativePosition) => {
@@ -177,7 +177,7 @@ class App extends React.Component {
       //setSelectedViewIds(KEY_SELECTED_VIEW_IDS, newSelectedViewIndex);
       window.dtableSDK.updatePluginSettings(PLUGIN_NAME, plugin_settings);
     });
-  }
+  };
 
   onSelectView = (viewId) => {
     const { views } = this.state;
@@ -185,39 +185,39 @@ class App extends React.Component {
     if (viewIdx > -1) {
       this.setState({ currentViewIdx: viewIdx });
     }
-  }
+  };
 
   getPluginSettings = () => {
     return window.dtableSDK.getPluginSettings(PLUGIN_NAME) || DEFAULT_SETTINGS;
-  }
+  };
 
   updatePluginSettings = (pluginSettings) => {
     window.dtableSDK.updatePluginSettings(PLUGIN_NAME, pluginSettings);
-  }
+  };
 
   getCurrentHistorySqlOptions = () => {
     if (!this.sqlOptionsLocalStorage) return [];
     return this.sqlOptionsLocalStorage.getCurrentHistorySqlOptions();
-  }
+  };
 
   saveHistorySqlOptions = (newOptions) => {
     this.sqlOptionsLocalStorage.saveHistorySqlOptions(newOptions);
-  }
+  };
 
   onCloseToggle = () => {
     this.setState({ showDialog: false });
     window.app.onClosePlugin && window.app.onClosePlugin();
-  }
+  };
 
   getUserCommonInfo = (email, avatar_size) => {
     return window.dtableWebAPI.getUserCommonInfo(email, avatar_size);
-  }
+  };
 
   sqlQuery = (sql) => {
     this.getTableName(sql);
     const dtableUuid = window.dtable.dtableUuid;
     return dtableDbAPI.sqlQuery(dtableUuid, sql);
-  }
+  };
 
   getTableName = (sql) => {
     const upperSQL = sql.toUpperCase();
@@ -242,20 +242,20 @@ class App extends React.Component {
       const currentTable = getTableByName(tables, tableName);
       this.setState({ currentTable });
     });
-  }
+  };
 
   getTables = () => {
     return window.dtableSDK.getTables();
-  }
+  };
 
   getTableById = (tableId) => {
     const tables = this.getTables();
     return getTableById(tables, tableId);
-  }
+  };
 
   getViewById = (table, view_id) => {
     return getViewById(table.views, view_id);
-  }
+  };
 
   getPluginMarginTop = () => {
     // 48: view toolbar height, 7: plugin wrapper occludes the height of tables bar
@@ -269,7 +269,7 @@ class App extends React.Component {
     const { header_height } = header_settings || {};
     if (header_height === 'double') return marginTop + 56;
     return marginTop + 32;
-  }
+  };
 
   render() {
     const { showDialog, currentViewIdx, views } = this.state;

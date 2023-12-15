@@ -10,12 +10,12 @@ class SqlOptionsLocalStorage {
     } catch {
       return [];
     }
-  }
+  };
 
   saveHistorySqlOptions = (options) => {
     if (!Array.isArray(options) || options.length < 1) return;
     window.localStorage.setItem(this.appKey, JSON.stringify(options.slice(0, 10)));
-  }
+  };
 
 }
 

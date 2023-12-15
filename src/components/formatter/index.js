@@ -35,13 +35,13 @@ class CellFormatter extends React.Component {
     const { component } = this.props;
     const { emptyComponent } = component || {};
     return emptyComponent || null;
-  }
+  };
 
   downloadImage = (url) => {
     let seafileFileIndex = url.indexOf('seafile-connector');
     if (seafileFileIndex > -1) return;
     window.location.href = url + '?dl=1';
-  }
+  };
 
   renderFormatter = () => {
     let { column, cellValue, isSample } = this.props;
@@ -187,7 +187,7 @@ class CellFormatter extends React.Component {
       default:
         return this.renderEmptyFormatter();
     }
-  }
+  };
 
   render() {
     return (

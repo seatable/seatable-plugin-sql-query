@@ -25,7 +25,7 @@ class DTableDbAPI {
       rows: [{ row_id: rowId, offset, limit: 10 }]
     };
     return this.req.post(url, data);
-  }
+  };
 
   listTableRowsByIds = (dtableUuid, tableName, rowIds) => {
     this.init();
@@ -34,7 +34,7 @@ class DTableDbAPI {
     const sql = `select * from \`${tableName}\` where _id in (${newRowIds.join(', ')})`;
     const data = { sql: sql };
     return this.req.post(url, data);
-  }
+  };
 
   sqlQuery(dtableUuid, sql, parameters, convert_keys = false) {
     this.init();

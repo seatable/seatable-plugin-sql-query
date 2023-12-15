@@ -29,12 +29,12 @@ class HorizontalScrollbar extends React.Component {
       return;
     }
     this.setScrollLeft(scrollLeft);
-  }
+  };
 
   setScrollLeft = (scrollLeft) => {
     this.isSelfScroll = false;
     this.container.scrollLeft = scrollLeft;
-  }
+  };
 
   onScroll = (event) => {
     // only update scrollLeft via scroll by itself.
@@ -45,7 +45,7 @@ class HorizontalScrollbar extends React.Component {
       return;
     }
     this.isSelfScroll = true;
-  }
+  };
 
   render() {
     const { canvasWidth } = this.props;

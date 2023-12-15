@@ -18,17 +18,17 @@ class Header extends Component {
 
   openNewViewDialog = () => {
     this.setState({ isNewViewDialogDisplay: true });
-  }
+  };
 
   closeNewViewDialog = () => {
     this.setState({ isNewViewDialogDisplay: false });
-  }
+  };
 
   addView = (viewName) => {
     this.props.addView(viewName, () => {
       this.viewsRef.setViewsScrollLeft();
     });
-  }
+  };
 
   render() {
     const { isNewViewDialogDisplay } = this.state;

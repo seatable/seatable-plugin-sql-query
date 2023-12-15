@@ -20,7 +20,7 @@ class RenameViewDialog extends Component {
     } else {
       this.setState({ viewName: value });
     }
-  }
+  };
 
   handleKeyDown = (e) => {
     if (e.keyCode === 13) {
@@ -28,7 +28,7 @@ class RenameViewDialog extends Component {
       this.handleSubmit();
       return false;
     }
-  }
+  };
 
   handleSubmit = () => {
     let { viewName } = this.state;
@@ -39,11 +39,11 @@ class RenameViewDialog extends Component {
     }
     this.props.onRenameViewConfirm(viewName);
     this.props.onRenameViewCancel();
-  }
+  };
 
   toggle = () => {
     this.props.onRenameViewCancel();
-  }
+  };
 
   render() {
     const { viewName, errMessage } = this.state;
