@@ -1,11 +1,11 @@
 {
   "name": "sql-query",
-  "version": "0.1.10",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "axios": "^1.6.1",
     "deep-copy": "^1.4.2",
-    "dtable-ui-component": "4.3.1",
+    "dtable-ui-component": "4.3.4",
     "dtable-utils": "4.3.3",
     "is-hotkey": "^0.1.4",
     "react": "17.0.2",
@@ -21,6 +21,7 @@
     "translate": "node scripts/translate.js",
     "push-translate": "tx push -s",
     "pull-translate": "tx pull -a -f && npm run translate",
+    "push-git": "git push origin master && git push https://github.com/seatable/seatable-plugin-sql-query.git master",
     "build-plugin": "export GENERATE_SOURCEMAP=false && npm run clean && npm run build && node scripts/build-plugin.js"
   },
   "browserslist": {
