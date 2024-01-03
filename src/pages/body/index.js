@@ -3,9 +3,10 @@ import intl from 'react-intl-universal';
 import PropTypes from 'prop-types';
 import { Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import isHotkey from 'is-hotkey';
-import { QUERY_STATUS, SQL_STATISTIC_KEY_WORDS } from '../../constants';
+import { QUERY_STATUS } from '../../constants';
 import RecordList from './records';
 import ExportButton from './widgets/export-button';
+import { getValidSQL } from '../../utils/utils';
 
 class Body extends Component {
 
@@ -73,23 +74,11 @@ class Body extends Component {
   };
 
   getValidSQL = (sql) => {
-    const upperSQL = sql.toUpperCase();
-    if (!upperSQL.trim().startsWith('SELECT ')) return sql;
-    if (upperSQL.indexOf('GROUP BY') > -1) return sql;
-    const selectIndex = upperSQL.indexOf('SELECT ');
-    const fromIndex = upperSQL.indexOf(' FROM ');
-    const selectedColumnsString = sql.slice(selectIndex + 7, fromIndex);
-    if (selectedColumnsString.indexOf('*') > -1) {
-      return sql;
+    const validSQL = getValidSQL(sql);
+    if (validSQL !== sql) {
+      this.isActiveQueryId = false;
     }
-    if (selectedColumnsString.indexOf('_id') > -1) {
-      return sql;
-    }
-    if (SQL_STATISTIC_KEY_WORDS.filter(item => selectedColumnsString.indexOf(item) > -1).length > 0) {
-      return sql;
-    }
-    this.isActiveQueryId = false;
-    return sql.slice(0, selectIndex + 7) + `\`_id\`, ${selectedColumnsString}` + sql.slice(fromIndex, );
+    return validSQL;
   };
 
   onQuery = () => {
