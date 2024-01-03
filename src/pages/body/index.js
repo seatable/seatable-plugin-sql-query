@@ -6,7 +6,7 @@ import isHotkey from 'is-hotkey';
 import { QUERY_STATUS } from '../../constants';
 import RecordList from './records';
 import ExportButton from './widgets/export-button';
-import { getValidSQL } from '../../utils/utils';
+import { getValidSQL, getErrorMsg } from '../../utils/utils';
 
 class Body extends Component {
 
@@ -62,13 +62,13 @@ class Body extends Component {
   getResult = () => {
     const { sql, queryStatus, result } = this.state;
     if (!sql) {
-      return { success: false, error_message: 'SQL_is_required', isInternalError: true };
+      return { success: false, error_message: intl.get('SQL_is_required') };
     }
     if (queryStatus === QUERY_STATUS.READY) {
-      return { success: false, error_message: 'Please_query_first', isInternalError: true };
+      return { success: false, error_message: intl.get('Please_query_first') };
     }
     if (queryStatus === QUERY_STATUS.DOING) {
-      return { success: false, error_message: 'Querying_try_again_later', isInternalError: true };
+      return { success: false, error_message: intl.get('Querying_try_again_later') };
     }
     return { ...result, isActiveQueryId: this.isActiveQueryId };
   };
@@ -92,8 +92,9 @@ class Body extends Component {
     this.setState({ queryStatus: QUERY_STATUS.DOING }, () => {
       this.props.sqlQuery(validSQL).then(res => {
         this.setState({ queryStatus: QUERY_STATUS.DONE, result: res.data, isOpen: false });
-      }).catch(e => {
-        this.setState({ queryStatus: QUERY_STATUS.DONE, result: { error_message: 'DtableDb Server Error.', isOpen: false } });
+      }).catch(error => {
+        const errorMessage = getErrorMsg(error);
+        this.setState({ queryStatus: QUERY_STATUS.DONE, result: { error_message: errorMessage, isOpen: false } });
       });
       const options = this.props.getCurrentHistorySqlOptions();
       const newOptions = options.includes(sql) ? options : [ sql.trim(), ...options ];

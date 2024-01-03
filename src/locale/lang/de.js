@@ -28,7 +28,10 @@ const de = {
   "Rows_must_be_array": "Zeilen müssen ein Array sein.",
   "All_files": "Alle Dateien",
   "Record_details": "Details des Eintrags",
-  "Please_query_first": "Zunächst Abfrage ausführen"
+  "Please_query_first": "Zunächst Abfrage ausführen",
+  "Permission_denied": "Der Zugriff wurde verweigert.",
+  "Error": "Error.",
+  "Please_check_the_network": "Überprüfen Sie die Netzwerkverbindung."
 };
 
 export default de;

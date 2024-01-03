@@ -28,5 +28,8 @@
   "Rows_must_be_array": "行必须是一个数组。",
   "All_files": "全部文件",
   "Record_details": "记录详情信息",
-  "Please_query_first": "请先查询"
+  "Please_query_first": "请先查询",
+  "Permission_denied": "权限错误。",
+  "Error": "错误。",
+  "Please_check_the_network": "请检查网络连接。"
 }
