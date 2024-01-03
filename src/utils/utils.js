@@ -84,20 +84,20 @@ export const getValidSQL = (sql) => {
   return sql.slice(0, selectIndex + 7) + `\`_id\`, ${sql.slice(selectIndex + 7)}`;
 };
 
-export const getErrorMsg = (error, t) => {
+export const getErrorMsg = (error) => {
   let errorMsg = '';
   if (error.response) {
     if (error.response.status === 403) {
-      errorMsg = t('Permission_denied');
+      errorMsg = 'Permission_denied';
     } else if (error.response.data && error.response.data['error_msg']) {
       errorMsg = error.response.data['error_msg'];
     } else if (error.response.data && error.response.data['error_message']) {
       errorMsg = error.response.data['error_message'];
     } else {
-      errorMsg = t('Error');
+      errorMsg = 'Error';
     }
   } else {
-    errorMsg = t('Please_check_the_network');
+    errorMsg = 'Please_check_the_network';
   }
   return errorMsg;
 };

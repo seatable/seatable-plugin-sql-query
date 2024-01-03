@@ -94,7 +94,7 @@ class Body extends Component {
         this.setState({ queryStatus: QUERY_STATUS.DONE, result: res.data, isOpen: false });
       }).catch(error => {
         const errorMessage = getErrorMsg(error);
-        this.setState({ queryStatus: QUERY_STATUS.DONE, result: { error_message: errorMessage, isOpen: false } });
+        this.setState({ queryStatus: QUERY_STATUS.DONE, result: { error_message: intl.get(errorMessage) || errorMessage, isOpen: false } });
       });
       const options = this.props.getCurrentHistorySqlOptions();
       const newOptions = options.includes(sql) ? options : [ sql.trim(), ...options ];
