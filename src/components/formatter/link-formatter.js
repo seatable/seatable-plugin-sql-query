@@ -267,6 +267,7 @@ LinkFormatter.propTypes = {
   value: PropTypes.any,
   containerClassName: PropTypes.string,
   cellValueUtils: PropTypes.object,
+  tables: PropTypes.array,
   renderEmptyFormatter: PropTypes.func,
   getUserCommonInfo: PropTypes.func,
 };
