@@ -28,7 +28,10 @@ const fr = {
   "Rows_must_be_array": "Les lignes doivent être un array.",
   "All_files": "Tous les fichiers",
   "Record_details": "Détails de l'enregistrement",
-  "Please_query_first": "Veuillez d'abord faire votre requête"
+  "Please_query_first": "Veuillez d'abord faire votre requête",
+  "Permission_denied": "Permission denied",
+  "Error": "Error",
+  "Please_check_the_network": "Please check the network"
 };
 
 export default fr;
