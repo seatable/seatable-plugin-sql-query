@@ -29,9 +29,9 @@ const en = {
   "All_files": "All files",
   "Record_details": "Record details",
   "Please_query_first": "Please query first",
-  "Permission_denied": "Permission denied.",
-  "Error": "Error.",
-  "Please_check_the_network": "Please check the network."
+  "Permission_denied": "Permission denied",
+  "Error": "Error",
+  "Please_check_the_network": "Please check the network"
 };
 
 export default en;

@@ -29,9 +29,9 @@ const fr = {
   "All_files": "Tous les fichiers",
   "Record_details": "Détails de l'enregistrement",
   "Please_query_first": "Veuillez d'abord faire votre requête",
-  "Permission_denied": "L'accès a été refusé.",
-  "Error": "Error.",
-  "Please_check_the_network": "Vérifiez le réseau."
+  "Permission_denied": "Permission denied",
+  "Error": "Error",
+  "Please_check_the_network": "Please check the network"
 };
 
 export default fr;
