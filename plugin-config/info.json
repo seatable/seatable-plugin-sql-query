@@ -1,6 +1,6 @@
 {
   "name": "sql-query",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "display_type": "overlay",
   "display_name": {
     "de": "SQL-Abfrage",
