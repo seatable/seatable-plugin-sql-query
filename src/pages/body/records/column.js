@@ -8,7 +8,7 @@ function Column(props) {
 
   return (
     <div
-      className={`sql-query-result-table-cell column ${className} ${type === INDEX_COLUMN_TYPE ? 'index': ''}`}
+      className={`sql-query-result-table-cell column ${className} ${type === INDEX_COLUMN_TYPE ? 'index' : ''}`}
       style={{ ...style, width, maxWidth: width, minWidth: width, left }}
     >
       <div className="sql-query-result-column-content text-truncate">

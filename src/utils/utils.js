@@ -53,9 +53,9 @@ export const initScrollBar = () => {
     const style = document.createElement('style');
     document.head.appendChild(style);
     const sheet = style.sheet;
-    sheet.addRule('div::-webkit-scrollbar','width: 8px;height: 8px;');
-    sheet.addRule('div::-webkit-scrollbar-button','display: none;');
-    sheet.addRule('div::-webkit-scrollbar-thumb','background-color: rgb(206, 206, 212);border-radius: 10px;');
+    sheet.addRule('div::-webkit-scrollbar', 'width: 8px;height: 8px;');
+    sheet.addRule('div::-webkit-scrollbar-button', 'display: none;');
+    sheet.addRule('div::-webkit-scrollbar-thumb', 'background-color: rgb(206, 206, 212);border-radius: 10px;');
   }
 };
 

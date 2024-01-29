@@ -97,7 +97,7 @@ class Body extends Component {
         this.setState({ queryStatus: QUERY_STATUS.DONE, result: { error_message: intl.get(errorMessage) || errorMessage, isOpen: false } });
       });
       const options = this.props.getCurrentHistorySqlOptions();
-      const newOptions = options.includes(sql) ? options : [ sql.trim(), ...options ];
+      const newOptions = options.includes(sql) ? options : [sql.trim(), ...options];
       this.props.saveHistorySqlOptions(newOptions);
       const { sql: oldSQL } = currentView;
       if (oldSQL !== sql) {

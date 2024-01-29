@@ -169,12 +169,12 @@ class App extends React.Component {
 
     const newSelectedViewIndex = updatedViews.indexOf(selectedView);
 
-    //plugin_settings.views = updatedViews;
+    // plugin_settings.views = updatedViews;
     this.setState({
       views: plugin_settings,
       currentViewIdx: newSelectedViewIndex
     }, () => {
-      //setSelectedViewIds(KEY_SELECTED_VIEW_IDS, newSelectedViewIndex);
+      // setSelectedViewIds(KEY_SELECTED_VIEW_IDS, newSelectedViewIndex);
       window.dtableSDK.updatePluginSettings(PLUGIN_NAME, plugin_settings);
     });
   };

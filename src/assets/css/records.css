@@ -247,8 +247,10 @@
 }
 
 .sql-query-plugin .sql-query-result-table-cell .collaborator-avatar {
-  height: 16px;
-  width: 16px;
+  /* to keep center */
+  margin-top: 2px;
+  height: 16px !important;
+  width: 16px !important;
 }
 
 /* link */
@@ -378,4 +380,15 @@
   position: sticky;
   left: 8px;
   width: fit-content;
+}
+
+/* keep center */
+.sql-query-plugin .sql-query-result-table-cell .sql-query-single-select-formatter,
+.sql-query-plugin .sql-query-result-table-cell .sql-query-multiple-select-formatter  {
+  display: flex;
+  align-items: center;
+}
+
+.sql-query-result-table-cell .collaborator-item{
+  align-items: unset;
 }

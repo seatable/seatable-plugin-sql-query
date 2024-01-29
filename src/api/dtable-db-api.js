@@ -18,7 +18,7 @@ class DTableDbAPI {
   listRowLinkedRecords = (dtableUuid, tableId, columnKey, rowId, offset) => {
     this.init();
     offset = offset ? offset : 0;
-    const url = 'api/v1/linked-records/'+ dtableUuid;
+    const url = 'api/v1/linked-records/' + dtableUuid;
     const data = {
       table_id: tableId,
       link_column: columnKey,
@@ -29,7 +29,7 @@ class DTableDbAPI {
 
   listTableRowsByIds = (dtableUuid, tableName, rowIds) => {
     this.init();
-    const url = 'api/v1/query/'+ dtableUuid;
+    const url = 'api/v1/query/' + dtableUuid;
     const newRowIds = rowIds.map(item => `'${item}'`);
     const sql = `select * from \`${tableName}\` where _id in (${newRowIds.join(', ')})`;
     const data = { sql: sql };
@@ -38,7 +38,7 @@ class DTableDbAPI {
 
   sqlQuery(dtableUuid, sql, parameters, convert_keys = false) {
     this.init();
-    const url = 'api/v1/query/'+ dtableUuid;
+    const url = 'api/v1/query/' + dtableUuid;
     let data = { sql: sql, convert_keys };
     if (parameters) {
       data['parameters'] = parameters;

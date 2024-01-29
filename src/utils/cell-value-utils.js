@@ -102,7 +102,7 @@ class CellValueUtils {
     return '';
   };
 
-  getCellValueDisplayString = (cellValue, column, {tables = [], collaborators = []} = {}) => {
+  getCellValueDisplayString = (cellValue, column, { tables = [], collaborators = [] } = {}) => {
     const { type, data } = column;
     const newData = data || {};
     switch (type) {
@@ -279,7 +279,7 @@ class CellValueUtils {
         const { data } = column;
         const { result_type } = data || {};
         if (result_type === FORMULA_RESULT_TYPE.NUMBER) {
-          return { ...column, data: { format: data.format, decimal: data.decimal, thousands: data.thousands, precision: data.precision, enable_precision: data.enable_precision } , type: CellType.NUMBER };
+          return { ...column, data: { format: data.format, decimal: data.decimal, thousands: data.thousands, precision: data.precision, enable_precision: data.enable_precision }, type: CellType.NUMBER };
         }
         if (result_type === FORMULA_RESULT_TYPE.DATE) {
           let format = 'YYYY-MM-DD';
