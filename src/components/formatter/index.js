@@ -49,7 +49,7 @@ class CellFormatter extends React.Component {
     const { type: columnType } = column || {};
     const containerClassName = `sql-query-${columnType}-formatter`;
 
-    switch(columnType) {
+    switch (columnType) {
       case CellType.TEXT: {
         if (!cellValue) return this.renderEmptyFormatter();
         return <TextFormatter value={cellValue} containerClassName={containerClassName} />;

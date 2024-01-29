@@ -79,7 +79,7 @@ class NewViewDialog extends React.Component {
                 onChange={this.handleChange}
                 autoFocus={true}
               />
-              <Input style={{display: 'none'}} />
+              <Input style={{ display: 'none' }} />
             </FormGroup>
           </Form>
           {errMessage && <Alert color="danger" className="mt-2">{intl.get(errMessage)}</Alert>}

@@ -25,7 +25,7 @@ function Record(props) {
         if (type === INDEX_COLUMN_TYPE) {
           return (
             <div
-              key={`${key}-${{index}}`}
+              key={`${key}-${{ index }}`}
               className={`${className} index`}
               style={{ ...style, width, maxWidth: width, minWidth: width }}
             >
@@ -53,7 +53,7 @@ function Record(props) {
         }
         return (
           <div
-            key={`${key}-${{index}}`}
+            key={`${key}-${{ index }}`}
             className={className}
             style={{ ...style, width, maxWidth: width, minWidth: width, left }}
             onDoubleClick={FILE_COLUMN_TYPES.includes(type) ? () => props.openEnlargeFormatter(column, value) : () => {}}

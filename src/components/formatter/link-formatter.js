@@ -20,10 +20,10 @@ function LinkFormatter(props) {
   if (!Array.isArray(value) || value.length === 0) return props.renderEmptyFormatter();
   let { display_column: displayColumn } = data || {};
   if (!displayColumn) return props.renderEmptyFormatter();
-  const { type: displayColumnType , data: displayColumnData } = displayColumn;
+  const { type: displayColumnType, data: displayColumnData } = displayColumn;
   const cellValue = getFormulaArrayValue(value, !isArrayFormalColumn(displayColumnType));
   if (!Array.isArray(cellValue) || cellValue.length === 0) return props.renderEmptyFormatter();
-  switch(displayColumnType) {
+  switch (displayColumnType) {
     case CellType.TEXT:
     case CellType.AUTO_NUMBER:
     case CellType.EMAIL:

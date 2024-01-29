@@ -82,7 +82,7 @@ export const generatorViewId = (views) => {
 export const bytesToSize = bytes => {
   if (typeof(bytes) == 'undefined') return ' ';
 
-  if(bytes < 0) return '--';
+  if (bytes < 0) return '--';
   const sizes = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
 
   if (bytes === 0) return bytes + sizes[0];
@@ -201,7 +201,7 @@ export const getTableHiddenColumnKeys = (table, viewId, getViewById) => {
       if (!Array.isArray(hidden_columns)) return [];
 
       // avoid modifying referenced raw data
-      return [ ...hidden_columns ];
+      return [...hidden_columns];
     }
     // view is not exist
   }

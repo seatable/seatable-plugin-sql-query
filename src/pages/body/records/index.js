@@ -48,7 +48,7 @@ class RecordList extends Component {
         width: getCellRecordWidth(column)
       };
     });
-    this.displayColumns = [ INDEX_COLUMN ].concat(this.columns).map((column, columnIndex) => {
+    this.displayColumns = [INDEX_COLUMN].concat(this.columns).map((column, columnIndex) => {
       return {
         ...column,
         isFrozen: columnIndex < frozenColumnsCount,

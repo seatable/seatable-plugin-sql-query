@@ -85,7 +85,7 @@ class RowCard extends PureComponent {
 
   render() {
     const { row, nameColumn, isShowRemoveCardItemBtn } = this.props;
-    const cardItemClass = classnames('row-card-item position-relative d-flex', {'row-card-item-highlight': this.props.isHighlightRow});
+    const cardItemClass = classnames('row-card-item position-relative d-flex', { 'row-card-item-highlight': this.props.isHighlightRow });
     return (
       <div className={cardItemClass} onClick={this.onSelectRow}>
         <div className="row-card-item-container w-100">
