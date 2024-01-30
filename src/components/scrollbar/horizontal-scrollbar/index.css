@@ -11,15 +11,15 @@
   height: 1px;
 }
 
-::-webkit-scrollbar {
+.horizontal-scrollbar::-webkit-scrollbar {
   height: 7px;
 }
 
-::-webkit-scrollbar-track,::-webkit-scrollbar-track-piece{
+.horizontal-scrollbar::-webkit-scrollbar-track,::-webkit-scrollbar-track-piece {
   background-color: transparent;
 }
 
-::-webkit-scrollbar-thumb {
+.horizontal-scrollbar::-webkit-scrollbar-thumb {
   background-color: rgb(193, 193, 193);
   border-radius: 7px;
 }
