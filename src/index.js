@@ -13,14 +13,13 @@ class TaskList {
     // local develop
     window.app = {};
     window.app.state = {};
- 
-    await dtableSDK.init(window.dtablePluginConfig);
-    await dtableSDK.syncWithServer();
-    await dtableSDK.dtableWebAPI.login();
 
     window.dtable = {
       ...window.dtablePluginConfig,
     };
+ 
+    await dtableSDK.init(window.dtablePluginConfig);
+    await dtableSDK.syncWithServer();
 
     window.app.departments = dtableSDK.dtableStore.departments;
     window.app.collaborators = dtableSDK.dtableStore.collaborators;
