@@ -101,6 +101,7 @@ class RecordList extends Component {
           <div className="sql-query-result-container position-relative" ref={ref => this.searchQueryResRef = ref}>
             <div className="sql-query-result-content">
               <Table
+                isJoinStmt={this.props.isJoinStmt}
                 isLoading={isLoading}
                 records={records}
                 columns={this.displayColumns}
@@ -147,6 +148,7 @@ RecordList.propTypes = {
   getTables: PropTypes.func,
   getTableById: PropTypes.func,
   getViewById: PropTypes.func,
+  isJoinStmt: PropTypes.bool
 };
 
 export default RecordList;
