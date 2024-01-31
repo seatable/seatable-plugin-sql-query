@@ -178,6 +178,7 @@ class Table extends Component {
       const recordIndex = rowOverScanStartIdx + index;
       return (
         <Record
+          isJoinStmt={this.props.isJoinStmt}
           key={recordIndex._id || recordIndex}
           columns={displayColumns}
           record={record}
@@ -252,6 +253,7 @@ Table.propTypes = {
   onOpenRecordExpandDialog: PropTypes.func,
   openEnlargeFormatter: PropTypes.func,
   getUserCommonInfo: PropTypes.func,
+  isJoinStmt: PropTypes.bool
 };
 
 export default Table;

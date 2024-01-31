@@ -10,3 +10,17 @@
 .horizontal-scrollbar-inner {
   height: 1px;
 }
+
+.horizontal-scrollbar::-webkit-scrollbar {
+  height: 7px;
+}
+
+.horizontal-scrollbar::-webkit-scrollbar-track,::-webkit-scrollbar-track-piece {
+  background-color: transparent;
+}
+
+.horizontal-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgb(193, 193, 193);
+  border-radius: 7px;
+}
+

@@ -5,12 +5,12 @@ import { CellFormatter } from '../../../components';
 import { INDEX_COLUMN_TYPE, FILE_COLUMN_TYPES } from '../../../constants';
 
 function Record(props) {
-  const { columns, record, index } = props;
+  const { columns, record, index, isJoinStmt } = props;
 
   return (
     <div className="sql-query-result-table-row record-height-default">
       {columns.map((column) => {
-        const { key, name, width, type, data, isFrozen, isLastFrozen, left } = column;
+        const { key, name, width, type, data, isFrozen, isLastFrozen, left, id } = column;
         let style = {};
         let className = 'sql-query-result-table-cell ';
         if (isFrozen) {
@@ -41,7 +41,13 @@ function Record(props) {
             </div>
           );
         }
-        const value = record[name] || record[key];
+        let value; 
+        if (isJoinStmt) {
+          value = record[id];
+        } else {
+          value = record[name] || record[key];
+        }
+
         if (FORMULA_COLUMN_TYPES_MAP[type]) {
           className += 'sql-query-result-table-formula-cell ';
           const { array_type } = data || {};
@@ -79,6 +85,7 @@ Record.propTypes = {
   openEnlargeFormatter: PropTypes.func,
   onOpenRecordExpandDialog: PropTypes.func,
   getUserCommonInfo: PropTypes.func,
+  isJoinStmt: PropTypes.func
 };
 
 export default Record;

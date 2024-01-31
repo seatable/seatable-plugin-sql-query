@@ -83,8 +83,7 @@ class Body extends Component {
 
   onQuery = () => {
     const { sql, queryStatus } = this.state;
-    if (!sql) return;
-    if (queryStatus === QUERY_STATUS.DOING) return;
+    if (!sql || (queryStatus === QUERY_STATUS.DOING)) return;
     this.isActiveQueryId = true;
     const validSQL = this.getValidSQL(sql);
     const { currentView } = this.props;
@@ -157,13 +156,14 @@ class Body extends Component {
         {intl.get('Querying')}
       </div>
     );
-    const { success, error_message, results, metadata: columns } = result;
+    const { success, error_message, results, metadata: columns, is_join_stmt: isJoinStmt  } = result;
     if (success) {
       const displayColumns = this.isActiveQueryId ? columns : columns.filter(column => column.key !== '_id');
       const gridWidth = this.getGridWidth();
       const gridHeight = this.getGridHeight();
       return (
         <RecordList
+          isJoinStmt={isJoinStmt}
           columns={displayColumns}
           records={results}
           gridWidth={gridWidth}

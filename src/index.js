@@ -13,9 +13,11 @@ class TaskList {
     // local develop
     window.app = {};
     window.app.state = {};
+
     window.dtable = {
       ...window.dtablePluginConfig,
     };
+ 
     await dtableSDK.init(window.dtablePluginConfig);
     await dtableSDK.syncWithServer();
 

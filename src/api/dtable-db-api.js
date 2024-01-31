@@ -7,8 +7,11 @@ class DTableDbAPI {
   }
 
   init() {
-    if (this.req) return;
     const { accessToken, dtableDb } = window.dtable;
+    if (this.req) {
+      this.req.defaults.headers['Authorization'] = 'Token ' + accessToken;
+      return;
+    } 
     this.req = axios.create({
       baseURL: dtableDb,
       headers: { 'Authorization': 'Token ' + accessToken }
