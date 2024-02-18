@@ -29,7 +29,7 @@
   "All_files": "Alle Dateien",
   "Record_details": "Details des Eintrags",
   "Please_query_first": "Zunächst Abfrage ausführen",
-  "Permission_denied": "Permission denied",
-  "Error": "Error",
-  "Please_check_the_network": "Please check the network"
+  "Permission_denied": "Der Zugriff wurde verweigert.",
+  "Error": "Fehler",
+  "Please_check_the_network": "Überprüfen Sie die Netzwerkverbindung."
 }

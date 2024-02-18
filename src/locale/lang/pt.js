@@ -1,4 +1,4 @@
-{
+const pt = {
   "SQL_query": "Consulta SQL",
   "Query": "Consulta",
   "Querying": "Consultar...",
@@ -32,4 +32,6 @@
   "Permission_denied": "Permission denied",
   "Error": "Erro",
   "Please_check_the_network": "Please check the network"
-}
+};
+
+export default pt;

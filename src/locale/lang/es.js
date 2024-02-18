@@ -1,4 +1,4 @@
-{
+const es = {
   "SQL_query": "SQL query",
   "Query": "Consulta",
   "Querying": "Consultando…",
@@ -32,4 +32,6 @@
   "Permission_denied": "No permitido",
   "Error": "Error",
   "Please_check_the_network": "Comprueba la conexión."
-}
+};
+
+export default es;
