@@ -85,7 +85,7 @@ Record.propTypes = {
   openEnlargeFormatter: PropTypes.func,
   onOpenRecordExpandDialog: PropTypes.func,
   getUserCommonInfo: PropTypes.func,
-  isJoinStmt: PropTypes.func
+  isJoinStmt: PropTypes.bool
 };
 
 export default Record;

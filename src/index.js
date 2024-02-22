@@ -13,10 +13,6 @@ class TaskList {
     // local develop
     window.app = {};
     window.app.state = {};
-
-    window.dtable = {
-      ...window.dtablePluginConfig,
-    };
  
     await dtableSDK.init(window.dtablePluginConfig);
     await dtableSDK.syncWithServer();
@@ -28,6 +24,10 @@ class TaskList {
     window.app.collaboratorsCache = {};
     window.dtableWebAPI = dtableSDK.dtableWebAPI;
     window.dtableSDK = dtableSDK;
+    window.dtable = {
+      ...window.dtablePluginConfig,
+      ...dtableSDK.config
+    };
   }
 
   static async execute() {
