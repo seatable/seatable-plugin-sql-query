@@ -1,3 +1,4 @@
+import intl from 'react-intl-universal';
 import { CellType } from 'dtable-utils';
 import { View } from '../model';
 export { FILE_COLUMN_TYPES, START, FILES_SLICE_LENGTH, END, DOWNLOAD_NAME_COLUMN_TYPES } from './download-file';
@@ -37,7 +38,7 @@ export const PRIVATE_COLUMN_KEY_TYPE_MAP = {
 export const UNKNOWN_TYPE = 'unknown';
 
 export const DEFAULT_SETTINGS = [
-  new View({ _id: '0000' }),
+  new View({ _id: '0000', name: intl.get('Default_view') }),
 ];
 
 export const SEQUENCE_COLUMN_WIDTH = 80;
