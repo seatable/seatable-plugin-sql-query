@@ -76,6 +76,7 @@ export const SQL_STATISTIC_KEY_WORDS = [
   'MAX',
   'MIN',
   'AVG',
+  'DISTINCT',
 ];
 
 export const LEFT_NAV = 280;
