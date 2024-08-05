@@ -336,7 +336,8 @@ module.exports = function (webpackEnv) {
         ]),
       ],
       fallback: {
-        path: require.resolve("path-browserify"),
+        path: require.resolve('path-browserify'),
+        process: require.resolve('process'),
       }
     },
     module: {
@@ -615,7 +616,7 @@ module.exports = function (webpackEnv) {
         cwd: process.cwd(),
       }),
       new webpack.ProvidePlugin({
-        process: 'process/browser',
+        process: 'process/browser.js',
       }),
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
