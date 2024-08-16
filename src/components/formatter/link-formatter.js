@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { CellType, FORMULA_RESULT_TYPE } from 'dtable-utils';
 import {
-  MultipleSelectFormatter,
+  SingleSelectFormatter,
   NumberFormatter,
   DateFormatter,
   CTimeFormatter,
@@ -131,9 +131,23 @@ function LinkFormatter(props) {
     case CellType.SINGLE_SELECT: {
       if (!cellValue || cellValue.length === 0) return props.renderEmptyFormatter();
       const options = displayColumnData && Array.isArray(displayColumnData.options) ? displayColumnData.options : [];
-      return <MultipleSelectFormatter value={cellValue} options={options || []} containerClassName={`sql-query-${displayColumnType}-formatter`} />;
+      return (
+        <div className={containerClassName}>
+          {cellValue.map((value, index) => {
+            if (!value) return null;
+            return (
+              <SingleSelectFormatter
+                key={index}
+                value={value}
+                options={options}
+              />
+            );
+          })}
+        </div>
+      );
     }
     case CellType.MULTIPLE_SELECT: {
+      // not support yet.
       if (!cellValue || cellValue.length === 0) return props.renderEmptyFormatter();
       return (
         <div className={containerClassName}>
@@ -153,6 +167,7 @@ function LinkFormatter(props) {
       );
     }
     case CellType.COLLABORATOR: {
+      // not support yet.
       if (!cellValue || cellValue.length === 0) return props.renderEmptyFormatter();
       return (
         <div className={containerClassName}>
@@ -172,6 +187,7 @@ function LinkFormatter(props) {
       );
     }
     case CellType.CHECKBOX: {
+      // not support yet.
       return (
         <div className={containerClassName}>
           {cellValue.map((value, index) => {
@@ -185,6 +201,7 @@ function LinkFormatter(props) {
       );
     }
     case CellType.GEOLOCATION: {
+      // not support yet.
       return (
         <div className={containerClassName}>
           {cellValue.map((value, index) => {
@@ -199,6 +216,7 @@ function LinkFormatter(props) {
       );
     }
     case CellType.LONG_TEXT: {
+      // not support yet.
       return (
         <div className={containerClassName}>
           {cellValue.map((value, index) => {
