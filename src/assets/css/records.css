@@ -392,3 +392,16 @@
 .sql-query-result-table-cell .collaborator-item{
   align-items: unset;
 }
+
+.sql-query-result-table-formula-cell .dtable-ui.multiple-select-formatter,
+.sql-query-result-table-formula-cell .dtable-ui.multiple .single-select-formatter {
+  display: inline-flex;
+  align-items: center;
+}
+
+.sql-query-result-table-cell .sql-query-link-formatter .dtable-ui.single-select-formatter {
+  display: inline-flex;
+  align-items: center;
+  width: auto;
+  height: auto;
+}
