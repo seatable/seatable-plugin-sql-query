@@ -15,34 +15,32 @@ class DTableDbAPI {
     });
   }
 
-  listRowLinkedRecords = (dtableUuid, tableId, columnKey, rowId, offset) => {
+  listRowLinkedRecords(dtableUuid, tableId, linkColumnKey, rowId, offset) {
     this.init();
-    offset = offset ? offset : 0;
-    const url = 'api/v1/linked-records/' + dtableUuid;
+    const url = `api/v2/dtables/${dtableUuid}/query-links/`;
     const data = {
       table_id: tableId,
-      link_column: columnKey,
+      link_column_key: linkColumnKey,
       rows: [{ row_id: rowId, offset, limit: 10 }]
     };
     return this.req.post(url, data);
-  };
+  }
 
   listTableRowsByIds = (dtableUuid, tableName, rowIds) => {
     this.init();
-    const url = 'api/v1/query/' + dtableUuid;
     const newRowIds = rowIds.map(item => `'${item}'`);
     const sql = `select * from \`${tableName}\` where _id in (${newRowIds.join(', ')})`;
-    const data = { sql: sql };
-    return this.req.post(url, data);
+    return this.sqlQuery(dtableUuid, sql);
   };
 
-  sqlQuery(dtableUuid, sql, parameters, convert_keys = false) {
+  sqlQuery(dtableUuid, sql, parameters = [], convert_keys = false) {
     this.init();
-    const url = 'api/v1/query/' + dtableUuid;
-    let data = { sql: sql, convert_keys };
-    if (parameters) {
-      data['parameters'] = parameters;
-    }
+    const url = `api/v2/dtables/${dtableUuid}/sql/`;
+    const data = {
+      sql,
+      parameters,
+      convert_keys,
+    };
     return this.req.post(url, data);
   }
 

@@ -6,6 +6,10 @@ export default {
   APIToken: '01ab23[...]45cd67',
   // server URL of the dtable of the plugin (required)
   server: 'https://example.com',
+
+  // required
+  dtableDb: 'https://example.com/api-gateway/',
+
   // id of the workspace with the dtable of the plugin (required, workspace must exist)
   workspaceID: '1',
   // name of the dtable to add the plugin to (required, dtable must exist under this name)
