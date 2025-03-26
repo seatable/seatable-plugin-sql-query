@@ -1,17 +1,17 @@
 {
   "name": "sql-query",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "private": true,
   "dependencies": {
     "axios": "~1.7.*",
     "deep-copy": "^1.4.2",
-    "dtable-ui-component": "^5.2.1",
+    "dtable-ui-component": "6.0.13",
     "dtable-utils": "5.0.10",
     "is-hotkey": "^0.1.4",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "react-intl-universal": "^2.12.0",
-    "reactstrap": "8.9.0"
+    "reactstrap": "^9.2.3"
   },
   "scripts": {
     "clean": "rm -rf plugin-zip && mkdir plugin-zip",

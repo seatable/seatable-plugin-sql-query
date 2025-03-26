@@ -130,7 +130,7 @@ class Body extends Component {
     const { displayHistoryOptions } = this.state;
     if (displayHistoryOptions < 1) return '';
     return (
-      <DropdownMenu className="sql-query-input-dropdown-menu">
+      <DropdownMenu className="dtable-dropdown-menu">
         {displayHistoryOptions.map((option, index) => {
           return (
             <DropdownItem

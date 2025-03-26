@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import DTable from 'dtable-sdk';
 import App from './app';
 
@@ -32,9 +32,8 @@ class TaskList {
 
   static async execute() {
     await this.init();
-    ReactDOM.render(
-      <App showDialog isDevelopment />, document.getElementById('root')
-    );
+    const root = createRoot(document.getElementById('root'));
+    root.render(<App isDevelopment showDialog />);
   }
 
 }
