@@ -8,9 +8,10 @@ class DTableDbAPI {
 
   init() {
     if (this.req) return;
-    const { accessToken, dtableDb } = window.dtable;
+    const { accessToken, server } = window.dtable;
+    const apiGatewayUrl = (server || '').replace(/\/*$/, '') + '/api-gateway/';
     this.req = axios.create({
-      baseURL: dtableDb,
+      baseURL: apiGatewayUrl,
       headers: { 'Authorization': 'Token ' + accessToken }
     });
   }
