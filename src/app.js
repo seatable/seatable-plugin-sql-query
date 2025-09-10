@@ -6,6 +6,7 @@ import { toaster } from 'dtable-ui-component';
 import { getTableByName, getTableById, getViewById } from 'dtable-utils';
 import { PLUGIN_NAME, DEFAULT_SETTINGS } from './constants';
 import { Header, Body } from './pages';
+import { NewTableDialog } from './components/dialog';
 import SqlOptionsLocalStorage from './api/sql-options-local-storage';
 import { generatorViewId, getDisplayColumns } from './utils/common-utils';
 import { View } from './model';
@@ -26,7 +27,9 @@ class App extends React.Component {
       showDialog: props.showDialog || false,
       currentViewIdx: 0,
       views: [],
-      currentTable: {}
+      currentTable: {},
+      showNewTableDialog: false,
+      newTableDefaultName: '',
     };
     this.sqlOptionsLocalStorage = null;
     this.cellValueUtils = new CellValueUtils();
@@ -102,11 +105,20 @@ class App extends React.Component {
     this.updateViews(currentViewIdx, newViews);
   };
 
-  export = async () => {
-    const result = this.bodyRef.getResult();
+  export = () => {
     const { currentViewIdx, views } = this.state;
     const view = views[currentViewIdx];
-    const { name } = view;
+    const defaultName = view?.name || '';
+    this.setState({ showNewTableDialog: true, newTableDefaultName: defaultName });
+  };
+
+  closeNewTableDialog = () => {
+    this.setState({ showNewTableDialog: false });
+  };
+
+  confirmExportToNewTable = async (tableName) => {
+    this.setState({ showNewTableDialog: false });
+    const result = this.bodyRef.getResult();
     const { success, error_message, results, metadata: columns, isInternalError, isActiveQueryId } = result;
     if (success) {
       try {
@@ -115,7 +127,7 @@ class App extends React.Component {
         const supportColumns = getDisplayColumns(columns, isActiveQueryId);
         const validResults = this.cellValueUtils.getExportRows(supportColumns, results, { tables, collaborators });
         const validColumns = this.cellValueUtils.getExportColumns(supportColumns);
-        await window.dtableSDK.importDataIntoNewTable(name, validColumns, validResults);
+        await window.dtableSDK.importDataIntoNewTable(tableName, validColumns, validResults);
         this.onCloseToggle();
         window.app.onSelectTable && window.app.onSelectTable(tables.length - 1);
       } catch (error) {
@@ -303,6 +315,14 @@ class App extends React.Component {
           getTableById={this.getTableById}
           getViewById={this.getViewById}
         />
+        {this.state.showNewTableDialog && (
+          <NewTableDialog
+            getTables={this.getTables}
+            tableName={this.state.newTableDefaultName || ''}
+            onNewTableConfirm={this.confirmExportToNewTable}
+            onNewTableCancel={this.closeNewTableDialog}
+          />
+        )}
       </div>
     );
   }
