@@ -202,3 +202,7 @@
   cursor: pointer;
   opacity: .75;
 }
+
+.sql-query-plugin .sql-query-plugin-header .sql-query-plugin-header-right .dtable-icon-x {
+  font-size: 16px;
+}
