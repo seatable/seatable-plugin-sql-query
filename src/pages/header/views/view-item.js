@@ -143,7 +143,7 @@ class ViewItem extends Component {
             <div className="sql-query-plugin-view-name">{name}</div>
             {isSelect && (
               <div className="sql-query-plugin-view-toggle ml-2" onClick={this.toggleDropdown}>
-                <i className="dtable-font dtable-icon-drop-down"></i>
+                <i className="dtable-font dtable-icon-down3"></i>
               </div>
             )}
             {isDropdownMenuOpen && (
@@ -159,10 +159,10 @@ class ViewItem extends Component {
                 </button>
                 */}
                 {canDelete &&
-                <button className="dropdown-item sql-query-view-dropdown-item" onClick={this.deleteView}>
-                  <i className="dtable-font dtable-icon-delete sql-query-view-item-icon"></i>
-                  <span>{intl.get('Delete_view')}</span>
-                </button>
+                  <button className="dropdown-item sql-query-view-dropdown-item" onClick={this.deleteView}>
+                    <i className="dtable-font dtable-icon-delete sql-query-view-item-icon"></i>
+                    <span>{intl.get('Delete_view')}</span>
+                  </button>
                 }
               </div>
             )}

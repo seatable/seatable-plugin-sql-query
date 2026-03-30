@@ -153,11 +153,10 @@
 }
 
 /* dropdown */
-.sql-query-plugin .sql-query-plugin-header .dtable-icon-drop-down {
+.sql-query-plugin .sql-query-plugin-header .dtable-icon-down3 {
   display: inline-block;
   font-size: 12px;
   color: #949494;
-  transform: scale(.8);
   transition: all .1s;
 }
 
