@@ -9,9 +9,9 @@
     "zh-cn": "SQL 查询"
   },
   "description": {
-    "de": "Verwenden Sie SQL, um die Daten in der Tabelle abzufragen",
-    "en": "Use SQL to query the data in the table",
-    "fr": "Utiliser SQL pour interroger les données de la table",
-    "zh-cn": "用 SQL 的方式来查询表格中的数据"
+    "de": "Verwenden Sie SQL, um die Daten in der Tabelle abzufragen.",
+    "en": "Use SQL to query the data in the table.",
+    "fr": "Utiliser SQL pour interroger les données de la table.",
+    "zh-cn": "用 SQL 的方式来查询表格中的数据。"
   }
 }
