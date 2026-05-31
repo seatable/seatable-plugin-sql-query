@@ -160,33 +160,6 @@
   transition: all .1s;
 }
 
-.sql-query-plugin .sql-query-plugin-header .sql-query-view-dropdown-menu {
-  margin-top: 0px;
-}
-
-.sql-query-plugin .sql-query-plugin-header .sql-query-view-dropdown-item {
-  height: 32px;
-  padding: 3px 12px;
-  line-height: 1.5;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.sql-query-plugin .sql-query-plugin-header .sql-query-view-dropdown-item:hover {
-  color: #fff;
-  background-color: #20a0ff;
-}
-
-.sql-query-plugin .sql-query-plugin-header .sql-query-view-dropdown-item .sql-query-view-item-icon {
-  font-size: 14px;
-  margin-right: 10px;
-  color: #8c8c8c;
-}
-
-.sql-query-plugin .sql-query-plugin-header .sql-query-view-dropdown-item:hover .sql-query-view-item-icon {
-  color: #fff;
-}
-
 .sql-query-plugin .sql-query-plugin-header .sql-query-plugin-header-right {
   height: 24px;
   width: 24px;

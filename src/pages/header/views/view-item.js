@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import intl from 'react-intl-universal';
+import { DTableDropdownItem, DTableDropdownMenu } from 'dtable-ui-component';
 import { RenameViewDialog } from '../../../components';
 
 class ViewItem extends Component {
@@ -147,24 +148,10 @@ class ViewItem extends Component {
               </div>
             )}
             {isDropdownMenuOpen && (
-              <div className="dropdown-menu large show sql-query-view-dropdown-menu" style={menuPosition}>
-                <button className="dropdown-item sql-query-view-dropdown-item" onClick={this.openRenameViewDialog}>
-                  <i className="dtable-font dtable-icon-rename sql-query-view-item-icon"></i>
-                  <span>{intl.get('Rename_view')}</span>
-                </button>
-                {/*
-                <button className="dropdown-item sql-query-view-dropdown-item" onClick={this.exportView}>
-                  <i className="dtable-font dtable-icon-export-to-new-table sql-query-view-item-icon"></i>
-                  <span>{intl.get('Export_to_a_new_table')}</span>
-                </button>
-                */}
-                {canDelete &&
-                  <button className="dropdown-item sql-query-view-dropdown-item" onClick={this.deleteView}>
-                    <i className="dtable-font dtable-icon-delete sql-query-view-item-icon"></i>
-                    <span>{intl.get('Delete_view')}</span>
-                  </button>
-                }
-              </div>
+              <DTableDropdownMenu className="show sql-query-view-dropdown-menu" style={menuPosition}>
+                <DTableDropdownItem onClick={this.openRenameViewDialog} icon={<i className="dtable-font dtable-icon-rename"></i>} content={intl.get('Rename_view')} />
+                {canDelete && (<DTableDropdownItem onClick={this.deleteView} icon={<i className="dtable-font dtable-icon-delete"></i>} content={intl.get('Delete_view')} />)}
+              </DTableDropdownMenu>
             )}
           </div>
         </div>
