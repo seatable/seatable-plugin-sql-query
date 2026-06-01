@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import intl from 'react-intl-universal';
 import PropTypes from 'prop-types';
-import { Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Button, Dropdown, DropdownToggle } from 'reactstrap';
+import { DTableDropdownItem, DTableDropdownMenu } from 'dtable-ui-component';
 import isHotkey from 'is-hotkey';
 import { QUERY_STATUS } from '../../constants';
 import RecordList from './records';
@@ -130,19 +131,13 @@ class Body extends Component {
     const { displayHistoryOptions } = this.state;
     if (displayHistoryOptions < 1) return '';
     return (
-      <DropdownMenu className="dtable-dropdown-menu">
+      <DTableDropdownMenu style={{ maxWidth: '100%' }}>
         {displayHistoryOptions.map((option, index) => {
           return (
-            <DropdownItem
-              key={`history-option-${index}`}
-              className="sql-query-input-dropdown-item"
-              onClick={() => this.onSqlChange(option)}
-            >
-              {option}
-            </DropdownItem>
+            <DTableDropdownItem key={`history-option-${index}`} className="sql-query-input-dropdown-item text-truncate" onClick={() => this.onSqlChange(option)} content={option} />
           );
         })}
-      </DropdownMenu>
+      </DTableDropdownMenu>
     );
   };
 

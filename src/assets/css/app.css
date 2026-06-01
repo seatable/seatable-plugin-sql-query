@@ -35,18 +35,6 @@
   width: 100%;
 }
 
-.sql-query-plugin .sql-query-input-dropdown-item {
-  padding: 3px 12px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.sql-query-plugin .sql-query-input-dropdown-item:hover {
-  cursor: pointer;
-  color: #fff;
-  background-color: #20a0ff;
-}
-
 .sql-query-plugin .sql-input-container .sql-input {
   height: 40px;
   width: 100%;
