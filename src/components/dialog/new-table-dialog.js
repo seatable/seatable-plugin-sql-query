@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import intl from 'react-intl-universal';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, Alert, Button } from 'reactstrap';
+import { Modal, ModalBody, ModalFooter, Form, FormGroup, Label, Input, Alert, Button } from 'reactstrap';
 import isHotkey from 'is-hotkey';
+import { DTableModalHeader } from 'dtable-ui-component';
 
 const NewTableDialog = (props) => {
   const { tableName: defaultName, getTables, onNewTableConfirm, onNewTableCancel } = props;
@@ -63,7 +64,7 @@ const NewTableDialog = (props) => {
 
   return (
     <Modal isOpen toggle={toggle} autoFocus={false}>
-      <ModalHeader toggle={toggle}>{intl.get('New_table')}</ModalHeader>
+      <DTableModalHeader toggle={toggle}>{intl.get('New_table')}</DTableModalHeader>
       <ModalBody>
         <Form>
           <FormGroup>
