@@ -4,6 +4,7 @@ import intl from 'react-intl-universal';
 import LOGO from '../../assets/images/sql-query.png';
 import Views from './views';
 import { NewViewDialog } from '../../components';
+import { IconButton } from 'dtable-ui-component';
 
 import '../../assets/css/header.css';
 
@@ -42,13 +43,17 @@ class Header extends Component {
           </div>
           <div className="sql-query-plugin-header-center mr-9">
             <Views {...this.props} ref={ref => this.viewsRef = ref}/>
-            <div className="sql-query-plugin-header-view-add" onClick={this.openNewViewDialog}>
-              <i className="dtable-font dtable-icon-add-table"></i>
-            </div>
+            <IconButton
+              icon='add-table'
+              title={intl.get('New_view')}
+              onClick={this.openNewViewDialog}
+            />
           </div>
-          <div className="sql-query-plugin-header-right" onClick={this.props.onCloseToggle}>
-            <i title={intl.get('Close')} className="dtable-font dtable-icon-x"></i>
-          </div>
+          <IconButton
+            icon='x'
+            title={intl.get('Close')}
+            onClick={this.props.onCloseToggle}
+          />
         </div>
         {isNewViewDialogDisplay && (
           <NewViewDialog

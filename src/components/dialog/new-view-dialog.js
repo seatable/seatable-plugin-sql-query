@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, Alert, Button } from 'reactstrap';
+import { Modal, ModalBody, ModalFooter, Form, FormGroup, Label, Input, Alert, Button } from 'reactstrap';
 import intl from 'react-intl-universal';
 import isHotkey from 'is-hotkey';
+import { DTableModalHeader } from 'dtable-ui-component';
 
 class NewViewDialog extends React.Component {
 
@@ -65,7 +66,7 @@ class NewViewDialog extends React.Component {
 
     return (
       <Modal isOpen={true} toggle={this.toggle} autoFocus={false}>
-        <ModalHeader toggle={this.toggle}>{intl.get('New_view')}</ModalHeader>
+        <DTableModalHeader toggle={this.toggle}>{intl.get('New_view')}</DTableModalHeader>
         <ModalBody>
           <Form>
             <FormGroup>
