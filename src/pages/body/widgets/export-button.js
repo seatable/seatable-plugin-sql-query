@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { UncontrolledTooltip } from 'reactstrap';
+import { DTableToolTip } from 'dtable-ui-component';
 import intl from 'react-intl-universal';
 
 class ExportButton extends Component {
@@ -20,9 +20,9 @@ class ExportButton extends Component {
         >
           <i className="dtable-font dtable-icon-export-to-new-table"></i>
         </div>
-        <UncontrolledTooltip placement="bottom" target={this.exportButtonRef} fade={false}>
+        <DTableToolTip placement="bottom" target={this.exportButtonRef}>
           {intl.get('Export_to_a_new_table')}
-        </UncontrolledTooltip>
+        </DTableToolTip>
       </Fragment>
     );
   }
