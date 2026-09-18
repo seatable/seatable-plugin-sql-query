@@ -231,8 +231,8 @@ class CellValueUtils {
       let newRow = {};
       Object.keys(columnsKeyNameMap).forEach(key => {
         const column = columnsKeyNameMap[key];
-        const { name, type } = column;
-        const cellValue = row[key];
+        const { id, name, type } = column;
+        const cellValue = row[id] ?? row[key];
         if (type === CellType.LONG_TEXT) {
           newRow[name] = convertValueToDtableLongTextValue(cellValue);
         } else if (type === CellType.LINK) {
@@ -249,8 +249,8 @@ class CellValueUtils {
               newRow[name] = validCellValue;
             } else if (result_type === FORMULA_RESULT_TYPE.DATE) {
               let format = 'YYYY-MM-DD';
-              if (data && data.format ) {
-                format = data.format ;
+              if (data && data.format) {
+                format = data.format;
               }
               format = format.indexOf('HH:mm') > -1 ? 'YYYY-MM-DD HH:mm' : 'YYYY-MM-DD';
               newRow[name] = cellValue && typeof cellValue === 'string' ? getDateDisplayString(cellValue, format) : '';
@@ -261,9 +261,9 @@ class CellValueUtils {
         } else if (type === CellType.BUTTON) {
           //
         } else if (type === UNKNOWN_TYPE) {
-          newRow[name] = this.getUnknownDisplayString(row[key]);
+          newRow[name] = this.getUnknownDisplayString(cellValue);
         } else {
-          newRow[name] = row[key];
+          newRow[name] = cellValue;
         }
       });
       return newRow;
@@ -283,8 +283,8 @@ class CellValueUtils {
         }
         if (result_type === FORMULA_RESULT_TYPE.DATE) {
           let format = 'YYYY-MM-DD';
-          if (data && data.format ) {
-            format = data.format ;
+          if (data && data.format) {
+            format = data.format;
           }
           return { ...column, data: { format }, type: CellType.DATE };
         }
